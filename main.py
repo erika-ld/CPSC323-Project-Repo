@@ -1,4 +1,22 @@
-#Include: function lexer() & 3 test cases
+
+def fsm_int(input):
+    states, alphabets = (2, 2)
+    table = [[0 for i in range(states)] for j in range(alphabets)]
+    print(table)
+    return 1
+
+
+def fsm_real():
+    states, alphabets = (2, 2)
+    table = [[0 for i in range(states)] for j in range(alphabets)]
+    print(table)
+    return 1
+
+def fsm_id():
+    states, alphabets = (2, 2)
+    table = [[0 for i in range(states)] for j in range(alphabets)]
+    print(table)
+    return 1
 
 def lexer():
     return 1
