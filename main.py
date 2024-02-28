@@ -29,9 +29,12 @@ def lexer(input):
     while True:
         char = input.read(1)          
         #Terminates when whitespace is reached.
-        if char.isalpha():
-            print(char)
+        if input == ():
+            w
+        elif char.isalpha():
             #Call DFSM Id
+            print(char)
+            dfsm_id_output = dfsm_id()
         else:
             break
     
@@ -41,7 +44,10 @@ def lexer(input):
 def main():
     
     #Open file_one (test_case_one.txt) for reading purposes.
-    file_one = open('test_case_one.txt' , 'r')
+    file_one = open('test_case_one.txt')
+    contents = file_one.read()
+    token_list = contents.split()
+    print(token_list)
     lexer(file_one)
     #Need help implementing while loop to reach end of file.
 
