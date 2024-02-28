@@ -23,25 +23,32 @@ def dfsm_id(input):
     return 1
 
 
-def lexer():
+def lexer(input):
+    #Call the FSMs from this function.
+
+    while True:
+        char = input.read(1)          
+        #Terminates when whitespace is reached.
+        if char.isalpha():
+            print(char)
+            #Call DFSM Id
+        else:
+            break
+    
     return 1
+
 
 def main():
     
     #Open file_one (test_case_one.txt) for reading purposes.
     file_one = open('test_case_one.txt' , 'r')
-
-    #While loop to read characters from file_one.
-    while True:
-        char = file_one.read(1)          
-        if not char: 
-            break
-        print(char)
+    lexer(file_one)
+    #Need help implementing while loop to reach end of file.
 
     #Close file_one.
     file_one.close()
 
-    print(lexer())
+    #print(lexer())
 
 if __name__ == "__main__":
     main()
