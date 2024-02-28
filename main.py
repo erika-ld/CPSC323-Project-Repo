@@ -27,13 +27,14 @@ def lexer(input):
     #Call the FSMs from this function.
 
     while True:
-        char = input.read(1)          
-        #Terminates when whitespace is reached.
-        if input == ():
-            w
-        elif char.isalpha():
+        #endif else function integer boolean real if return print scan while endwhile true false
+        if input == ('endif' or 'else' or 'function' or 'integer' or 
+        'boolean' or 'real' or 'if' or 'return' or 'print' or 'scan' or 'while' or 'endwhile'):
+            #process keyword
+            return 1
+        elif input[0].isalpha():
             #Call DFSM Id
-            print(char)
+            print(input[0])
             dfsm_id_output = dfsm_id()
         else:
             break
@@ -48,7 +49,8 @@ def main():
     contents = file_one.read()
     token_list = contents.split()
     print(token_list)
-    lexer(file_one)
+    for i in token_list:
+        lexer(i)
     #Need help implementing while loop to reach end of file.
 
     #Close file_one.
