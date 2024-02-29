@@ -2,16 +2,18 @@
 def dfsm_int(input):
     states, alphabets = (3,2)
     table = [[0 for i in range(alphabets)] for j in range(states)]
-    print(table)
-    return 1
+    print("dfsm_int input:", input)
+    acceptance_state = True;
+    return acceptance_state
 
 
 
 def dfsm_real(input):
     states, alphabets = (5,3)
     table = [[0 for i in range(alphabets)] for j in range(states)]
-    print(table)
-    return 1
+    print("dfsm_real input:", input)
+    acceptance_state = True;
+    return acceptance_state
 
 
 
@@ -40,9 +42,16 @@ def lexer(input):
         print(dfsm_id_output)
     elif input[0].isdigit():
         if '.' in input:
+            # Call DFSM for real
             print("Real found:", input)
+            dfsm_real_output = dfsm_real(input)
+            #Print whether the DFSM_REAL found the token to be a valid real.
+            print(dfsm_real_output)
         else:
             print("Integer found:", input)
+            dfsm_int_output = dfsm_int(input)
+            #Print whether the DFSM_INT found the token to be a valid int.
+            print(dfsm_int_output)            
     else:
         print("Unknown token:", input)
 
