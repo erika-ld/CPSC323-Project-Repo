@@ -34,7 +34,20 @@ def lexer(input):
     #Operators: (11) >, <, =, ==, !=, +, -, /, *, <=, >=
     operators = ['>', '<', '=', '==', '!=', '+', '-', '/', '*', '<=', '>=']
 
-    if input in keywords:
+    #Separators: (6) (  )  ,  ;  {  }
+    separators = ['(', ')', ',', ';', '{', '}']
+
+    token_length = len(input)
+
+    if (input in separators):
+        print("Separator found:", input)
+    elif (input[0] in separators):
+        print("Separator found:", input[0])
+        input.replace(input[0], '')
+    elif (input[(token_length - 1)] in separators):
+        print("Separator found:", input[token_length - 1])
+        input.replace(input[token_length - 1], '')
+    elif input in keywords:
         print("Keyword found:", input)
     elif input in operators:
         print("Operator found:", input)
