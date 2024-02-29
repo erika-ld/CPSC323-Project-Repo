@@ -29,11 +29,15 @@ def lexer(input):
     #Call the FSMs from this function.
 
     #Keywords: (14) endif else function integer boolean real if return print scan while endwhile true false
-   
     keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
-                'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']    
+                'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']  
+    #Operators: (11) >, <, =, ==, !=, +, -, /, *, <=, >=
+    operators = ['>', '<', '=', '==', '!=', '+', '-', '/', '*', '<=', '>=']
+
     if input in keywords:
         print("Keyword found:", input)
+    elif input in operators:
+        print("Operator found:", input)
     elif input[0].isalpha():
         # Call DFSM for identifier
         print("Identifier found:", input)
