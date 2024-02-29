@@ -24,20 +24,19 @@ def dfsm_id(input):
 def lexer(input):
     #Call the FSMs from this function.
 
-    #Keywords: endif else function integer boolean real if return print scan while endwhile true false
-    if (input == 'endif' or 'else' or 'function' or 'integer' or 'true' or 'false'
-    'boolean' or 'real' or 'if' or 'return' or 'print' or 'scan' or 'while' or 'endwhile'):
-        #process keyword
-        ex = "keyword found"
-        print(ex)
-
-    #elif input[0].isalpha():
-        #Call DFSM Id
-        #print(input[0])
-        #dfsm_id_output = dfsm_id(input)
-        #print(dfsm_id_output)
-    #else:
-        #break
+    #Keywords: (14) endif else function integer boolean real if return print scan while endwhile true false
+   
+    keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
+                'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']    
+    if input in keywords:
+        # Process keyword
+        print("Keyword found:", input)
+    elif input[0].isalpha():
+        # Call DFSM for identifier
+        print("Identifier found:", input)
+        # dfsm_id_output = dfsm_id(input)  # Call your identifier FSM here
+    else:
+        print("Unknown token:", input)
 
     return 0
 
