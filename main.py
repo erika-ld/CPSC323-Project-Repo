@@ -1,94 +1,94 @@
-
-def dfsm_int(input):
-    states, alphabets = (3,2)
-    table = [[0 for i in range(alphabets)] for j in range(states)]
-    print("dfsm_int input:", input)
-    acceptance_state = True;
-    return acceptance_state
-
-
-
-def dfsm_real(input):
-    states, alphabets = (5,3)
-    table = [[0 for i in range(alphabets)] for j in range(states)]
-    print("dfsm_real input:", input)
-    acceptance_state = True;
-    return acceptance_state
-
-
-
-def dfsm_id(input):
-    states, alphabets = (7,4)
-    table = [[0 for i in range(alphabets)] for j in range(states)]
-    print("dfsm_id input:", input)
-    acceptance_state = True;
-    return acceptance_state
-
-
-def lexer(input):
-    #Call the FSMs from this function.
-
-    #Keywords: (14) endif else function integer boolean real if return print scan while endwhile true false
-    keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
-                'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']  
-    #Operators: (11) >, <, =, ==, !=, +, -, /, *, <=, >=
-    operators = ['>', '<', '=', '==', '!=', '+', '-', '/', '*', '<=', '>=']
-
-    #Separators: (6) (  )  ,  ;  {  }
-    separators = ['(', ')', ',', ';', '{', '}']
-
-    token_length = len(input)
-
-    if (input in separators):
-        print("Separator found:", input)
-    elif (input[0] in separators):
-        print("Separator found:", input[0])
-        input.replace(input[0], '')
-    elif (input[(token_length - 1)] in separators):
-        print("Separator found:", input[token_length - 1])
-        input.replace(input[token_length - 1], '')
-    elif input in keywords:
-        print("Keyword found:", input)
-    elif input in operators:
-        print("Operator found:", input)
-    elif input[0].isalpha():
-        # Call DFSM for identifier
-        print("Identifier found:", input)
-        dfsm_id_output = dfsm_id(input)  
-        #Print whether the DFSM_ID found the token to be a valid identifier.
-        print(dfsm_id_output)
-    elif input[0].isdigit():
-        if '.' in input:
-            # Call DFSM for real
-            print("Real found:", input)
-            dfsm_real_output = dfsm_real(input)
-            #Print whether the DFSM_REAL found the token to be a valid real.
-            print(dfsm_real_output)
-        else:
-            print("Integer found:", input)
-            dfsm_int_output = dfsm_int(input)
-            #Print whether the DFSM_INT found the token to be a valid int.
-            print(dfsm_int_output)            
+def char_to_col(ch):
+    if ch.isalpha():
+        return 'L'
+    elif ch.isdigit():
+        return 'D'
+    elif ch == '_':
+        return '_'
     else:
-        print("Unknown token:", input)
+        return 'Other'
 
-    return 0
+
+def DFSM(string_input, transition_table):
+    state = 1
+    accepting_states = {2, 3, 4, 5}
+
+    for char in string_input:
+        col = char_to_col(char)
+        state = transition_table[state].get(col, 6)
+
+    return 1 if state in accepting_states else 0
+
+
+
+def lexer(input_string, transition_table):
+    tokens = []
+    current_token = ''
+    state = 1
+
+    for char in input_string:
+        if char.isspace(): 
+            if current_token.strip(): 
+                if DFSM(current_token, transition_table):
+                    tokens.append(('Identifier', current_token))
+                else:
+                    tokens.append(('Invalid', current_token))   
+                current_token = ''  
+        else: 
+            col = char_to_col(char)
+            state = transition_table[state].get(col, 6)
+
+            if state == 6:  
+                if current_token:
+                    if DFSM(current_token, transition_table):
+                        tokens.append(('Identifier', current_token))
+                    else:
+                        tokens.append(('Invalid', current_token))
+                    current_token = ''
+                state = 1  
+            elif state == 7:  # State for recognizing operators and separators
+                current_token = ''  # Reset current token when encountering operator or separator
+            else:  
+                current_token += char
+
+    if current_token: 
+        if DFSM(current_token, transition_table):
+            tokens.append(('Identifier', current_token))
+        else:
+            tokens.append(('Invalid', current_token))
+
+    return tokens
+
 
 
 def main():
-    # Open file for reading
-    with open('test_case_one.txt', 'r') as file:
-        contents = file.read()
-        if not contents:
-            print("File is empty")
-            return
-        
-        token_list = contents.split()
-        print("Token list:", token_list)
-        for token in token_list:
-            lexer(token)
+    input_file = "test_case_one.txt"
+    output_file = "output.txt"
+    with open(input_file, 'r') as file:
+        input_string = file.read()
 
-    #Close file_one.
+    id_transition_table = {
+        1: {'L': 2, 'D': 6, '_': 6, 'Other': 6},
+        2: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+        3: {'L': 4, 'D': 4, '_': 5, 'Other': 6},
+        4: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+        5: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+        6: {'L': 6, 'D': 6, '_': 6, 'Other': 6},
+    }
+
+    real_transition_table = {
+        1: {'D': 2, '.': 5, 'Other': 5},
+        2: {'D': 2, '.': 3, 'Other': 5},
+        3: {'D': 4, '.': 5, 'Other': 5},
+        4: {'D': 4, '.': 5, 'Other': 5},
+        5: {'D': 5, '.': 5, 'Other': 5},
+    }
+
+    tokens = lexer(input_string, id_transition_table)
+
+    with open(output_file, 'w') as file:
+        for token_type, token_value in tokens:
+            file.write(f"{token_type}: {token_value}\n")
 
 if __name__ == "__main__":
     main()
