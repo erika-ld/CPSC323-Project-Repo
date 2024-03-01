@@ -1,3 +1,10 @@
+import os
+keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
+            'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']
+operators = ['<=', '>=', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
+separators = ['(', ')', ',', ';', '{', '}']
+
+
 def char_to_col(ch):
     if ch.isalpha():
         return 'L'
@@ -18,7 +25,6 @@ def DFSM(string_input, transition_table):
         state = transition_table[state].get(col, 6)
 
     return 1 if state in accepting_states else 0
-
 
 
 def lexer(input_string, transition_table):
@@ -60,14 +66,34 @@ def lexer(input_string, transition_table):
     return tokens
 
 
-
+def remove_comments(input_string):
+    start_comment = input_string.find("[*")
+    while start_comment != -1:
+        end_comment = input_string.find("*]", start_comment + 2)
+        if end_comment == -1:
+            # If there's no matching end comment, remove everything after the start comment
+            input_string = input_string[:start_comment]
+            break
+        input_string = input_string[:start_comment] + input_string[end_comment + 2:]
+        start_comment = input_string.find("[*", start_comment)
+    return input_string
 
 
 def main():
     input_file = "test_case_one.txt"
     output_file = "output.txt"
+    temp_file = "temp.txt"
+
+    # Read input file
     with open(input_file, 'r') as file:
         input_string = file.read()
+
+    # Remove comments from input string
+    input_string_no_comments = remove_comments(input_string)
+
+    # Write modified input to a temporary file
+    with open(temp_file, 'w') as temp:
+        temp.write(input_string_no_comments)
 
     id_transition_table = {
         1: {'L': 2, 'D': 6, '_': 6, 'Other': 6},
@@ -78,11 +104,30 @@ def main():
         6: {'L': 6, 'D': 6, '_': 6, 'Other': 6},
     }
 
-    tokens = lexer(input_string, id_transition_table)
+    # Perform lexical analysis on modified input
+    tokens = lexer(input_string_no_comments, id_transition_table)
 
+    # Write tokens to output file
     with open(output_file, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type}: {token_value}\n")
+
+    # Write keywords, operators, and separators to output file
+    with open(output_file, 'a') as file:
+        for keyword in keywords:
+            if keyword in input_string_no_comments:
+                file.write('Keywords: '+ keyword + "\n")
+
+        for operator in operators:
+            if operator in input_string_no_comments:
+                file.write('Operators: ' + operator + "\n")
+
+        for separator in separators:
+            if separator in input_string_no_comments:
+                file.write('Separators: '+ separator + "\n")
+
+    # Remove temporary file
+    os.remove(temp_file)
 
 if __name__ == "__main__":
     main()
