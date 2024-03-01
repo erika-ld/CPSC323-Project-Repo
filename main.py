@@ -5,13 +5,25 @@ def char_to_col(ch):
         return 'D'
     elif ch == '_':
         return '_'
+    elif ch == '.':
+        return '.'
     else:
         return 'Other'
 
 
-def DFSM(string_input, transition_table):
+def DFSM_ID(string_input, transition_table):
     state = 1
     accepting_states = {2, 3, 4, 5}
+
+    for char in string_input:
+        col = char_to_col(char)
+        state = transition_table[state].get(col, 6)
+
+    return 1 if state in accepting_states else 0
+
+def DFSM_REAL(string_input, transition_table):
+    state = 1
+    accepting_states = {2, 4}
 
     for char in string_input:
         col = char_to_col(char)
@@ -29,7 +41,7 @@ def lexer(input_string, transition_table):
     for char in input_string:
         if char.isspace(): 
             if current_token.strip(): 
-                if DFSM(current_token, transition_table):
+                if DFSM_ID(current_token, transition_table):
                     tokens.append(('Identifier', current_token))
                 else:
                     tokens.append(('Invalid', current_token))   
@@ -40,7 +52,7 @@ def lexer(input_string, transition_table):
 
             if state == 6:  
                 if current_token:
-                    if DFSM(current_token, transition_table):
+                    if DFSM_ID(current_token, transition_table):
                         tokens.append(('Identifier', current_token))
                     else:
                         tokens.append(('Invalid', current_token))
@@ -52,7 +64,7 @@ def lexer(input_string, transition_table):
                 current_token += char
 
     if current_token: 
-        if DFSM(current_token, transition_table):
+        if DFSM_ID(current_token, transition_table):
             tokens.append(('Identifier', current_token))
         else:
             tokens.append(('Invalid', current_token))
