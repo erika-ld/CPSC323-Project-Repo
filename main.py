@@ -5,7 +5,6 @@ operators = ['<=', '>=', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
 separators = ['(', ')', ',', ';', '{', '}']
 
 
-
 def char_to_col(ch):
     if ch.isalpha():
         return 'L'
@@ -68,13 +67,25 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
         if char.isspace(): 
             #and the current_token is existent -> return true
             if current_token.strip(): 
+                print(current_token.strip())
+                length = len(current_token)
+                if (current_token[0].isdigit()):
+                    print("is digit")
+                    if DFSM_REAL(current_token, real_transition_table):
+                        tokens.append(('Real', current_token))  
+                    elif real_state == 2:
+                        DFSM_INT(current_token, int_transition_table)
+                    else:
+                        tokens.append(('Invalid', current_token)) 
                 #if dfsm_id returns true -> the fsm returned an accepting state
-                if DFSM_ID(current_token, id_transition_table):
-                    #add the current_token to the tokens list
-                    tokens.append(('Identifier', current_token))
-                else:
-                    #add the invalid token to the tokens list
-                    tokens.append(('Invalid', current_token))   
+                if (current_token[0].isalpha()):
+                    print("is letter")
+                    if DFSM_ID(current_token, id_transition_table):
+                        #add the current_token to the tokens list
+                        tokens.append(('Identifier', current_token))
+                    else:
+                        #add the invalid token to the tokens list
+                        tokens.append(('Invalid', current_token))   
                 #reset the current token    
                 current_token = ''  
         #if it is not a space, and is instead a character
@@ -82,32 +93,51 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
             #find out which column the char belongs to
             col = char_to_col(char)
             if char.isdigit():
-                state = real_transition_table[state].get(col, 5)
+                real_state = real_transition_table[state].get(col, 5)
+                if real_state == 5:
+                    if current_token:
+                        if DFSM_REAL(current_token, real_transition_table):
+                            tokens.append(('Real', current_token))
+                        else:
+                            tokens.append(('Invalid', current_token))
+                        current_token = ''
+                    real_state = 1
+                elif real_state == 7:
+                    current_token = ''
+                else:
+                    current_token += char
+
             else:
                 #find out which state the fsm is now in after the new input, else state = 6
-                state = id_transition_table[state].get(col, 6)
-
-
-            # if an input was given that was 'other'
-            if state == 6: 
-                #if current_token exists 
-                if current_token: 
-                    #if the dfsm_id returned 1 -> in acceptance state
-                    if DFSM_ID(current_token, id_transition_table):
-                        #append the token to the tokens list
-                        tokens.append(('Identifier', current_token))
-                    else:
-                        #append current token to the invalid tokens list
-                        tokens.append(('Invalid', current_token))
-                    #reset current token
-                    current_token = ''
-                state = 1  
-            elif state == 7:  # State for recognizing operators and separators
-                current_token = ''  # Reset current token when encountering operator or separator
-            else:  
-                current_token += char
+                id_state = id_transition_table[state].get(col, 6)
+                # if an input was given that was 'other'
+                if id_state == 6: 
+                    #if current_token exists 
+                    if current_token: 
+                        #if the dfsm_id returned 1 -> in acceptance state
+                        if DFSM_ID(current_token, id_transition_table):
+                            #append the token to the tokens list
+                            tokens.append(('Identifier', current_token))
+                        else:
+                            #append current token to the invalid tokens list
+                            tokens.append(('Invalid', current_token))
+                        #reset current token
+                        current_token = ''
+                    id_state = 1  
+                elif id_state == 7:  # State for recognizing operators and separators
+                    current_token = ''  # Reset current token when encountering operator or separator
+                else:  
+                    current_token += char
     #after the for loop
     if current_token: 
+        if DFSM_REAL(current_token, real_transition_table):
+            tokens.append(('Real', current_token))
+        else:
+            tokens.append(('Invalid', current_token))
+        if DFSM_INT(current_token, int_transition_table):
+            tokens.append(('Int', current_token))
+        else:
+            tokens.append(('Invalid', current_token))
         if DFSM_ID(current_token, id_transition_table):
             tokens.append(('Identifier', current_token))
         else:
