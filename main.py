@@ -19,6 +19,7 @@ def char_to_col(ch):
         return 'Other'
 
 
+# DFSM ID
 def DFSM_ID(string_input, transition_table):
     state = 1
     accepting_states = {2, 3, 4, 5}
@@ -28,59 +29,95 @@ def DFSM_ID(string_input, transition_table):
         state = transition_table[state].get(col, 6)
 
     return 1 if state in accepting_states else 0
+# END DFSM ID
 
 
-
+# DFSM REAL
 def DFSM_REAL(string_input, transition_table):
     state = 1
     accepting_states = {4}
 
     for char in string_input:
         col = char_to_col(char)
-        state = transition_table[state].get(col, 6)
+        state = transition_table[state].get(col, 5)
 
     return 1 if state in accepting_states else 0
+# END DFSM REAL
 
+# DFSM INT
+def DFSM_INT(string_input, transition_table):
+    state = 1
+    accepting_states = {2}
 
+    for char in string_input:
+        col = char_to_col(char)
+        state = transition_table[state].get(col, 3)
 
-def lexer(input_string, transition_table):
+    return 1 if state in accepting_states else 0
+# END DFSM INT
+
+# LEXER
+def lexer(input_string, id_transition_table, int_transition_table, real_transition_table):
     tokens = []
     current_token = ''
     state = 1
 
+    #for every character inputted
     for char in input_string:
+        #if it is a space
         if char.isspace(): 
+            #and the current_token is existent -> return true
             if current_token.strip(): 
-                if DFSM_ID(current_token, transition_table):
+                #if dfsm_id returns true -> the fsm returned an accepting state
+                if DFSM_ID(current_token, id_transition_table):
+                    #add the current_token to the tokens list
                     tokens.append(('Identifier', current_token))
                 else:
+                    #add the invalid token to the tokens list
                     tokens.append(('Invalid', current_token))   
+                #reset the current token    
                 current_token = ''  
+        #if it is not a space, and is instead a character
         else: 
+            #find out which column the char belongs to
             col = char_to_col(char)
-            state = transition_table[state].get(col, 6)
+            if char.isdigit():
+                state = real_transition_table[state].get(col, 5)
+            else:
+                #find out which state the fsm is now in after the new input, else state = 6
+                state = id_transition_table[state].get(col, 6)
 
-            if state == 6:  
-                if current_token:
-                    if DFSM_ID(current_token, transition_table):
+
+            # if an input was given that was 'other'
+            if state == 6: 
+                #if current_token exists 
+                if current_token: 
+                    #if the dfsm_id returned 1 -> in acceptance state
+                    if DFSM_ID(current_token, id_transition_table):
+                        #append the token to the tokens list
                         tokens.append(('Identifier', current_token))
                     else:
+                        #append current token to the invalid tokens list
                         tokens.append(('Invalid', current_token))
+                    #reset current token
                     current_token = ''
                 state = 1  
             elif state == 7:  # State for recognizing operators and separators
                 current_token = ''  # Reset current token when encountering operator or separator
             else:  
                 current_token += char
-
+    #after the for loop
     if current_token: 
-        if DFSM_ID(current_token, transition_table):
+        if DFSM_ID(current_token, id_transition_table):
             tokens.append(('Identifier', current_token))
         else:
             tokens.append(('Invalid', current_token))
 
     return tokens
+# END LEXER
 
+
+# REMOVE COMMENTS
 def remove_comments(input_string):
     start_comment = input_string.find("[*")
     while start_comment != -1:
@@ -92,7 +129,9 @@ def remove_comments(input_string):
         input_string = input_string[:start_comment] + input_string[end_comment + 2:]
         start_comment = input_string.find("[*", start_comment)
     return input_string
+#END REMOVE COMMENTS
 
+# MAIN
 def main():
     input_file = "test_case_one.txt"
     output_file = "output.txt"
@@ -133,14 +172,15 @@ def main():
     }
 
     # Perform lexical analysis on modified input
-    tokens = lexer(input_string_no_comments, id_transition_table)
+    #adjust lexer function to have parameters for all transition tables 
+    tokens = lexer(input_string_no_comments, id_transition_table, int_transition_table, real_transition_table)
 
     # Write tokens to output file
     with open(output_file, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type}: {token_value}\n")
     
-        # Write keywords, operators, and separators to output file
+    # Write keywords, operators, and separators to output file
     with open(output_file, 'a') as file:
         for keyword in keywords:
             if keyword in input_string_no_comments:
@@ -155,8 +195,8 @@ def main():
                 file.write('Separators: '+ separator + "\n")
 
     # Remove temporary file
-    os.remove(temp_file)
-
+    #os.remove(temp_file)
+# END MAIN
 
 if __name__ == "__main__":
     main()
