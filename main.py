@@ -70,8 +70,8 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
             #and the current_token is existent -> return true
             if current_token.strip(): 
                 #if dfsm_id returns true -> the fsm returned an accepting state
-                if (current_token.isalpha()):
-                    print("was letter")
+                if (current_token[0].isalpha()):
+                    print("was letter ", current_token[0])
                     if DFSM_ID(current_token, id_transition_table):
                         #add the current_token to the tokens list
                         tokens.append(('Identifier', current_token))
@@ -81,7 +81,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     #reset the current token    
                     current_token = ''   
                 else:
-                    print("was digit")
+                    print("was digit ", current_token[0])
                     if DFSM_REAL(current_token, real_transition_table):
                         print('append top')
                         tokens.append(('Real', current_token))  
@@ -99,7 +99,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
             #find out which column the char belongs to
             col = char_to_col(char)
             if char.isdigit() or col == '.':
-                print("is digit")
+                print("is digit ", char)
                 real_state = real_transition_table[real_state].get(col, 5)
                 if real_state == 5:
                     if current_token:
@@ -116,7 +116,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     current_token += char
 
             else:
-                print("is letter")
+                print("is letter ", char)
                 #find out which state the fsm is now in after the new input, else state = 6
                 id_state = id_transition_table[id_state].get(col, 6)
                 # if an input was given that was 'other'
