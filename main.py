@@ -66,7 +66,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
     #for every character inputted
     for char in input_string:
         #if it is a space
-        if char.isspace(): 
+        if char.isspace() or char in operators or char in separators: 
             #and the current_token is existent -> return true
             if current_token.strip(): 
                 #if dfsm_id returns true -> the fsm returned an accepting state
@@ -114,7 +114,6 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     current_token = ''
                 else:
                     current_token += char
-
             else:
                 print("is letter ", char)
                 #find out which state the fsm is now in after the new input, else state = 6
