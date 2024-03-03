@@ -11,7 +11,7 @@ function check (temp integer)
     }
 }
 $
-integer temperature;
+integer temperature; [* hi this is a comment *]
 $
 scan(temperature);
 check(temperature);
