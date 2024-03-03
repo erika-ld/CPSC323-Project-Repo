@@ -11,7 +11,7 @@ function find_max (a real, b real)
     }
 }
 $
-real x, y, max;
+real x, y, max; [* hi this is a comment *]
 $
 scan(x, y);
 max = find_max(x, .12);
