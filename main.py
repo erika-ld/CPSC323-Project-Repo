@@ -83,19 +83,15 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                 else:
                     print("was digit ", current_token[0])
                     if DFSM_REAL(current_token, real_transition_table):
-                        print('append top')
+                        print('real appended')
                         tokens.append(('Real', current_token))  
                     else:
-                        if real_state == 2:
-                            #need to make if statements for this
-                            if DFSM_INT(current_token, int_transition_table):
-                                tokens.append(('Int', current_token))
-                                print('int')
-                            else:
-                                tokens.append(('Invalid', current_token)) 
+                        if DFSM_INT(current_token, int_transition_table):
+                            tokens.append(('Int', current_token))
+                            print('int appended')
                         else:
                             tokens.append(('Invalid', current_token)) 
-                            print('no')
+                            print('invalid real')
                     current_token = ''  
         #if it is not a space, and is instead a character
         else: 
