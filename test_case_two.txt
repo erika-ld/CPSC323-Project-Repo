@@ -1,4 +1,3 @@
-[* Test Case 2: This code includes comments and separators *]
 $
 function check (temp integer)
 {
