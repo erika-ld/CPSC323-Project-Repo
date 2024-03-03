@@ -8,6 +8,11 @@ function check (speed integer)
     else
     {
         print("you're putting others in danger when you exceed this limit");
+        print("It's hot outside");
+    }
+    else
+    {
+        print("It's cool outside");
     }
 }
 $
