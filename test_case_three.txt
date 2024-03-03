@@ -1,18 +1,20 @@
-[* this is comment for this sample code which
-converts Fahrenheit into Celcius *]
+[* Test Case 3: Incorporates identifiers, real numbers, operators, and invalid inputs *]
 $
-function convertx (fahr integer)
+function find_max (a real, b real)
 {
-return 5 * (fahr -32) / 9;
+    if (a > b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
 }
 $
-integer low, high, step; [* declarations *]
-$ 2.00 / .12
-scan (low, high, step);
-while (low <= high )
-{ print (low);
-print (convertx (low));
-low = low + step;
-}
-endwhile
+real x, y, max;
+$
+scan(x, y);
+max = find_max(x, .12);
+print(max);
 $

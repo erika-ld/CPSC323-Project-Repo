@@ -1,18 +1,14 @@
-[* this is comment for this sample code which
-converts Fahrenheit into Celcius *]
+[* Test Case 1: Includes real numbers, integers, keywords, identifiers, and invalid inputs *]
 $
-function convertx (fahr integer)
+function calculate (value real)
 {
-return 5 * (fahr -32) / 9;
+    result = value * 2 + .12;
+    return result;
 }
 $
-integer low, high, step; [* declarations *]
-$ 2.00 / .12
-scan (low, high, step);
-while (low <= high )
-{ print (low);
-print (convertx (low));
-low = low + step;
-}
-endwhile
+real num, result;
+$
+scan (num);
+result = calculate(num);
+print(result);
 $

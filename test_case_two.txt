@@ -1,18 +1,19 @@
-[* this is comment for this sample code which
-converts Fahrenheit into Celcius *]
+[* Test Case 2: This code includes comments and separators *]
 $
-function convertx (fahr integer)
+function check (temp integer)
 {
-return 5 * (fahr -32) / 9;
+    if (temp >= 25)
+    {
+        print("It's hot outside!");
+    }
+    else
+    {
+        print("It's cool outside!");
+    }
 }
 $
-integer low, high, step; [* declarations *]
-$ 2.00 / .12
-scan (low, high, step);
-while (low <= high )
-{ print (low);
-print (convertx (low));
-low = low + step;
-}
-endwhile
+integer temperature;
+$
+scan(temperature);
+check(temperature);
 $
