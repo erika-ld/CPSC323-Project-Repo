@@ -1,18 +1,18 @@
 $
-function check (temp integer)
+function check (speed integer)
 {
-    if (temp >= 25)
+    if (speed >= 25)
     {
-        print("It's hot outside!");
+        print("you're at a safe speed for a resedentia area!");
     }
     else
     {
-        print("It's cool outside!");
+        print("you're putting others in danger when you exceed this limit");
     }
 }
 $
-integer temperature; [* hi this is a comment *]
+integer speederature; [* hi this is a comment *]
 $
-scan(temperature);
-check(temperature);
+scan(speederature);
+check(speederature);
 $
