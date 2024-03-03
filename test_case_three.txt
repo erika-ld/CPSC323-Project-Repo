@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-[* Test Case 3 *]
-=======
->>>>>>> 817fdb2961c0fbb1d5ffd4979b31d76c4ccdf8e7
 $
 function find_max (a real, b real)
 {
