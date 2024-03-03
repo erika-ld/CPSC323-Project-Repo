@@ -1,4 +1,4 @@
-[* Test Case 2: This code includes comments and separators *]
+[* Test Case 2 *]
 $
 function check (temp integer)
 {
