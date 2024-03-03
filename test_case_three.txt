@@ -1,4 +1,3 @@
-[* Test Case 3: Incorporates identifiers, real numbers, operators, and invalid inputs *]
 $
 function find_max (a real, b real)
 {
