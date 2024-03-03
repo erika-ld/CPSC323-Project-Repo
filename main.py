@@ -221,29 +221,32 @@ def main():
     
     # Write keywords, operators, and separators to output file
     with open(output_file, 'a') as file:
+        # Loop through the input string and check for keywords, operators, and separators
+        i = 0
+        while i < len(input_string_no_comments):
+            if input_string_no_comments[i:i+2] in operators:
+                file.write('Operators: ' + input_string_no_comments[i:i+2] + "\n")
+                i += 2
+            elif input_string_no_comments[i] in operators:
+                file.write('Operators: ' + input_string_no_comments[i] + "\n")
+                i += 1
+            elif input_string_no_comments[i] in separators:
+                file.write('Separators: ' + input_string_no_comments[i] + "\n")
+                i += 1
+            else:
+                i += 1
+
+        # Check for keywords
         for keyword in keywords:
             if keyword in input_string_no_comments:
-                file.write('Keywords: '+ keyword + "\n")
-
-        for operator in operators:
-            # Check if the operator is present in the input string
-            if operator in input_string_no_comments:
-                # Write the operator to the output file
-                file.write('Operators: ' + operator + "\n")
-                # Remove the operator from the input string to avoid duplication
-                input_string_no_comments = input_string_no_comments.replace(operator, '')
-
-        for separator in separators:
-            if separator in input_string_no_comments:
-                file.write('Separators: '+ separator + "\n")
+                file.write('Keywords: ' + keyword + "\n")
 
     # Remove temporary file
     os.remove(temp_file)
 
-
-
 # END MAIN
+
+
 
 if __name__ == "__main__":
     main()
-
