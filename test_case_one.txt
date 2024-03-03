@@ -1,4 +1,3 @@
-[* Test Case 1: Includes real numbers, integers, keywords, identifiers, and invalid inputs *]
 $
 function calculate (value real)
 {
