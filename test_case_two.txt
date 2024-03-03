@@ -3,11 +3,11 @@ function check (temp integer)
 {
     if (temp >= 25)
     {
-        print("It's hot outside!");
+        print("It's hot outside");
     }
     else
     {
-        print("It's cool outside!");
+        print("It's cool outside");
     }
 }
 $
