@@ -55,6 +55,7 @@ def DFSM_INT(string_input, transition_table):
     return 1 if state in accepting_states else 0
 # END DFSM INT
 
+
 # LEXER
 def lexer(input_string, id_transition_table, int_transition_table, real_transition_table):
     tokens = []
@@ -94,39 +95,39 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
         else:
             # find out which column the char belongs to
             col = char_to_col(char)
-            if char.isdigit() or col == '.':
-                real_state = real_transition_table[real_state].get(col, 5)
-                if real_state == 5:
-                    if current_token:
-                        if DFSM_REAL(current_token, real_transition_table):
-                            tokens.append(('Real', current_token))
-                        else:
-                            tokens.append(('Invalid', current_token))
+            if char.isdigit():
+                if current_token == '.':
+                    real_state = real_transition_table[real_state].get(col, 5)
+                    if real_state == 5:
+                        tokens.append(('Invalid', current_token))
                         current_token = ''
-                    real_state = 1
-                elif real_state == 7:
-                    current_token = ''
+                        real_state = 1
+                    else:
+                        current_token += char
                 else:
+                    int_state = int_transition_table[int_state].get(col, 3)
+                    if int_state == 3:
+                        tokens.append(('Int', current_token))
+                        current_token = char
+                        int_state = 1
+                    else:
+                        current_token += char
+            elif char == '.':
+                if current_token.isdigit():
                     current_token += char
+                else:
+                    tokens.append(('Invalid', current_token))
+                    current_token = char
             else:
-                # find out which state the fsm is now in after the new input, else state = 6
                 id_state = id_transition_table[id_state].get(col, 6)
-                # if an input was given that was 'other'
                 if id_state == 6:
-                    # if current_token exists
                     if current_token:
-                        # if the dfsm_id returned 1 -> in acceptance state
                         if DFSM_ID(current_token, id_transition_table):
-                            # append the token to the tokens list
                             tokens.append(('Identifier', current_token))
                         else:
-                            # append current token to the invalid tokens list
                             tokens.append(('Invalid', current_token))
-                        # reset current token
                         current_token = ''
                     id_state = 1
-                elif id_state == 7:  # State for recognizing operators and separators
-                    current_token = ''  # Reset current token when encountering operator or separator
                 else:
                     current_token += char
     # after the for loop
@@ -149,8 +150,14 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                 else:
                     tokens.append(('Invalid', current_token))
 
+    # Remove empty entries from tokens
+    tokens = [(token_type, token_value) for token_type, token_value in tokens if token_value.strip()]
+
     return tokens
 # END LEXER
+
+
+
 
 
 
