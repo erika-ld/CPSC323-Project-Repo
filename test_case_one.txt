@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 [* Test Case 1 *]
+=======
+>>>>>>> 817fdb2961c0fbb1d5ffd4979b31d76c4ccdf8e7
 $
 function calculate (value real)
 {
