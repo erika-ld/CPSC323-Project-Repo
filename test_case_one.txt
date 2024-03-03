@@ -1,7 +1,7 @@
 $
 function calculate (value real)
 {
-    result = value * 2 + .12;
+    result = value * 23.56 - 5 + .12;
     return result; [* hi this is a comment *]
 }
 $

@@ -2,7 +2,8 @@ Identifier: calculate
 Identifier: value
 Identifier: result
 Identifier: value
-Int: 2
+Real: 23.56
+Int: 5
 Invalid: .12
 Identifier: result
 Separators: $
@@ -11,10 +12,12 @@ Separators: )
 Separators: {
 Operators: =
 Operators: *
+Operators: -
 Operators: +
 Separators: ;
 Separators: ;
 Separators: }
+Separators: $
 Keywords: function
 Keywords: real
 Keywords: return
