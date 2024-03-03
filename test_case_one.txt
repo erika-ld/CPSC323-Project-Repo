@@ -4,10 +4,3 @@ function calculate (value real)
     result = value * 2 + .12;
     return result;
 }
-$
-real num, result;
-$
-scan (num);
-result = calculate(num);
-print(result);
-$
