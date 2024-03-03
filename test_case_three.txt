@@ -17,3 +17,9 @@ scan(x, y);
 max = find_max(x, .12);
 print(max);
 $
+real num, result;
+$
+scan (num);
+result = calculate(num);
+print(result);
+$
