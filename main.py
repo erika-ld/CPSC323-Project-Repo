@@ -1,10 +1,12 @@
 import os
+
+# Lists of 3 hardcoded tokens: Keywords, Operators, Separators
 keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
             'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']
 operators = ['<=', '>=', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
 separators = ['(', ')', ',', ';', '{', '}']
 
-
+# char_to_col(): takes char argument ch and outputs the correct category of input
 def char_to_col(ch):
     if ch.isalpha():
         return 'L'
@@ -17,6 +19,9 @@ def char_to_col(ch):
     else:
         return 'Other'
 
+# DFSM Functions for Identifier, Integer, and Real
+# Arguments: string input and transition table for corresponding token
+# Returns: 1 if state is in accepting state, 0 for other
 
 # DFSM ID
 def DFSM_ID(string_input, transition_table):
@@ -28,7 +33,6 @@ def DFSM_ID(string_input, transition_table):
         state = transition_table[state].get(col, 6)
 
     return 1 if state in accepting_states else 0
-# END DFSM ID
 
 
 # DFSM REAL
@@ -41,7 +45,7 @@ def DFSM_REAL(string_input, transition_table):
         state = transition_table[state].get(col, 5)
 
     return 1 if state in accepting_states else 0
-# END DFSM REAL
+
 
 # DFSM INT
 def DFSM_INT(string_input, transition_table):
@@ -53,10 +57,12 @@ def DFSM_INT(string_input, transition_table):
         state = transition_table[state].get(col, 3)
 
     return 1 if state in accepting_states else 0
-# END DFSM INT
 
 
-# LEXER
+
+# lexer(): evaluates each char in string input and calls corresponding DFSM functions to maintain token list
+# Arguments: string input & 3 transition tables for Identifier, Integer, and Reals
+# Returns: tokens list containing the processed tokens
 def lexer(input_string, id_transition_table, int_transition_table, real_transition_table):
     tokens = []
     current_token = ''
@@ -64,20 +70,15 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
     real_state = 1
     int_state = 1
 
-    # for every character inputted
     for char in input_string:
-        # if it is a space or an operator/separators
         if char.isspace() or char in operators or char in separators:
-            # and the current_token is existent -> return true
             if current_token.strip():
                 if current_token[0].isalpha():
                     if current_token in keywords:
                         current_token = ''  # Skip adding keywords to tokens list
                     elif DFSM_ID(current_token, id_transition_table):
-                        # add the current_token to the tokens list as an identifier
                         tokens.append(('Identifier', current_token))
                     else:
-                        # add the invalid token to the tokens list
                         tokens.append(('Invalid', current_token))
                 else:
                     if current_token in keywords:
@@ -89,11 +90,8 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                             tokens.append(('Int', current_token))
                         else:
                             tokens.append(('Invalid', current_token))
-                # reset the current token
                 current_token = ''
-        # if it is not a space, and is instead a character
         else:
-            # find out which column the char belongs to
             col = char_to_col(char)
             if char.isdigit():
                 if current_token == '.':
@@ -130,7 +128,6 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     id_state = 1
                 else:
                     current_token += char
-    # after the for loop
     if current_token:
         if current_token[0].isalpha():
             if current_token in keywords:
@@ -154,17 +151,12 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
     tokens = [(token_type, token_value) for token_type, token_value in tokens if token_value.strip()]
 
     return tokens
-# END LEXER
 
 
 
-
-
-
-
-
-
-# REMOVE COMMENTS
+# remove_comments(): removes comments from string input
+# Arguments: string input taken from test case file
+# Returns: modified input string with comments removed
 def remove_comments(input_string):
     start_comment = input_string.find("[*")
     while start_comment != -1:
@@ -176,9 +168,8 @@ def remove_comments(input_string):
         input_string = input_string[:start_comment] + input_string[end_comment + 2:]
         start_comment = input_string.find("[*", start_comment)
     return input_string
-#END REMOVE COMMENTS
 
-# MAIN
+# main(): reads and writes to files, calls lexer() function, and contains transition tables for Identifier, Integer, and Real
 def main():
     input_file = "test_case_one.txt"
     output_file = "output.txt"
@@ -250,8 +241,6 @@ def main():
 
     # Remove temporary file
     os.remove(temp_file)
-
-# END MAIN
 
 
 
