@@ -85,15 +85,18 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     if DFSM_REAL(current_token, real_transition_table):
                         print('append top')
                         tokens.append(('Real', current_token))  
-                    elif real_state == 2:
-                        #need to make if statements for this
-                        DFSM_INT(current_token, int_transition_table)
-                        print('int')
                     else:
-                        tokens.append(('Invalid', current_token)) 
-                        print('no')
+                        if real_state == 2:
+                            #need to make if statements for this
+                            if DFSM_INT(current_token, int_transition_table):
+                                tokens.append(('Int', current_token))
+                                print('int')
+                            else:
+                                tokens.append(('Invalid', current_token)) 
+                        else:
+                            tokens.append(('Invalid', current_token)) 
+                            print('no')
                     current_token = ''  
- 
         #if it is not a space, and is instead a character
         else: 
             #find out which column the char belongs to
