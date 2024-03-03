@@ -171,78 +171,82 @@ def remove_comments(input_string):
 
 # main(): reads and writes to files, calls lexer() function, and contains transition tables for Identifier, Integer, and Real
 def main():
-    input_file = "test_case_one.txt"
-    output_file = "output.txt"
+    input_files = ("test_case_one.txt", "test_case_two.txt", "test_case_three.txt")
     temp_file = "temp.txt"
 
-    # Read input file
-    with open(input_file, 'r') as file:
-        input_string = file.read()
+    for input_file in input_files:
+        # Get the base name of the input file
+        base_name = os.path.basename(input_file)
 
-    # Remove comments from input string
-    input_string_no_comments = remove_comments(input_string)
+        # Construct the output file name by appending "_output" to the base name
+        output_file = os.path.splitext(base_name)[0] + "_output.txt"
 
-    # Write modified input to a temporary file
-    with open(temp_file, 'w') as temp:
-        temp.write(input_string_no_comments)
+        # Read input file
+        with open(input_file, 'r') as file:
+            input_string = file.read() 
 
-    id_transition_table = {
-        1: {'L': 2, 'D': 6, '_': 6, 'Other': 6},
-        2: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
-        3: {'L': 4, 'D': 4, '_': 5, 'Other': 6},
-        4: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
-        5: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
-        6: {'L': 6, 'D': 6, '_': 6, 'Other': 6},
-    }
+        # Remove comments from input string
+        input_string_no_comments = remove_comments(input_string)
 
-    real_transition_table = {
-        1: {'D': 2, '.': 5, 'Other': 5},
-        2: {'D': 2, '.': 3, 'Other': 5},
-        3: {'D': 4, '.': 5, 'Other': 5},
-        4: {'D': 4, '.': 5, 'Other': 5},
-        5: {'D': 5, '.': 5, 'Other': 5},
-    }
+        # Write modified input to a temporary file
+        with open(temp_file, 'w') as temp:
+            temp.write(input_string_no_comments)
 
-    int_transition_table = {
-        1: {'D': 2, 'Other': 3},
-        2: {'D': 2, 'Other': 3}, 
-        3: {'D': 3, 'Other': 3},
-    }
+        id_transition_table = {
+            1: {'L': 2, 'D': 6, '_': 6, 'Other': 6},
+            2: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+            3: {'L': 4, 'D': 4, '_': 5, 'Other': 6},
+            4: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+            5: {'L': 3, 'D': 4, '_': 5, 'Other': 6},
+            6: {'L': 6, 'D': 6, '_': 6, 'Other': 6},
+        }
 
-    # Perform lexical analysis on modified input
-    tokens = lexer(input_string_no_comments, id_transition_table, int_transition_table, real_transition_table)
+        real_transition_table = {
+            1: {'D': 2, '.': 5, 'Other': 5},
+            2: {'D': 2, '.': 3, 'Other': 5},
+            3: {'D': 4, '.': 5, 'Other': 5},
+            4: {'D': 4, '.': 5, 'Other': 5},
+            5: {'D': 5, '.': 5, 'Other': 5},
+        }
 
-    # Write tokens to output file
-    with open(output_file, 'w') as file:
-        for token_type, token_value in tokens:
-            file.write(f"{token_type}: {token_value}\n")
-    
-    # Write keywords, operators, and separators to output file
-    with open(output_file, 'a') as file:
-        # Loop through the input string and check for keywords, operators, and separators
-        i = 0
-        while i < len(input_string_no_comments):
-            if input_string_no_comments[i:i+2] in operators:
-                file.write('Operators: ' + input_string_no_comments[i:i+2] + "\n")
-                i += 2
-            elif input_string_no_comments[i] in operators:
-                file.write('Operators: ' + input_string_no_comments[i] + "\n")
-                i += 1
-            elif input_string_no_comments[i] in separators:
-                file.write('Separators: ' + input_string_no_comments[i] + "\n")
-                i += 1
-            else:
-                i += 1
+        int_transition_table = {
+            1: {'D': 2, 'Other': 3},
+            2: {'D': 2, 'Other': 3}, 
+            3: {'D': 3, 'Other': 3},
+        }
 
-        # Check for keywords
-        for keyword in keywords:
-            if keyword in input_string_no_comments:
-                file.write('Keywords: ' + keyword + "\n")
+        # Perform lexical analysis on modified input
+        tokens = lexer(input_string_no_comments, id_transition_table, int_transition_table, real_transition_table)
 
-    # Remove temporary file
-    os.remove(temp_file)
+        # Write tokens to output file
+        with open(output_file, 'w') as file:
+            for token_type, token_value in tokens:
+                file.write(f"{token_type}: {token_value}\n")
+        
+        # Write keywords, operators, and separators to output file
+        with open(output_file, 'a') as file:
+            # Loop through the input string and check for keywords, operators, and separators
+            i = 0
+            while i < len(input_string_no_comments):
+                if input_string_no_comments[i:i+2] in operators:
+                    file.write('Operators: ' + input_string_no_comments[i:i+2] + "\n")
+                    i += 2
+                elif input_string_no_comments[i] in operators:
+                    file.write('Operators: ' + input_string_no_comments[i] + "\n")
+                    i += 1
+                elif input_string_no_comments[i] in separators:
+                    file.write('Separators: ' + input_string_no_comments[i] + "\n")
+                    i += 1
+                else:
+                    i += 1
 
+            # Check for keywords
+            for keyword in keywords:
+                if keyword in input_string_no_comments:
+                    file.write('Keywords: ' + keyword + "\n")
 
+        # Remove temporary file
+        os.remove(temp_file)
 
 if __name__ == "__main__":
     main()
