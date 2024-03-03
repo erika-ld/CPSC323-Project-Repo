@@ -2,5 +2,5 @@ $
 function calculate (value real)
 {
     result = value * 2 + .12;
-    return result;
+    return result; [* hi this is a comment *]
 }
