@@ -1,1 +1,18 @@
-txt file for the second test case with Rat24S source code
+$
+function check (speed integer)
+{
+    if (speed >= 25)
+    {
+        print("you're at a safe speed for a resedentia area!");
+    }
+    else
+    {
+        print("you're putting others in danger when you exceed this limit");
+    }
+}
+$
+integer speederature; [* hi this is a comment *]
+$
+scan(speederature);
+check(speederature);
+$

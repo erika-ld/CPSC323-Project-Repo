@@ -4,7 +4,7 @@ import os
 keywords = ['endif', 'else', 'function', 'integer', 'true', 'false',
             'boolean', 'real', 'if', 'return', 'print', 'scan', 'while', 'endwhile']
 operators = ['<=', '>=', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
-separators = ['(', ')', ',', ';', '{', '}']
+separators = ['(', ')', ',', ';', '{', '}', '$']
 
 # char_to_col(): takes char argument ch and outputs the correct category of input
 def char_to_col(ch):

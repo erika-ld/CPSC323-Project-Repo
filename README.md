@@ -8,7 +8,7 @@ Erika Dickson - erikald@csu.fullerton.edu
 
 # Lexical Analyzer
 
-A lexical analyzer is implemented in Python for tokenizing input text according to specified language rules. This program identifies keywords, operators, separators, integers, and real numbers in the input text/file.
+A lexical analyzer is implemented in Python for tokenizing input text according to specified language rules. This program identifies Identifier, keywords, operators, separators, integers, and real numbers in the input text/file.
 
 ## Requirements
 
@@ -33,3 +33,4 @@ A lexical analyzer is implemented in Python for tokenizing input text according 
     ```bash
     python main.py
     ```
+    
