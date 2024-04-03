@@ -3,7 +3,7 @@ function check (speed integer)
 {
     if (speed >= 25)
     {
-        print("you're at a safe speed for a resedentia area!");
+        print("you're at a safe speed for a residential area!");
     }
     else
     {
