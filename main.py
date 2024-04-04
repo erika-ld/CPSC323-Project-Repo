@@ -72,24 +72,37 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
 
     for char in input_string:
         if char.isspace() or char in operators or char in separators:
-            if current_token.strip():
+            if char in separators:
+                        print('Separator:', char)
+                        current_token = ''
+            elif char in operators:
+                        print('Operator:', char)
+                        current_token = ''
+            elif current_token.strip():
                 if current_token[0].isalpha():
                     if current_token in keywords:
+                        print('Keyword:', current_token)
                         current_token = ''  # Skip adding keywords to tokens list
                     elif DFSM_ID(current_token, id_transition_table):
                         tokens.append(('Identifier', current_token))
+                        print('Identifier:', current_token)
                     else:
                         tokens.append(('Invalid', current_token))
+                        print('Invalid:', current_token)
                 else:
                     if current_token in keywords:
+                        print('Keyword:', current_token)
                         current_token = ''  # Skip adding keywords to tokens list
                     elif DFSM_REAL(current_token, real_transition_table):
-                        tokens.append(('Real', current_token))
+                        tokens.append(('Real:', current_token))
+                        print('Real:', current_token)
                     else:
                         if DFSM_INT(current_token, int_transition_table):
                             tokens.append(('Int', current_token))
+                            print('Int:', current_token)
                         else:
                             tokens.append(('Invalid', current_token))
+                            print('Invalid:', current_token)
                 current_token = ''
         else:
             col = char_to_col(char)
@@ -98,6 +111,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     real_state = real_transition_table[real_state].get(col, 5)
                     if real_state == 5:
                         tokens.append(('Invalid', current_token))
+                        print('Invalid:', current_token)
                         current_token = ''
                         real_state = 1
                     else:
@@ -106,6 +120,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     int_state = int_transition_table[int_state].get(col, 3)
                     if int_state == 3:
                         tokens.append(('Int', current_token))
+                        print('Int:', current_token)
                         current_token = char
                         int_state = 1
                     else:
@@ -115,6 +130,7 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     current_token += char
                 else:
                     tokens.append(('Invalid', current_token))
+                    print('Invalid:', current_token)
                     current_token = char
             else:
                 id_state = id_transition_table[id_state].get(col, 6)
@@ -122,8 +138,10 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                     if current_token:
                         if DFSM_ID(current_token, id_transition_table):
                             tokens.append(('Identifier', current_token))
+                            print('Identifier:', current_token)
                         else:
                             tokens.append(('Invalid', current_token))
+                            print('Invalid:', current_token)
                         current_token = ''
                     id_state = 1
                 else:
@@ -134,18 +152,23 @@ def lexer(input_string, id_transition_table, int_transition_table, real_transiti
                 current_token = ''  # Skip adding keywords to tokens list
             elif DFSM_ID(current_token, id_transition_table):
                 tokens.append(('Identifier', current_token))
+                print('Identifier:', current_token)
             else:
                 tokens.append(('Invalid', current_token))
+                print('Invalid:', current_token)
         else:
             if current_token in keywords:
                 current_token = ''  # Skip adding keywords to tokens list
             elif DFSM_REAL(current_token, real_transition_table):
                 tokens.append(('Real', current_token))
+                print('Real:', current_token)
             else:
                 if DFSM_INT(current_token, int_transition_table):
                     tokens.append(('Int', current_token))
+                    print('Int:', current_token)
                 else:
                     tokens.append(('Invalid', current_token))
+                    print('Invalid:', current_token)
 
     # Remove empty entries from tokens
     tokens = [(token_type, token_value) for token_type, token_value in tokens if token_value.strip()]
