@@ -1,18 +1,21 @@
-$
-function check (speed integer)
-{
-    if (speed >= 25)
-    {
-        print("you're at a safe speed for a resedentia area!");
-    }
-    else
-    {
-        print("you're putting others in danger when you exceed this limit");
-    }
-}
-$
-integer speederature; [* hi this is a comment *]
-$
-scan(speederature);
-check(speederature);
-$
+[* operator test *]
+= != > < <= => + - * / ==
++-*/
+[* separator test *]
+$ { } ; , () =
+)(
+[* keyword *]
+integer boolean real {} ; , if else endif return scan while endwhile
+true false
+[* integer *]
+1 1000 99 00000000000000
+[* real *]
+234.567 9.000001 000.00
+[* identifier *]
+z12_d_ Zzzz a1z4r zbc12__x x
+[* wrongTokens *]
+#
+_
+23rty
+000.
+.123
