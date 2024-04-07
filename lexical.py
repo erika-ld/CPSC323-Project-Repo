@@ -4,6 +4,7 @@ keywords = [
 ]
 operators = ['<=', '>=', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
 separators = ['(', ')', ',', ';', '{', '}', '$']
+lexeme = []
 tokens = []
 
 id_transition_table = {
@@ -90,8 +91,9 @@ int_transition_table = {
 
 
 # return the next token from the index input
-def get_next_token(index):
-  return tokens[index + 1]
+def get_token(index):
+  
+  return("Tokens: " + tokens[index] + "  Lexeme: "+ lexeme[index])
 
 
 comment_state = False
@@ -100,34 +102,48 @@ comment_state = False
 def lexer(input):
   global comment_state
 
+  # check comment
   if input == '[*':
     comment_state = True
+  # check keyword
   elif input in keywords:
     print("Keyword found:", input)
-    tokens.append(input)
+    lexeme.append(input)
+    tokens.append("Keyword")
+  # check operator
   elif input in operators:
     print("Operator found:", input)
-    tokens.append(input)
+    lexeme.append(input)
+    tokens.append("Operator")
+  # check separator
   elif input[0] in separators and len(input) > 1:
     next_token = input[1:]
     print("Separator found:", input[0])
-    tokens.append(input[0])
+    lexeme.append(input[0])
+    tokens.append("Separator")
     lexer(next_token)
   elif input in separators:
     print("Separator found:", input)
-    tokens.append(input)
+    lexeme.append(input)
+    tokens.append("Separator")
+  # check identifier
   elif input[0].isalpha() and len(input) > 1:
     if input[-1] in separators:
       print("Identifier found:", input[0:-1])
       print("Separator found:", input[-1])
-      tokens.append(input[0:-1])
-      tokens.append(input[-1])
+      lexeme.append(input[0:-1])
+      tokens.append("Identifier")
+      lexeme.append(input[-1])
+      tokens.append("Separator")
     else:
       print("Identifier found:", input)
-      tokens.append(input)
+      lexeme.append(input)
+      tokens.append("Identifier")
   elif input[0].isalpha():
     print("Identifier found:", input)
-    tokens.append(input)
+    lexeme.append(input)
+    tokens.append("Identifier")
+  # check real
   elif input[0].isdigit() and '.' in input:
     check_real_index = input.index('.')
     try:
@@ -135,28 +151,36 @@ def lexer(input):
         if input[-1] in separators:
           print("Real found: ", input[0:-1])
           print("Separator found:", input[-1])
-          tokens.append(input[0:-1])
-          tokens.append(input[-1])
+          lexeme.append(input[0:-1])
+          tokens.append("Real")
+          lexeme.append(input[-1])
+          tokens.append("Separator")
         else:
           print("Real found: ", input)
-          tokens.append(input)
+          lexeme.append(input)
+          tokens.append("Real")
       else:
         print("Unknown token:", input)
     except IndexError:
       print("Unknown token:", input)
+  # check digit
   elif input[0].isdigit():
     if input[-1] in separators:
       print("Integer found: ", input[0:-1])
       print("Separator found:", input[-1])
-      tokens.append(input[0:-1])
-      tokens.append(input[-1])
+      lexeme.append(input[0:-1])
+      tokens.append("Integer")
+      lexeme.append(input[-1])
+      tokens.append("Separator")
     else:
       print("Integer found: ", input)
-      tokens.append(input)
-
+      lexeme.append(input)
+      tokens.append("Integer")
+  # unknow token
   else:
     print("Unknown token:", input)
-    tokens.append(input)
+    lexeme.append(input)
+    tokens.append("Unknown")
     # might not need this line for assigment 2
 
 
@@ -178,8 +202,12 @@ def main():
       else:
         lexer(token)
 
+  with open('output_case_one.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(get_token(i) + '\n')
+    
   print(tokens)
-  # print(get_next_token(1))
+  # print(get_token(1))
 
 
 if __name__ == "__main__":
