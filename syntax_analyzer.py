@@ -5,11 +5,11 @@ import lexical
 print_switch = True
 
 #Not sure the etiquette on this file variable, does this need to be moved to main()? 
-syntax_output_file = "syntax_output_file.txt"
+#syntax_output_file = "syntax_output_file.txt"
 
-def print_file(token, lexemes, production_rules):
-    with open(syntax_output_file, 'w') as output:
-        output.write()
+#def print_file(token, lexemes, production_rules):
+    #with open(syntax_output_file, 'w') as output:
+        #output.write("Test")
 
 def Rat24S():
     if print_switch:
@@ -154,7 +154,15 @@ def Real():
 
 
 def main():
-    print("")
+    input_file = ("test_case_one_output.txt")
+    line_count = 0
+    with open(input_file, 'r') as input_file:
+        input_file_lines = input_file.readlines()
+        for line in input_file_lines:
+            line_count += 1
+            print("Line{}: {}".format(line_count, line.strip()))
+
+            
 
 if __name__ == "__main__":
     main()
