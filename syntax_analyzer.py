@@ -154,14 +154,7 @@ def Real():
 
 
 def main():
-    input_file = ("test_case_one_output.txt")
-    line_count = 0
-    with open(input_file, 'r') as input_file:
-        input_file_lines = input_file.readlines()
-        for line in input_file_lines:
-            line_count += 1
-            print("Line{}: {}".format(line_count, line.strip()))
-
+    return 0
             
 
 if __name__ == "__main__":
