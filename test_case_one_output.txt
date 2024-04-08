@@ -1,23 +1,22 @@
-Identifier: calculate
-Identifier: value
-Identifier: result
-Identifier: value
-Real: 23.56
-Int: 5
-Invalid: .12
-Identifier: result
-Separators: $
-Separators: (
-Separators: )
-Separators: {
-Operators: =
-Operators: *
-Operators: -
-Operators: +
-Separators: ;
-Separators: ;
-Separators: }
-Separators: $
-Keywords: function
-Keywords: real
-Keywords: return
+Tokens: Separator  Lexeme: $
+Tokens: Keyword  Lexeme: function
+Tokens: Identifier  Lexeme: calculate
+Tokens: Separator  Lexeme: (
+Tokens: Identifier  Lexeme: value
+Tokens: Identifier  Lexeme: real
+Tokens: Separator  Lexeme: )
+Tokens: Separator  Lexeme: {
+Tokens: Identifier  Lexeme: result
+Tokens: Operator  Lexeme: =
+Tokens: Identifier  Lexeme: value
+Tokens: Operator  Lexeme: *
+Tokens: Real  Lexeme: 23.56
+Tokens: Operator  Lexeme: -
+Tokens: Integer  Lexeme: 5
+Tokens: Operator  Lexeme: +
+Tokens: Unknown  Lexeme: .12;
+Tokens: Keyword  Lexeme: return
+Tokens: Identifier  Lexeme: result
+Tokens: Separator  Lexeme: ;
+Tokens: Separator  Lexeme: }
+Tokens: Separator  Lexeme: $

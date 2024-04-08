@@ -1,19 +1,18 @@
 import lexical
 
-#36-37 functions for each non-terminal 
-
 print_switch = True
-
-#def print_file(token, lexemes, production_rules):
-    #with open(syntax_output_file, 'w') as output:
-        #output.write("Test")
-
+token_index = 0
 
 #R1. <Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
 def Rat24S():
     if print_switch:
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
     
+    if lexical.get_lexeme(token_index) == '$':
+        token_index += 1
+        Optional_Function_Definitions()
+    else:
+        exit(1)
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
 def Optional_Function_Definitions():
     if print_switch:
@@ -246,6 +245,8 @@ def Term():
     if Factor():
         if Term_Prime():
             return True
+    
+    return False
 
 #<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>
 def Term_Prime():
@@ -255,8 +256,7 @@ def Term_Prime():
     if lexical.get_lexeme(token_index) == '*' or lexical.get_lexeme(token_index) == '/':
         token_index += 1
         if Factor():
-            if Term_Prime():
-                return True
+            return Term_Prime()
     elif lexical.get_(token_index) == "Unknown":
         #report error
         print("error")
@@ -286,10 +286,7 @@ def Primary():
             token_index += 1
             if IDs():
                 token_index += 1
-                if lexical.get_lexeme(token_index) == ']':
-                    return True
-                else:
-                    return False
+                return lexical.get_lexeme(token_index) == ']'
         else:
             return True
     elif lexical.get_token(token_index) == 'Integer':
@@ -320,6 +317,7 @@ def Empty():
 
     
 def main():
+    
     return 0
             
 
