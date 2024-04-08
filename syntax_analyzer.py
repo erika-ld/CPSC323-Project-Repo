@@ -23,6 +23,7 @@ def Optional_Function_Definitions():
 def Function_Definition():
     if print_switch:
         print("<Function Definitions> ::= <Function> | <Function> <Function Definitions>  ")
+
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 def Function():
     if print_switch:
@@ -93,10 +94,16 @@ def Assign():
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
 
-#R18. <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif
+#R18. Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif
+#Factorized: 
 def If():
     if print_switch:
-        print("<If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif")
+        print("Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif")
+        print("Factorized: ...")
+#Factorized: 
+def If_Prime():
+    if print_switch:
+        print("Factorized:...")
 
 #R19. <Return> ::= return ; | return <Expression> ;
 def Return():
@@ -148,9 +155,7 @@ def Primary():
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
 
-def If_Prime():
-    if print_switch:
-        print("[Rule]")
+
 
 def Expression_Prime():
     if print_switch:
