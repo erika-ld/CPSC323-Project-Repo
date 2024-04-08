@@ -92,7 +92,37 @@ int_transition_table = {
 }
 
 
-def get_token(index):
+def get_lexeme(index):
+  global comment_state
+  global output_state
+  output_state = True
+  # change input file if needed
+  with open('test_case_one.txt', 'r') as file:
+    contents = file.read()
+    if not contents:
+      print("File is empty")
+      return
+
+    token_list = contents.split()
+    # print("Token list:", token_list)
+    for token in token_list:
+      if comment_state is True and token != '*]':
+        continue
+      elif comment_state is True and token == '*]':
+        comment_state = False
+      else:
+        lexer(token)
+
+  # change output file name if needed
+  with open('output_case_one.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(output_token(i) + '\n')
+
+  output_state = False  
+  return(lexeme[index])
+
+
+def get_token_list(index):
   global comment_state
   global output_state
   output_state = True
