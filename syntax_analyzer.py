@@ -221,11 +221,34 @@ def Statement_List():
 def Statement_List_Prime():
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
-
+        
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-def Statement():
-    if print_switch:
-        print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
+def Statement(self):
+  print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
+  if lexical.tokens[0].get_lexeme == '{':
+    if Compound() is True:
+      return True
+  elif lexical.tokens[0].get_token == 'identifier':
+    if Assign() is True: 
+        return True
+  elif lexical.tokens[0].get_lexeme == 'if':
+    if If() is True:
+        return True
+  elif lexical.tokens[0].get_lexeme == 'return' :
+    if Return() is True:
+        return True
+  elif lexical.tokens[0].get_lexeme == 'print':
+    if Print() is True:
+        return True
+  elif lexical.tokens[0].get_lexeme == 'scan' :
+    if Scan() is True:
+        return True
+  elif lexical.tokens[0].get_lexeme == 'while':
+    if While() is True:
+        return True
+  else:
+    print("Syntax Error: Invalid statement")
+    return False
 
 #R16. <Compound> ::= { <Statement List> }
 def Compound():
