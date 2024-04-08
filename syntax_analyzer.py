@@ -41,10 +41,17 @@ def Optional_Parameter_List():
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
 
-#R6. <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
+#R6. Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
+#Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
 def Parameter_List():
     if print_switch:
-        print("<Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
+        print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
+        print("Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
+
+#<Parameter List Prime> ::= <Parameter List> | <Empty> 
+def Parameter_List_Prime():
+    if print_switch:
+        print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
 
 #R7. <Parameter> ::= <IDs > <Qualifier>
 def Parameter():
@@ -66,25 +73,46 @@ def Optional_Declaration_List():
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")     
 
-#R11. <Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>
+#R11. Original: <Declaration List> ::= <Declaration> ; | <Declaration> ; <Declaration List>
+#Factorized: <Declaration List> ::= <Declaration> ; <Declaration List Prime>
 def Declaration_List():
     if print_switch:
-        print("<Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>")
+        print("Original: <Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>")
+        print("Factorized: <Declaration List> ::= <Declaration> ; <Declaration List Prime>")
+
+#<Declaration List Prime> ::= <Declaration List> | <Empty>
+def Declaration_List_Prime():
+    if print_switch:
+        print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
 
 #R12. <Declaration> ::= <Qualifier > <IDs>
 def Declaration():
     if print_switch:
         print("<Declaration> ::= <Qualifier > <IDs>")
 
-#R13. <IDs> ::= <Identifier> | <Identifier>, <IDs>
+#R13. Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>
+#Factorized: <IDS> ::= <Identifier> <IDs Prime>
 def IDs():
     if print_switch:
-        print("<IDs> ::= <Identifier> | <Identifier>, <IDs>")
+        print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
+        print("Factorized: <IDS> ::= <Identifier> <IDs Prime>")
 
-#R14. <Statement List> ::= <Statement> | <Statement> <Statement List>
+#<IDs Prime> ::= <IDs> | <Empty> 
+def IDs_Prime():
+    if print_switch:
+        print("<IDs Prime> ::= <IDs> | <Empty>")
+
+#R14. Original: <Statement List> ::= <Statement> | <Statement> <Statement List>
+#Factorized: <Statement List> ::= <Statement> <Statement List Prime>
 def Statement_List():
     if print_switch:
-        print("<Statement List> ::= <Statement> | <Statement> <Statement List>")
+        print("Original: <Statement List> ::= <Statement> | <Statement> <Statement List>")
+        print("Factorized: <Statement List> ::= <Statement> <Statement List Prime>")
+
+#<Statement List Prime> ::= <Statement List> | <Empty>
+def Statement_List_Prime():
+    if print_switch:
+        print("<Statement List Prime> ::= <Statement List> | <Empty>")
 
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 def Statement():
@@ -101,7 +129,7 @@ def Assign():
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
 
-#R18. Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif
+#R18. Original: <If> ::= if ( <Condition> ) <Statement> endif | if ( <Condition> ) <Statement> else <Statement> endif
 #Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>
 def If():
     if print_switch:
@@ -113,10 +141,17 @@ def If_Prime():
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
 
-#R19. <Return> ::= return ; | return <Expression> ;
+#R19. Original: <Return> ::= return ; | return <Expression> ;
+#Factorized: <Return> ::= return <Return Prime>
 def Return():
     if print_switch:
-        print("<Return> ::= return ; | return <Expression> ;")
+        print("Original: <Return> ::= return ; | return <Expression> ;")
+        print("Factorized: <Return> ::= return <Return Prime>")
+
+#<Return Prime> ::= <Expression> | <Empty>
+def Return_Prime():
+    if print_switch:
+        print("<Return Prime> ::= <Expression> | <Empty>")
 
 #R20. <Print> ::= print ( <Expression>);
 def Print():
@@ -149,6 +184,11 @@ def Expression():
         print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
 
 
+
+def Expression_Prime():
+    if print_switch:
+        print("[Rule]")
+
 #R26. Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
 #Revised: <Term> ::= <Factor> <Term Prime>
 def Term():
@@ -169,36 +209,6 @@ def Factor():
 def Primary():
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
-
-
-
-def Expression_Prime():
-    if print_switch:
-        print("[Rule]")
-
-
-
-
-def Parameter_List_Prime():
-    if print_switch:
-        print("")
-
-def Declaration_List_Prime():
-    if print_switch:
-        print("")
-
-def IDs_Prime():
-    if print_switch:
-        print("")
-
-def Statement_List_Prime():
-    if print_switch:
-        print("")
-
-def Return_Prime():
-    if print_switch:
-        print("")
-
 
 
 def main():
