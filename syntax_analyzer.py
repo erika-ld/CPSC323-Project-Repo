@@ -29,6 +29,8 @@ def Function_Definition():
 def Function_Definition_Prime():
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
+    if Function_Definition():
+      return True
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 def Function():
@@ -49,8 +51,11 @@ def Parameter_List():
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
-    if print_switch:
-        print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
+  if print_switch:
+    print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
+  if lexical.get_lexeme(token_index) == ',':
+    return Parameter() and Parameter_List_Prime()
+  return True
 
 #R7. <Parameter> ::= <IDs > <Qualifier>
 def Parameter():
