@@ -168,7 +168,25 @@ def While():
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
     if lexical.get_lexeme == 'while':
-        if Condition():
+        if lexical.get_lexeme(token_index) == '(':
+            token_index += 1
+            if Condition():
+                token_index += 1
+                if lexical.get_lexeme(token_index) == ')':
+                    return True
+                else:
+                    return False
+                    print("error")
+            else:
+                return False
+                print("error")
+        else:
+            return False
+            print("error")
+    else:
+        return False
+        print("error")
+
 
 
 #R23. <Condition> ::= <Expression> <Relop> <Expression>
