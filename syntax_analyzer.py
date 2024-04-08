@@ -56,6 +56,9 @@ def Function_Definition():
     if Function():
         if Function_Definition_Prime():
             return True
+        else:
+            print("error")
+            exit(1)
     else:
         print("error")
         exit(1)
@@ -111,6 +114,9 @@ def Parameter_List():
     if Parameter():
         if Parameter_List_Prime():
             return True
+        else:
+            print("error")
+            exit(1)
     else:
         print('error')
         exit(1)
@@ -133,6 +139,9 @@ def Parameter():
     if IDs():
         if Qualifier():
             return True
+        else:
+            print("error")
+            exit(1)
     else:
         print("error")
         exit(1)
@@ -152,6 +161,11 @@ def Body():
 def Optional_Declaration_List():
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")     
+    if Declaration_List() | Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
 
 #R11. Original: <Declaration List> ::= <Declaration> ; | <Declaration> ; <Declaration List>
 #Factorized: <Declaration List> ::= <Declaration> ; <Declaration List Prime>
@@ -164,6 +178,7 @@ def Declaration_List():
 def Declaration_List_Prime():
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
+
 
 #R12. <Declaration> ::= <Qualifier > <IDs>
 def Declaration():
@@ -179,6 +194,16 @@ def IDs():
     if print_switch:
         print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
         print("Factorized: <IDS> ::= <Identifier> <IDs Prime>")
+    
+    if lexical.get_token(token_index) == 'Identifier':
+        if IDs_Prime():
+            return True
+        else:
+            print("error")
+            exit(1)
+    else:
+        print("error")
+        exit(1)
 
 #<IDs Prime> ::= , <IDs> | <Empty> 
 def IDs_Prime():
