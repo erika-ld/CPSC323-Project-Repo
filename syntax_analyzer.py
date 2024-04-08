@@ -204,9 +204,9 @@ def Term():
     if print_switch:
         print("Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
         print("Revised: <Term> ::= <Factor> <Term Prime>")
-    
-    Factor()
-    Term_Prime()
+    if Factor():
+        if Term_Prime():
+            return True
 
 
 def Term_Prime():
@@ -214,22 +214,42 @@ def Term_Prime():
         print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> ")
 
     if lexical.get_lexeme(token_index) == '*' or lexical.get_lexeme(token_index) == '/':
+        token_index += 1
         if Factor():
-            Term_Prime()
+            if Term_Prime():
+                return True
+    elif lexical.get_(token_index) == "Unknown":
+        #report error
+        print("error")
+        return False
     else:
         Empty()
-
-
+        return True
     
 #R27. <Factor> ::= - <Primary> | <Primary>
 def Factor():
     if print_switch:
         print("<Factor> ::= - <Primary> | <Primary>")
+    if lexical.get_lexeme(token_index) == '-':
+        token_index += 1
+        return Primary()
+    else:
+        return Primary()
+
 
 #R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
 def Primary():
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
+    if lexical.output_token(token_index) == 'Identifier':
+        token_index += 1
+        if lexical.get_lexeme(token_index) == '[':
+            token_index += 1
+            if IDs():
+                token_index += 1
+                if lexical.get_lexeme(token_index) == ']':
+                    return 
+
 
 #R29: <Empty> ::= ε
 def Empty():
