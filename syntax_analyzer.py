@@ -7,7 +7,7 @@ token_index = 0
 def Rat24S():
     if print_switch:
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
-    
+
     if lexical.get_lexeme(token_index) == '$':
         token_index += 1
         if Optional_Function_Definitions():
@@ -20,39 +20,36 @@ def Rat24S():
             if not lexical.get_lexeme(token_index) == '$':
                 print("error")
                 exit(1)
-        
+
         Statement_List()
         token_index += 1
         if not lexical.get_lexeme(token_index) == '$':
             print("error")
             exit(1)
-        
         return True
 
     else:
         print("error")
         exit(1)
 
-
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
 def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
-    
+
     if Function_Definition() | Empty():
         return True
     else:
         print("error")
         exit(1)
 
-
-#R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>    
+#R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
 #Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
 def Function_Definition():
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
-    
+
     if Function():
         if Function_Definition_Prime():
             return True
@@ -93,7 +90,7 @@ def Function():
         print("error")
     else:
         print("error")
-        exit(1)
+        exit(1) 
 
 #R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
 def Optional_Parameter_List():
@@ -120,7 +117,7 @@ def Parameter_List():
     else:
         print('error')
         exit(1)
-    
+
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
@@ -135,7 +132,7 @@ def Parameter_List_Prime():
 def Parameter():
     if print_switch:
         print("<Parameter> ::= <IDs > <Qualifier>")
-    
+
     if IDs():
         if Qualifier():
             return True
@@ -146,53 +143,93 @@ def Parameter():
         print("error")
         exit(1)
 
-
-#R8. <Qualifier> ::= integer | boolean | real
+# R8. <Qualifier> ::= integer | boolean | real
 def Qualifier():
     if print_switch:
         print("<Qualifier> ::= integer | boolean | real")
+    
+    lexeme = lexical.get_lexeme(token_index)
+    if lexeme == 'integer' or lexeme == 'boolean' or lexeme == 'real':
+        token_index += 1
+        return True
+    else:
+        print("Error: Expected 'integer', 'boolean', or 'real' in Qualifier")
+        return False
 
-#R9. <Body> ::= { < Statement List> }
+
+# R9. <Body> ::= { <Statement List> }
 def Body():
     if print_switch:
-        print("<Body> ::= { < Statement List> }")
+        print("<Body> ::= { <Statement List> }")
+    
+    if lexical.get_lexeme(token_index) == '{':
+        token_index += 1
+        if Statement_List():
+            if lexical.get_lexeme(token_index) == '}':
+                token_index += 1
+                return True
+            else:
+                print("Error: Missing '}' in Body")
+                return False
+        else:
+            print("Error: Problem parsing Statement List in Body")
+            return False
+    else:
+        print("Error: Missing '{' in Body")
+        return False
+
 
 #R10. <Opt Declaration List> ::= <Declaration List> | <Empty>
 def Optional_Declaration_List():
     if print_switch:
-        print("<Opt Declaration List> ::= <Declaration List> | <Empty>")     
+        print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
     if Declaration_List() | Empty():
         return True
     else:
         print("error")
-        exit(1)
+        exit(1)    
 
-#R11. Original: <Declaration List> ::= <Declaration> ; | <Declaration> ; <Declaration List>
-#Factorized: <Declaration List> ::= <Declaration> ; <Declaration List Prime>
+# R11. <Declaration List> ::= <Declaration> ; <Declaration List Prime>
 def Declaration_List():
     if print_switch:
-        print("Original: <Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>")
-        print("Factorized: <Declaration List> ::= <Declaration> ; <Declaration List Prime>")
+        print("<Declaration List> ::= <Declaration> ; <Declaration List Prime>")
+    
+    if Declaration():
+        if lexical.get_lexeme(token_index) == ';':
+            token_index += 1
+            return Declaration_List_Prime()
+        else:
+            print("Missing semicolon (;) after declaration")
+            return False
+    else:
+        print("Error in declaration")
+        return False
 
-#<Declaration List Prime> ::= <Declaration List> | <Empty>
+# <Declaration List Prime> ::= <Declaration List> | <Empty>
 def Declaration_List_Prime():
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
-
-    if Declaration_List() or Empty():
+    
+    if Declaration_List():
         return True
     else:
-        print("error")
-        exit(1)
+        Empty()
+        return True
 
-
-#R12. <Declaration> ::= <Qualifier > <IDs>
+# R12. <Declaration> ::= <Qualifier> <IDs>
 def Declaration():
-  if print_switch:
-      print("<Declaration> ::= <Qualifier > <IDs>")
-  if lexical.get_token(token_index) == 'identifier':
-    return IDs_Prime()
-  return False
+    if print_switch:
+        print("<Declaration> ::= <Qualifier> <IDs>")
+    
+    if Qualifier():
+        if IDs():
+            return True
+        else:
+            print("Error: Invalid IDs in Declaration")
+            return False
+    else:
+        print("Error: Invalid Qualifier in Declaration")
+        return False
 
 #R13. Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>
 #Factorized: <IDS> ::= <Identifier> <IDs Prime>
@@ -200,7 +237,7 @@ def IDs():
     if print_switch:
         print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
         print("Factorized: <IDS> ::= <Identifier> <IDs Prime>")
-    
+
     if lexical.get_token(token_index) == 'Identifier':
         if IDs_Prime():
             return True
@@ -248,7 +285,12 @@ def Statement_List():
 def Statement_List_Prime():
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
-        
+    if Statement_List() | Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
+
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 def Statement(self):
   print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
@@ -290,7 +332,7 @@ def Compound():
     else:
       print("error in Compound")
       exit(1)
-        
+
 #R17. <Assign> ::= <Identifier> = <Expression> ;
 def Assign():
     if print_switch:
@@ -305,75 +347,154 @@ def Assign():
       print("error")
       exit(1)
 
-def expect_lexeme(expected_lexeme):
-  token, lexeme = lexical.get_next_token()
-  if lexeme == expected_lexeme:
-      print(f"Expected lexeme '{expected_lexeme}' found")
-      return True
-  else:
-      print(f"Syntax Error: Expected lexeme '{expected_lexeme}', got '{lexeme}'")
-      return False
-
-#R18. Original: <If> ::= if ( <Condition> ) <Statement> endif | if ( <Condition> ) <Statement> else <Statement> endif
-#Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>
-def If(self):
-    print("Parsing If rule: if ( <Condition> ) <Statement> <If Prime>")
-
-    if self.expect_lexeme("if") and self.expect_lexeme("(") and self.Condition() and self.expect_lexeme(")") and self.Statement() and self.If_prime():
-        print("If rule successfully parsed")
-        return True
+# R18. <If> ::= if ( <Condition> ) <Statement> <If Prime>
+def If():
+    if print_switch:
+        print("<If> ::= if ( <Condition> ) <Statement> <If Prime>")
+    
+    if lexical.get_lexeme(token_index) == 'if':
+        token_index += 1
+        if lexical.get_lexeme(token_index) == '(':
+            token_index += 1
+            if Condition():
+                if lexical.get_lexeme(token_index) == ')':
+                    token_index += 1
+                    if Statement():
+                        return If_Prime()
+                    else:
+                        print("Error: Invalid statement in if branch")
+                        return False
+                else:
+                    print("Error: Missing closing parenthesis ')' in if statement")
+                    return False
+            else:
+                print("Error: Invalid condition in if statement")
+                return False
+        else:
+            print("Error: Missing opening parenthesis '(' in if statement")
+            return False
     else:
-        print("Error in If rule parsing")
+        print("Error: 'if' keyword expected")
         return False
-def If_prime(self):
-    if self.tokens[self.current_token_index].lexeme == 'endif':
-        print("Parsed: endif")
-        return self.expect_lexeme("endif")
-    elif self.tokens[self.current_token_index].lexeme == 'else':
-        print("Parsed: else <Statement> endif")
-        return self.expect_lexeme("else") and self.Statement() and self.expect_lexeme("endif")
-    else:
-        print("Error in If prime rule parsing")
-        return False
-# Existing code
 
-#<If Prime> ::= else <Statement> endif | endif
+# <If Prime> ::= else <Statement> endif | endif
 def If_Prime():
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
+    
     if lexical.get_lexeme(token_index) == 'else':
         token_index += 1
         if Statement():
-            token_index += 1
-            if lexical.get_lexeme(token_index)
+            if lexical.get_lexeme(token_index) == 'endif':
+                token_index += 1
+                return True
+            else:
+                print("Error: 'endif' keyword expected after else branch in if statement")
+                return False
+        else:
+            print("Error: Invalid statement in else branch of if statement")
+            return False
+    elif lexical.get_lexeme(token_index) == 'endif':
+        token_index += 1
+        return True
+    else:
+        print("Error: 'else' or 'endif' keyword expected")
+        return False
 
-#R19. Original: <Return> ::= return ; | return <Expression> ;
-#Factorized: <Return> ::= return <Return Prime>
+#R19. <Return> ::= return <Return Prime>
 def Return():
     if print_switch:
-        print("Original: <Return> ::= return ; | return <Expression> ;")
-        print("Factorized: <Return> ::= return <Return Prime>")
+        print("<Return> ::= return <Return Prime>")
+    
+    if lexical.get_lexeme(token_index) == 'return':
+        token_index += 1
+        return Return_Prime()
+    else:
+        print("Error: 'return' keyword expected")
+        return False
 
-#<Return Prime> ::= <Expression> ; | <Empty> ;
+# <Return Prime> ::= <Expression> | <Empty>
 def Return_Prime():
     if print_switch:
         print("<Return Prime> ::= <Expression> | <Empty>")
+    
+    if lexical.get_lexeme(token_index) == ';':
+        token_index += 1
+        return True
+    elif Expression():
+        return True
+    else:
+        Empty()
+        return True
 
-#R20. <Print> ::= print ( <Expression>);
+# R20. <Print> ::= print ( <Expression>);
 def Print():
     if print_switch:
         print("<Print> ::= print ( <Expression>);")
+    
+    if lexical.get_lexeme(token_index) == 'print':
+        token_index += 1
+        if lexical.get_lexeme(token_index) == '(':
+            token_index += 1
+            if Expression():
+                if lexical.get_lexeme(token_index) == ')':
+                    token_index += 1
+                    if lexical.get_lexeme(token_index) == ';':
+                        token_index += 1
+                        return True
+                    else:
+                        print("Error: Missing semicolon (;) after print statement")
+                        return False
+                else:
+                    print("Error: Missing closing parenthesis ')' in print statement")
+                    return False
+            else:
+                print("Error: Invalid expression in print statement")
+                return False
+        else:
+            print("Error: Missing opening parenthesis '(' in print statement")
+            return False
+    else:
+        print("Error: 'print' keyword expected")
+        return False
 
-#R21. <Scan> ::= scan ( <IDs> );
+# R21. <Scan> ::= scan ( <IDs> );
 def Scan():
     if print_switch:
         print("<Scan> ::= scan ( <IDs> );")
+    
+    if lexical.get_lexeme(token_index) == 'scan':
+        token_index += 1
+        if lexical.get_lexeme(token_index) == '(':
+            token_index += 1
+            if IDs():
+                if lexical.get_lexeme(token_index) == ')':
+                    token_index += 1
+                    if lexical.get_lexeme(token_index) == ';':
+                        token_index += 1
+                        return True
+                    else:
+                        print("Error: Missing semicolon (;) after scan statement")
+                        return False
+                else:
+                    print("Error: Missing closing parenthesis ')' in scan statement")
+                    return False
+            else:
+                print("Error: Invalid IDs in scan statement")
+                return False
+        else:
+            print("Error: Missing opening parenthesis '(' in scan statement")
+            return False
+    else:
+        print("Error: 'scan' keyword expected")
+        return False
 
-#R22. <While> ::= while ( <Condition> ) <Statement> endwhile
+# R22. <While> ::= while ( <Condition> ) <Statement> endwhile
 def While():
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
-    if lexical.get_lexeme == 'while':
+    if lexical.get_lexeme(token_index) == 'while':
+        token_index += 1
         if lexical.get_lexeme(token_index) == '(':
             token_index += 1
             if Condition():
@@ -381,19 +502,17 @@ def While():
                 if lexical.get_lexeme(token_index) == ')':
                     return True
                 else:
-                    return False
                     print("error")
+                    return False
             else:
-                return False
                 print("error")
+                return False
         else:
-            return False
             print("error")
+            return False
     else:
-        return False
         print("error")
-
-
+        return False
 
 #R23. <Condition> ::= <Expression> <Relop> <Expression>
 def Condition():
@@ -412,7 +531,6 @@ def Condition():
             print("error")
     else:
         return False
-    
 
 #R24. <Relop> ::= == | != | > | < | <= | =>
 def Relop():
@@ -423,18 +541,37 @@ def Relop():
     else:
         return False
 
-#R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+# R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
 def Expression():
-  global token_index 
-  if print_switch:
-    print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
-    print("Revised: <Expression> ::= <Term> <Expression_Prime>")  
-  if Term() and Expression_Prime():
-      return True
+    global token_index 
+    if print_switch:
+        print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
+        print("Revised: <Expression> ::= <Term> <Expression_Prime>")  
+    
+    if not Term():
+        return False
+
+    # Check if there's an expression prime part
+    if not Expression_Prime():
+        return False
+
+    # Check if the next token is either '+' or '-'
+    while lexical.get_lexeme(token_index) == '+' or lexical.get_lexeme(token_index) == '-':
+        # Move to the next token
+        token_index += 1
+        # Parse the next term
+        if not Term():
+            return False
+
+    return True
 
 def Expression_Prime():
     if print_switch:
         print("[Rule]")
+    
+    # Logic for expression prime, if any, can be added here
+    return True  # Placeholder logic, modify as needed
+
 
 #R26. Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
 #Revised: <Term> ::= <Factor> <Term Prime>
@@ -515,9 +652,8 @@ def Primary():
 def Empty():
     print("<Empty> ::= ε")
 
-    
 def main():
-
+    
     return 0
             
 
