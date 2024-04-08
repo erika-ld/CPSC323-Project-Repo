@@ -2,10 +2,8 @@ Identifier: calculate
 Identifier: value
 Identifier: result
 Identifier: value
-Real: 23.56
+Real:: 23.56
 Int: 5
-Invalid: .12
-Identifier: result
 Separators: $
 Separators: (
 Separators: )
