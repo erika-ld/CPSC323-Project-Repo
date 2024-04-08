@@ -229,13 +229,31 @@ def Statement():
 
 #R16. <Compound> ::= { <Statement List> }
 def Compound():
-    if print_switch:
-        print("<Compound> ::= { <Statement List> }")
-
+  if print_switch:
+    print("<Compound> ::= { <Statement List> }")
+    if (
+        lexical.get_token(token_index - 1) == '{' and 
+        lexical.get_token(token_index) == 'Identifier' and 
+        lexical.get_token(token_index + 1) == '}'
+    ):
+      return True
+    else:
+      print("error in Compound")
+      exit(1)
+        
 #R17. <Assign> ::= <Identifier> = <Expression> ;
 def Assign():
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
+    if (
+      lexical.get_token(token_index - 1) == '=' and 
+      lexical.get_token(token_index) == 'Identifier' and 
+      lexical.get_token(token_index + 1) == ';'
+    ):
+      return True
+    else:
+      print("error")
+      exit(1)
 
 #R18. Original: <If> ::= if ( <Condition> ) <Statement> endif | if ( <Condition> ) <Statement> else <Statement> endif
 #Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>
