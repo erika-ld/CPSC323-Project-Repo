@@ -257,10 +257,13 @@ def Primary():
         return True
     elif lexical.get_lexeme(token_index) == '(':
         token_count += 1
-        Expression() 
-        token_count += 1
-        if Expression() and lexical.get_lexeme(token_index) == ')':
-            return True
+        if Expression(): 
+            token_count += 1
+            if lexical.get_lexeme(token_index) == ')':
+                return True
+            else:
+                return False
+                print("error")
         else:
             return False
             print("error")
@@ -277,7 +280,6 @@ def Empty():
     print("<Empty> ::= ε")
 
     
-
 def main():
     return 0
             
