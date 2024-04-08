@@ -222,15 +222,8 @@ def Expression():
   if print_switch:
     print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
     print("Revised: <Expression> ::= <Term> <Expression_Prime>")  
-  # Parse the first term
-  Term()
-
-   # Check if the next token is either '+' or '-'
-  if lexical.get_lexeme(token_index) == '+' or lexical.get_lexeme(token_index) == '-':
-        # Move to the next token
-        token_index += 1
-        # Parse the next term
-        Term()
+  if Term() and Expression_Prime():
+      return True
 
 def Expression_Prime():
     if print_switch:
