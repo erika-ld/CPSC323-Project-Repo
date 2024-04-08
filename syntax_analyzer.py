@@ -72,11 +72,22 @@ def Function():
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     if lexical.get_lexeme(token_index) == 'function':
-        if Identifier():
+        token_index += 1
+        if lexical.get_token(token_index) == 'Identifier':
             token_index += 1
-            
-
-        return True
+            if lexical.get_lexeme(token_index) == '(':
+                token_index += 1
+                Optional_Parameter_List()
+                token_index += 1
+                if lexical.get_lexeme(token_index) == ')':
+                    token_index += 1
+                    Optional_Declaration_List()
+                    Body()
+                    return True
+                else:
+                    print("error")
+            print("error")
+        print("error")
     else:
         print("error")
         exit(1)
