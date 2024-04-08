@@ -103,7 +103,7 @@ def If():
 #Factorized: 
 def If_Prime():
     if print_switch:
-        print("Factorized:...")
+        print("Factorized: ...")
 
 #R19. <Return> ::= return ; | return <Expression> ;
 def Return():
@@ -140,10 +140,17 @@ def Expression():
     if print_switch:
         print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
 
-#R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
+
+#R26. Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
+#Revised: Term ::= <Factor> <Term Prime>
 def Term():
     if print_switch:
-        print("<Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
+        print("Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
+        print("Revised: <Term> ::= <Factor> <Term Prime>")
+
+def Term_Prime():
+    if print_switch:
+        print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> ")
 
 #R27. <Factor> ::= - <Primary> | <Primary>
 def Factor():
@@ -161,9 +168,7 @@ def Expression_Prime():
     if print_switch:
         print("[Rule]")
 
-def Term_Prime():
-    if print_switch:
-        print("[Rule]")
+
 
 def Function_Definition_Prime():
     if print_switch:
