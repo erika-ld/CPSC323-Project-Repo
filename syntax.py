@@ -146,7 +146,7 @@ def Expression():
   Term()
 
    # Check if the next token is either '+' or '-'
-  while lexical.get_token(token_index) == '+' or lexical.get_token(token_index) == '-':
+  if lexical.get_lexeme(token_index) == '+' or lexical.get_lexeme(token_index) == '-':
         # Move to the next token
         token_index += 1
         # Parse the next term
@@ -204,12 +204,11 @@ def Return_Prime():
 
 
 def main():
+    
+    # print(lexical.get_lexeme(1))
     return 0
 
-#   token_dict = lexical.get_token(1)
-#   key = next(iter(token_dict.keys()))  # Get the first (and only) key
-#   value = token_dict[key]  # Get the value corresponding to the key
-#   print(value)
+
 
 
 
