@@ -157,7 +157,7 @@ def get_token_list(index):
 
 
 
-# return the next token from the index input
+# return the from the index input
 def output_token(index):
 
   return ("Tokens: " + tokens[index] + "  Lexeme: " + lexeme[index])
@@ -194,21 +194,24 @@ def lexer(input):
       print("Separator found:", input)
     lexeme.append(input)
     tokens.append("Separator")
+
+  
   # check identifier
   elif input[0].isalpha() and len(input) > 1:
-    if input[-1] in separators:
-      if output_state is False:
-        print("Identifier found:", input[0:-1])
-        print("Separator found:", input[-1])
-      lexeme.append(input[0:-1])
-      tokens.append("Identifier")
-      lexeme.append(input[-1])
-      tokens.append("Separator")
+    for i in range(1, len(input)):
+      if input[i] in separators: 
+        next_token = input[i:]
+        if output_state is False:
+          print("Identifier found:", input[:i])
+        lexeme.append(input[:i])
+        tokens.append("Identifier")
+        lexer(next_token)
+        break
     else:
       if output_state is False:
         print("Identifier found:", input)
-      lexeme.append(input)
-      tokens.append("Identifier")
+        lexeme.append(input)
+        tokens.append("Identifier")
   elif input[0].isalpha():
     if output_state is False:
       print("Identifier found:", input)
