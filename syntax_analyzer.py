@@ -19,10 +19,17 @@ def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
-#R3. <Function Definitions> ::= <Function> | <Function> <Function Definitions>    
+#R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>    
+#Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
 def Function_Definition():
     if print_switch:
-        print("<Function Definitions> ::= <Function> | <Function> <Function Definitions>  ")
+        print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
+        print("Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
+
+#<Function Definition Prime> ::= <Function Definition> | <Empty>
+def Function_Definition_Prime():
+    if print_switch:
+        print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 def Function():
@@ -95,15 +102,16 @@ def Assign():
         print("<Assign> ::= <Identifier> = <Expression> ;")
 
 #R18. Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif
-#Factorized: 
+#Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>
 def If():
     if print_switch:
         print("Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif")
-        print("Factorized: ...")
-#Factorized: 
+        print("Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>")
+
+#<If Prime> ::= else <Statement> endif | endif
 def If_Prime():
     if print_switch:
-        print("Factorized: ...")
+        print("<If Prime> ::= else <Statement> endif | endif")
 
 #R19. <Return> ::= return ; | return <Expression> ;
 def Return():
@@ -142,7 +150,7 @@ def Expression():
 
 
 #R26. Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
-#Revised: Term ::= <Factor> <Term Prime>
+#Revised: <Term> ::= <Factor> <Term Prime>
 def Term():
     if print_switch:
         print("Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
@@ -170,9 +178,6 @@ def Expression_Prime():
 
 
 
-def Function_Definition_Prime():
-    if print_switch:
-        print("")
 
 def Parameter_List_Prime():
     if print_switch:
