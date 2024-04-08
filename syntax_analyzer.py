@@ -261,6 +261,17 @@ def If():
     if print_switch:
         print("Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif")
         print("Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>")
+      if (
+        lexical.get_token(token_index) == 'if' and 
+        lexical.get_token(token_index) == '(' and 
+        lexical.get_token(token_index) == ')' and
+        lexical.get_token(token_index) == 'Identifier' and
+        If_Prime()
+      ):
+        return True
+      else:
+        print("error")
+        exit(1)
 
 #<If Prime> ::= else <Statement> endif | endif
 def If_Prime():
