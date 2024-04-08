@@ -172,11 +172,16 @@ def While():
 def Condition():
     if print_switch:
         print("<Condition> ::= <Expression> <Relop> <Expression>")
+    
 
 #R24. <Relop> ::= == | != | > | < | <= | =>
 def Relop():
     if print_switch:
         print("<Relop> ::= == | != | > | < | <= | =>")
+    if lexical.get_lexeme(token_index) == '==' or lexical.get_lexeme(token_index) == '!=' or lexical.get_lexeme(token_index) == '>' or lexical.get_lexeme(token_index) == '<' or lexical.get_lexeme(token_index) == '<=' or lexical.get_lexeme(token_index) == '>=':
+        return True
+    else:
+        return False
 
 #R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
 def Expression():
@@ -208,10 +213,10 @@ def Term():
         if Term_Prime():
             return True
 
-
+#<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>
 def Term_Prime():
     if print_switch:
-        print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> ")
+        print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
 
     if lexical.get_lexeme(token_index) == '*' or lexical.get_lexeme(token_index) == '/':
         token_index += 1
@@ -256,9 +261,9 @@ def Primary():
     elif lexical.get_token(token_index) == 'Integer':
         return True
     elif lexical.get_lexeme(token_index) == '(':
-        token_count += 1
+        token_index += 1
         if Expression(): 
-            token_count += 1
+            token_index += 1
             if lexical.get_lexeme(token_index) == ')':
                 return True
             else:
