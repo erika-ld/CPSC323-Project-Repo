@@ -179,6 +179,12 @@ def Declaration_List_Prime():
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
 
+    if Declaration_List() or Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
+
 
 #R12. <Declaration> ::= <Qualifier > <IDs>
 def Declaration():
@@ -209,6 +215,18 @@ def IDs():
 def IDs_Prime():
     if print_switch:
         print("<IDs Prime> ::= <IDs> | <Empty>")
+    if lexical.get_lexeme(token_index) == ',':
+        token_index += 1
+        if IDs():
+            return True
+        else:
+            print("error")
+            exit(1)
+    elif Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
 
 #R14. Original: <Statement List> ::= <Statement> | <Statement> <Statement List>
 #Factorized: <Statement List> ::= <Statement> <Statement List Prime>
@@ -216,11 +234,25 @@ def Statement_List():
     if print_switch:
         print("Original: <Statement List> ::= <Statement> | <Statement> <Statement List>")
         print("Factorized: <Statement List> ::= <Statement> <Statement List Prime>")
+    if Statement():
+        if Statement_List_Prime():
+            return True
+        else:
+            print("error")
+            exit(1)
+    else:
+        print("error")
+        exit(1)
 
 #<Statement List Prime> ::= <Statement List> | <Empty>
 def Statement_List_Prime():
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
+    if Statement_List() | Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
 
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 def Statement():
@@ -266,6 +298,11 @@ def If():
 def If_Prime():
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
+    if lexical.get_lexeme(token_index) == 'else':
+        token_index += 1
+        if Statement():
+            token_index += 1
+            if lexical.get_lexeme(token_index)
 
 #R19. Original: <Return> ::= return ; | return <Expression> ;
 #Factorized: <Return> ::= return <Return Prime>
