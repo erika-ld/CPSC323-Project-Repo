@@ -96,6 +96,11 @@ def Function():
 def Optional_Parameter_List():
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
+    if Parameter_List() or Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
 
 #R6. Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
 #Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
@@ -103,23 +108,35 @@ def Parameter_List():
     if print_switch:
         print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
         print("Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
-    if Parameter() and Parameter_List_Prime():
-      return True
-    print('empty')
-    return True
+    if Parameter():
+        if Parameter_List_Prime():
+            return True
+    else:
+        print('error')
+        exit(1)
+    
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
   if print_switch:
     print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
+
   if lexical.get_lexeme(token_index) == ',':
     return Parameter() and Parameter_List_Prime()
   return True
 
-#R7. <Parameter> ::= <IDs > <Qualifier>
+#R7. <Parameter> ::= <IDs> <Qualifier>
 def Parameter():
     if print_switch:
-        print("[<Parameter> ::= <IDs > <Qualifier>")
+        print("<Parameter> ::= <IDs > <Qualifier>")
+    
+    if IDs():
+        if Qualifier():
+            return True
+    else:
+        print("error")
+        exit(1)
+
 
 #R8. <Qualifier> ::= integer | boolean | real
 def Qualifier():
@@ -163,7 +180,7 @@ def IDs():
         print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
         print("Factorized: <IDS> ::= <Identifier> <IDs Prime>")
 
-#<IDs Prime> ::= <IDs> | <Empty> 
+#<IDs Prime> ::= , <IDs> | <Empty> 
 def IDs_Prime():
     if print_switch:
         print("<IDs Prime> ::= <IDs> | <Empty>")
@@ -214,7 +231,7 @@ def Return():
         print("Original: <Return> ::= return ; | return <Expression> ;")
         print("Factorized: <Return> ::= return <Return Prime>")
 
-#<Return Prime> ::= <Expression> | <Empty>
+#<Return Prime> ::= <Expression> ; | <Empty> ;
 def Return_Prime():
     if print_switch:
         print("<Return Prime> ::= <Expression> | <Empty>")
