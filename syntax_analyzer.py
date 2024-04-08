@@ -11,10 +11,11 @@ print_switch = True
 def Rat24S():
     if print_switch:
         print("[Rule]")
+    
 
 def Optional_Function_Definitions():
     if print_switch:
-        print("[Rule]")
+        print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
     
 def Optional_Declaration_List():
     if print_switch:
@@ -33,10 +34,6 @@ def Empty():
         print("[Rule]")
 
 def Function():
-    if print_switch:
-        print("[Rule]")
-
-def Identifier():
     if print_switch:
         print("[Rule]")
 
@@ -140,14 +137,29 @@ def Primary():
     if print_switch:
         print("[Rule]")
 
-def Integer():
+def Function_Definition_Prime():
     if print_switch:
-        print("[Rule]")
+        print("")
 
-def Real():
+def Parameter_List_Prime():
     if print_switch:
-        print("[Rule]")
+        print("")
 
+def Declaration_List_Prime():
+    if print_switch:
+        print("")
+
+def IDs_Prime():
+    if print_switch:
+        print("")
+
+def Statement_List_Prime():
+    if print_switch:
+        print("")
+
+def Return_Prime():
+    if print_switch:
+        print("")
 
 
 def main():
