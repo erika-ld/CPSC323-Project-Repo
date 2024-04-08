@@ -241,14 +241,35 @@ def Factor():
 def Primary():
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
-    if lexical.output_token(token_index) == 'Identifier':
+    if lexical.get_token(token_index) == 'Identifier':
         token_index += 1
         if lexical.get_lexeme(token_index) == '[':
             token_index += 1
             if IDs():
                 token_index += 1
                 if lexical.get_lexeme(token_index) == ']':
-                    return 
+                    return True
+                else:
+                    return False
+        else:
+            return True
+    elif lexical.get_token(token_index) == 'Integer':
+        return True
+    elif lexical.get_lexeme(token_index) == '(':
+        token_count += 1
+        Expression() 
+        token_count += 1
+        if Expression() and lexical.get_lexeme(token_index) == ')':
+            return True
+        else:
+            return False
+            print("error")
+    elif lexical.get_token(token_index) == 'Real':
+        return True
+    elif lexical.get_lexeme(token_index) == 'true' or lexical.get_lexeme(token_index) == 'false':
+        return True
+    else:
+        return False
 
 
 #R29: <Empty> ::= ε

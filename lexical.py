@@ -159,8 +159,12 @@ def get_token_list(index):
 
 # return the from the index input
 def output_token(index):
-
   return ("Tokens: " + tokens[index] + "  Lexeme: " + lexeme[index])
+
+
+def get_token(index):
+  return tokens[index]
+
 
 
 def lexer(input):
