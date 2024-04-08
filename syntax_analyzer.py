@@ -10,13 +10,41 @@ def Rat24S():
     
     if lexical.get_lexeme(token_index) == '$':
         token_index += 1
-        Optional_Function_Definitions()
+        if Optional_Function_Definitions():
+            token_index += 1
+            if not lexical.get_lexeme(token_index) == '$':
+                print("error")
+                exit(1)
+        elif Optional_Declaration_List():
+            token_index += 1
+            if not lexical.get_lexeme(token_index) == '$':
+                print("error")
+                exit(1)
+        
+        Statement_List()
+        token_index += 1
+        if not lexical.get_lexeme(token_index) == '$':
+            print("error")
+            exit(1)
+        
+        return True
+
     else:
+        print("error")
         exit(1)
+
+
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
 def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
+    
+    if Function_Definition() | Empty():
+        return True
+    else:
+        print("error")
+        exit(1)
+
 
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>    
 #Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
@@ -24,6 +52,13 @@ def Function_Definition():
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
+    
+    if Function():
+        if Function_Definition_Prime():
+            return True
+    else:
+        print("error")
+        exit(1)
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
 def Function_Definition_Prime():
@@ -34,6 +69,15 @@ def Function_Definition_Prime():
 def Function():
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
+    if lexical.get_lexeme(token_index) == 'function':
+        if Identifier():
+            token_index += 1
+            
+
+        return True
+    else:
+        print("error")
+        exit(1)
 
 #R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
 def Optional_Parameter_List():
@@ -317,7 +361,7 @@ def Empty():
 
     
 def main():
-    
+
     return 0
             
 
