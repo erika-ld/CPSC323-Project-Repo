@@ -204,11 +204,23 @@ def Term():
     if print_switch:
         print("Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
         print("Revised: <Term> ::= <Factor> <Term Prime>")
+    
+    Factor()
+    Term_Prime()
+
 
 def Term_Prime():
     if print_switch:
         print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> ")
 
+    if lexical.get_lexeme(token_index) == '*' or lexical.get_lexeme(token_index) == '/':
+        if Factor():
+            Term_Prime()
+    else:
+        Empty()
+
+
+    
 #R27. <Factor> ::= - <Primary> | <Primary>
 def Factor():
     if print_switch:
@@ -219,6 +231,11 @@ def Primary():
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
 
+#R29: <Empty> ::= ε
+def Empty():
+    print("<Empty> ::= ε")
+
+    
 
 def main():
     return 0
