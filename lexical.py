@@ -119,7 +119,11 @@ def get_token(index):
       file.write(output_token(i) + '\n')
 
   output_state = False  
-  return (output_token(index))
+  print("Tokens: " + tokens[index] + "  Lexeme: " + lexeme[index])
+  output = {
+    tokens[index]: lexeme[index]
+  }
+  return output
 
 
 
