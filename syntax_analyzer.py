@@ -167,11 +167,27 @@ def Scan():
 def While():
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
+    if lexical.get_lexeme == 'while':
+        if Condition():
+
 
 #R23. <Condition> ::= <Expression> <Relop> <Expression>
 def Condition():
     if print_switch:
         print("<Condition> ::= <Expression> <Relop> <Expression>")
+    
+    if Expression():
+        if Relop():
+            if Expression():
+                return True
+            else:
+                return False
+                print("error")
+        else:
+            return False
+            print("error")
+    else:
+        return False
     
 
 #R24. <Relop> ::= == | != | > | < | <= | =>
