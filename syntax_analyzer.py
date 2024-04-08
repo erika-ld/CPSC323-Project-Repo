@@ -255,23 +255,37 @@ def Assign():
       print("error")
       exit(1)
 
+def expect_lexeme(expected_lexeme):
+  token, lexeme = lexical.get_next_token()
+  if lexeme == expected_lexeme:
+      print(f"Expected lexeme '{expected_lexeme}' found")
+      return True
+  else:
+      print(f"Syntax Error: Expected lexeme '{expected_lexeme}', got '{lexeme}'")
+      return False
+
 #R18. Original: <If> ::= if ( <Condition> ) <Statement> endif | if ( <Condition> ) <Statement> else <Statement> endif
 #Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>
-def If():
-    if print_switch:
-        print("Original: <If> ::= if ( <Condition> ) <Statement> endif |if ( <Condition> ) <Statement> else <Statement> endif")
-        print("Factorized: <If> ::= if ( <Condition> ) <Statement> <If Prime>")
-      if (
-        lexical.get_token(token_index) == 'if' and 
-        lexical.get_token(token_index) == '(' and 
-        lexical.get_token(token_index) == ')' and
-        lexical.get_token(token_index) == 'Identifier' and
-        If_Prime()
-      ):
+def If(self):
+    print("Parsing If rule: if ( <Condition> ) <Statement> <If Prime>")
+
+    if self.expect_lexeme("if") and self.expect_lexeme("(") and self.Condition() and self.expect_lexeme(")") and self.Statement() and self.If_prime():
+        print("If rule successfully parsed")
         return True
-      else:
-        print("error")
-        exit(1)
+    else:
+        print("Error in If rule parsing")
+        return False
+def If_prime(self):
+    if self.tokens[self.current_token_index].lexeme == 'endif':
+        print("Parsed: endif")
+        return self.expect_lexeme("endif")
+    elif self.tokens[self.current_token_index].lexeme == 'else':
+        print("Parsed: else <Statement> endif")
+        return self.expect_lexeme("else") and self.Statement() and self.expect_lexeme("endif")
+    else:
+        print("Error in If prime rule parsing")
+        return False
+# Existing code
 
 #<If Prime> ::= else <Statement> endif | endif
 def If_Prime():
