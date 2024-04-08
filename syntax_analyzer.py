@@ -48,6 +48,10 @@ def Parameter_List():
     if print_switch:
         print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
         print("Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
+    if Parameter() and Parameter_List_Prime():
+      return True
+    print('empty')
+    return True
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
@@ -91,8 +95,11 @@ def Declaration_List_Prime():
 
 #R12. <Declaration> ::= <Qualifier > <IDs>
 def Declaration():
-    if print_switch:
-        print("<Declaration> ::= <Qualifier > <IDs>")
+  if print_switch:
+      print("<Declaration> ::= <Qualifier > <IDs>")
+  if lexical.get_token(token_index) == 'identifier':
+    return IDs_Prime()
+  return False
 
 #R13. Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>
 #Factorized: <IDS> ::= <Identifier> <IDs Prime>
