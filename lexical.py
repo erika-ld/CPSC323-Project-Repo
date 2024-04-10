@@ -296,9 +296,10 @@ def main():
 
   print(tokens)
   # print(output_token(1))
+  print(get_token(0))
 
 
-# if __name__ == "__main__":
-#   main()
+if __name__ == "__main__":
+   main()
   
   

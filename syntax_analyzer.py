@@ -3,6 +3,21 @@ import lexical
 print_switch = True
 token_index = 0
 
+#Error handler
+def error_handler(token, lexeme):
+    print('\nThere is an error on line {0}'.format(token_index))
+    print('Token: {0}, Lexeme: {1}'.format(token, lexeme))
+
+def update_output(token, lexeme, rule):
+    with open('syntax_analyzer', 'a') as file:
+        file.write('Token: {0}      Identifier: {1} \n'.format(token, lexeme))
+        file.write(rule)
+
+def example():
+    ex = 'hello'
+    ex2 = 'example'
+    error_handler(ex, ex2)
+
 #R1. <Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
 def Rat24S():
     if print_switch:
@@ -21,13 +36,14 @@ def Rat24S():
                 print("error")
                 exit(1)
 
+        token_index += 1
         Statement_List()
         token_index += 1
         if not lexical.get_lexeme(token_index) == '$':
             print("error")
             exit(1)
+        
         return True
-
     else:
         print("error")
         exit(1)
@@ -51,6 +67,7 @@ def Function_Definition():
         print("Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
 
     if Function():
+        token_index += 1
         if Function_Definition_Prime():
             return True
         else:
@@ -64,8 +81,11 @@ def Function_Definition():
 def Function_Definition_Prime():
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
-    if Function_Definition():
+    if Function_Definition() | Empty():
       return True
+    else:
+        print("error")
+        exit(1)
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 def Function():
@@ -82,6 +102,7 @@ def Function():
                 if lexical.get_lexeme(token_index) == ')':
                     token_index += 1
                     Optional_Declaration_List()
+                    token_index += 1
                     Body()
                     return True
                 else:
@@ -109,6 +130,7 @@ def Parameter_List():
         print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
         print("Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
     if Parameter():
+        token_index += 1
         if Parameter_List_Prime():
             return True
         else:
@@ -124,9 +146,11 @@ def Parameter_List_Prime():
   if print_switch:
     print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
 
-  if lexical.get_lexeme(token_index) == ',':
-    return Parameter() and Parameter_List_Prime()
-  return True
+    if Parameter_List() or Empty():
+        return True
+    else:
+        print('error')
+        exit(1)
 
 #R7. <Parameter> ::= <IDs> <Qualifier>
 def Parameter():
@@ -134,6 +158,7 @@ def Parameter():
         print("<Parameter> ::= <IDs > <Qualifier>")
 
     if IDs():
+        token_index += 1
         if Qualifier():
             return True
         else:
@@ -150,6 +175,7 @@ def Qualifier():
     
     lexeme = lexical.get_lexeme(token_index)
     if lexeme == 'integer' or lexeme == 'boolean' or lexeme == 'real':
+        #need this?
         token_index += 1
         return True
     else:
@@ -195,6 +221,7 @@ def Declaration_List():
         print("<Declaration List> ::= <Declaration> ; <Declaration List Prime>")
     
     if Declaration():
+        token_index += 1
         if lexical.get_lexeme(token_index) == ';':
             token_index += 1
             return Declaration_List_Prime()
@@ -651,9 +678,13 @@ def Primary():
 #R29: <Empty> ::= ε
 def Empty():
     print("<Empty> ::= ε")
+    
 
 def main():
-    
+    #example()
+    print(lexical.get_token(0))
+
+    #Rat24S()
     return 0
             
 
