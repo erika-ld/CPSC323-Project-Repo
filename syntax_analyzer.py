@@ -31,24 +31,24 @@ def Rat24S():
         if Optional_Function_Definitions():
             token_index += 1
             if not lexical.get_lexeme(token_index) == '$':
-                print("error")
+                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
                 exit(1)
         elif Optional_Declaration_List():
             token_index += 1
             if not lexical.get_lexeme(token_index) == '$':
-                print("error")
+                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
                 exit(1)
 
         token_index += 1
         Statement_List()
         token_index += 1
         if not lexical.get_lexeme(token_index) == '$':
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
         
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
@@ -60,7 +60,7 @@ def Optional_Function_Definitions():
     if Function_Definition() | Empty():
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
@@ -76,10 +76,10 @@ def Function_Definition():
         if Function_Definition_Prime():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
@@ -90,7 +90,7 @@ def Function_Definition_Prime():
     if Function_Definition() | Empty():
       return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
@@ -113,11 +113,11 @@ def Function():
                     Body()
                     return True
                 else:
-                    print("error")
-            print("error")
-        print("error")
+                    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1) 
 
 #R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
@@ -128,7 +128,7 @@ def Optional_Parameter_List():
     if Parameter_List() or Empty():
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R6. Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
@@ -143,10 +143,10 @@ def Parameter_List():
         if Parameter_List_Prime():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     else:
-        print('error')
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 
@@ -159,7 +159,7 @@ def Parameter_List_Prime():
     if Parameter_List() or Empty():
         return True
     else:
-        print('error')
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R7. <Parameter> ::= <IDs> <Qualifier>
@@ -173,10 +173,10 @@ def Parameter():
         if Qualifier():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 # R8. <Qualifier> ::= integer | boolean | real
@@ -226,7 +226,7 @@ def Optional_Declaration_List():
     if Declaration_List() | Empty():
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)    
 
 # R11. <Declaration List> ::= <Declaration> ; <Declaration List Prime>
@@ -287,10 +287,10 @@ def IDs():
         if IDs_Prime():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #<IDs Prime> ::= , <IDs> | <Empty> 
@@ -303,12 +303,12 @@ def IDs_Prime():
         if IDs():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     elif Empty():
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R14. Original: <Statement List> ::= <Statement> | <Statement> <Statement List>
@@ -322,10 +322,10 @@ def Statement_List():
         if Statement_List_Prime():
             return True
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             exit(1)
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #<Statement List Prime> ::= <Statement List> | <Empty>
@@ -336,7 +336,7 @@ def Statement_List_Prime():
     if Statement_List() | Empty():
         return True
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         exit(1)
 
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
@@ -395,7 +395,7 @@ def Assign():
     ):
       return True
     else:
-      print("error")
+      error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
       exit(1)
 
 # R18. <If> ::= if ( <Condition> ) <Statement> <If Prime>
@@ -560,16 +560,16 @@ def While():
                 if lexical.get_lexeme(token_index) == ')':
                     return True
                 else:
-                    print("error")
+                    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
                     return False
             else:
-                print("error")
+                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
                 return False
         else:
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
             return False
     else:
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         return False
 
 #R23. <Condition> ::= <Expression> <Relop> <Expression>
@@ -584,10 +584,10 @@ def Condition():
                 return True
             else:
                 return False
-                print("error")
+                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         else:
             return False
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
     else:
         return False
 
@@ -659,7 +659,7 @@ def Term_Prime():
             return Term_Prime()
     elif lexical.get_(token_index) == "Unknown":
         #report error
-        print("error")
+        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         return False
     else:
         Empty()
@@ -701,10 +701,10 @@ def Primary():
                 return True
             else:
                 return False
-                print("error")
+                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
         else:
             return False
-            print("error")
+            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index))
     elif lexical.get_token(token_index) == 'Real':
         return True
     elif lexical.get_lexeme(token_index) == 'true' or lexical.get_lexeme(token_index) == 'false':
