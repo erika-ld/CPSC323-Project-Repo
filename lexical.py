@@ -8,6 +8,7 @@ lexeme = []
 tokens = []
 comment_state = False
 output_state = False
+pre_state = True
 
 id_transition_table = {
     1: {
@@ -91,10 +92,10 @@ int_transition_table = {
     },
 }
 
-
-def get_lexeme(index):
+def pre_process():
   global comment_state
   global output_state
+  global pre_state
   output_state = True
   # change input file if needed
   with open('test_case_one.txt', 'r') as file:
@@ -102,7 +103,7 @@ def get_lexeme(index):
     if not contents:
       print("File is empty")
       return
-
+  
     token_list = contents.split()
     # print("Token list:", token_list)
     for token in token_list:
@@ -112,13 +113,25 @@ def get_lexeme(index):
         comment_state = False
       else:
         lexer(token)
-
+  
   # change output file name if needed
   with open('output_case_one.txt', 'w') as file:
     for i in range(len(tokens)):
       file.write(output_token(i) + '\n')
-
   output_state = False  
+  pre_state = False
+
+
+
+def get_token(index):
+  if pre_state:
+    pre_process()
+  return tokens[index]
+
+
+def get_lexeme(index):
+  if pre_state:
+    pre_process()
   return(lexeme[index])
 
 
@@ -162,8 +175,6 @@ def output_token(index):
   return ("Tokens: " + tokens[index] + "  Lexeme: " + lexeme[index])
 
 
-def get_token(index):
-  return tokens[index]
 
 
 
