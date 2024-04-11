@@ -22,6 +22,7 @@ def example():
 
 #R1. <Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
 def Rat24S():
+    global token_index
     if print_switch:
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
 
@@ -52,6 +53,7 @@ def Rat24S():
 
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
 def Optional_Function_Definitions():
+    global token_index
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
@@ -62,11 +64,12 @@ def Optional_Function_Definitions():
         exit(1)
 
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
-#Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
+#-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
 def Function_Definition():
+    global token_index
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
-        print("Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
+        print("-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
 
     if Function():
         token_index += 1
@@ -81,6 +84,7 @@ def Function_Definition():
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
 def Function_Definition_Prime():
+    global token_index
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
     if Function_Definition() | Empty():
@@ -91,6 +95,7 @@ def Function_Definition_Prime():
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 def Function():
+    global token_index
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     if lexical.get_lexeme(token_index) == 'function':
@@ -117,6 +122,7 @@ def Function():
 
 #R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
 def Optional_Parameter_List():
+    global token_index
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
     if Parameter_List() or Empty():
@@ -126,11 +132,12 @@ def Optional_Parameter_List():
         exit(1)
 
 #R6. Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
-#Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
+#-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
 def Parameter_List():
+    global token_index
     if print_switch:
         print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
-        print("Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
+        print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
     if Parameter():
         token_index += 1
         if Parameter_List_Prime():
@@ -145,6 +152,7 @@ def Parameter_List():
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
+  global token_index
   if print_switch:
     print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
 
@@ -156,8 +164,9 @@ def Parameter_List_Prime():
 
 #R7. <Parameter> ::= <IDs> <Qualifier>
 def Parameter():
+    global token_index
     if print_switch:
-        print("<Parameter> ::= <IDs > <Qualifier>")
+        print("<Parameter> ::= <IDs> <Qualifier>")
 
     if IDs():
         token_index += 1
@@ -172,6 +181,7 @@ def Parameter():
 
 # R8. <Qualifier> ::= integer | boolean | real
 def Qualifier():
+    global token_index
     if print_switch:
         print("<Qualifier> ::= integer | boolean | real")
     
@@ -187,6 +197,7 @@ def Qualifier():
 
 # R9. <Body> ::= { <Statement List> }
 def Body():
+    global token_index
     if print_switch:
         print("<Body> ::= { <Statement List> }")
     
@@ -209,6 +220,7 @@ def Body():
 
 #R10. <Opt Declaration List> ::= <Declaration List> | <Empty>
 def Optional_Declaration_List():
+    global token_index
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
     if Declaration_List() | Empty():
@@ -219,6 +231,7 @@ def Optional_Declaration_List():
 
 # R11. <Declaration List> ::= <Declaration> ; <Declaration List Prime>
 def Declaration_List():
+    global token_index
     if print_switch:
         print("<Declaration List> ::= <Declaration> ; <Declaration List Prime>")
     
@@ -236,6 +249,7 @@ def Declaration_List():
 
 # <Declaration List Prime> ::= <Declaration List> | <Empty>
 def Declaration_List_Prime():
+    global token_index
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
     
@@ -247,6 +261,7 @@ def Declaration_List_Prime():
 
 # R12. <Declaration> ::= <Qualifier> <IDs>
 def Declaration():
+    global token_index
     if print_switch:
         print("<Declaration> ::= <Qualifier> <IDs>")
     
@@ -261,11 +276,12 @@ def Declaration():
         return False
 
 #R13. Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>
-#Factorized: <IDS> ::= <Identifier> <IDs Prime>
+#-> Factorized: <IDS> ::= <Identifier> <IDs Prime>
 def IDs():
+    global token_index
     if print_switch:
         print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
-        print("Factorized: <IDS> ::= <Identifier> <IDs Prime>")
+        print("-> Factorized: <IDS> ::= <Identifier> <IDs Prime>")
 
     if lexical.get_token(token_index) == 'Identifier':
         if IDs_Prime():
@@ -279,6 +295,7 @@ def IDs():
 
 #<IDs Prime> ::= , <IDs> | <Empty> 
 def IDs_Prime():
+    global token_index
     if print_switch:
         print("<IDs Prime> ::= <IDs> | <Empty>")
     if lexical.get_lexeme(token_index) == ',':
@@ -295,11 +312,12 @@ def IDs_Prime():
         exit(1)
 
 #R14. Original: <Statement List> ::= <Statement> | <Statement> <Statement List>
-#Factorized: <Statement List> ::= <Statement> <Statement List Prime>
+#-> Factorized: <Statement List> ::= <Statement> <Statement List Prime>
 def Statement_List():
+    global token_index
     if print_switch:
         print("Original: <Statement List> ::= <Statement> | <Statement> <Statement List>")
-        print("Factorized: <Statement List> ::= <Statement> <Statement List Prime>")
+        print("-> Factorized: <Statement List> ::= <Statement> <Statement List Prime>")
     if Statement():
         if Statement_List_Prime():
             return True
@@ -312,6 +330,7 @@ def Statement_List():
 
 #<Statement List Prime> ::= <Statement List> | <Empty>
 def Statement_List_Prime():
+    global token_index
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
     if Statement_List() | Empty():
@@ -322,6 +341,7 @@ def Statement_List_Prime():
 
 #R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 def Statement(self):
+  global token_index
   print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
   if lexical.tokens[0].get_lexeme == '{':
     if Compound() is True:
@@ -350,6 +370,7 @@ def Statement(self):
 
 #R16. <Compound> ::= { <Statement List> }
 def Compound():
+  global token_index
   if print_switch:
     print("<Compound> ::= { <Statement List> }")
     if (
@@ -364,6 +385,7 @@ def Compound():
 
 #R17. <Assign> ::= <Identifier> = <Expression> ;
 def Assign():
+    global token_index
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
     if (
@@ -378,6 +400,7 @@ def Assign():
 
 # R18. <If> ::= if ( <Condition> ) <Statement> <If Prime>
 def If():
+    global token_index
     if print_switch:
         print("<If> ::= if ( <Condition> ) <Statement> <If Prime>")
     
@@ -408,6 +431,7 @@ def If():
 
 # <If Prime> ::= else <Statement> endif | endif
 def If_Prime():
+    global token_index
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
     
@@ -432,6 +456,7 @@ def If_Prime():
 
 #R19. <Return> ::= return <Return Prime>
 def Return():
+    global token_index
     if print_switch:
         print("<Return> ::= return <Return Prime>")
     
@@ -444,6 +469,7 @@ def Return():
 
 # <Return Prime> ::= <Expression> | <Empty>
 def Return_Prime():
+    global token_index
     if print_switch:
         print("<Return Prime> ::= <Expression> | <Empty>")
     
@@ -458,6 +484,7 @@ def Return_Prime():
 
 # R20. <Print> ::= print ( <Expression>);
 def Print():
+    global token_index
     if print_switch:
         print("<Print> ::= print ( <Expression>);")
     
@@ -489,6 +516,7 @@ def Print():
 
 # R21. <Scan> ::= scan ( <IDs> );
 def Scan():
+    global token_index
     if print_switch:
         print("<Scan> ::= scan ( <IDs> );")
     
@@ -520,6 +548,7 @@ def Scan():
 
 # R22. <While> ::= while ( <Condition> ) <Statement> endwhile
 def While():
+    global token_index
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
     if lexical.get_lexeme(token_index) == 'while':
@@ -545,6 +574,7 @@ def While():
 
 #R23. <Condition> ::= <Expression> <Relop> <Expression>
 def Condition():
+    global token_index
     if print_switch:
         print("<Condition> ::= <Expression> <Relop> <Expression>")
     
@@ -563,6 +593,7 @@ def Condition():
 
 #R24. <Relop> ::= == | != | > | < | <= | =>
 def Relop():
+    global token_index
     if print_switch:
         print("<Relop> ::= == | != | > | < | <= | =>")
     if lexical.get_lexeme(token_index) == '==' or lexical.get_lexeme(token_index) == '!=' or lexical.get_lexeme(token_index) == '>' or lexical.get_lexeme(token_index) == '<' or lexical.get_lexeme(token_index) == '<=' or lexical.get_lexeme(token_index) == '>=':
@@ -572,6 +603,7 @@ def Relop():
 
 # R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
 def Expression():
+    global token_index
     if print_switch:
         print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
         print("Revised: <Expression> ::= <Term> <Expression_Prime>")  
@@ -594,6 +626,7 @@ def Expression():
     return True
 
 def Expression_Prime():
+    global token_index
     if print_switch:
         print("[Rule]")
     
@@ -604,6 +637,7 @@ def Expression_Prime():
 #R26. Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
 #Revised: <Term> ::= <Factor> <Term Prime>
 def Term():
+    global token_index
     if print_switch:
         print("Original: <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>")
         print("Revised: <Term> ::= <Factor> <Term Prime>")
@@ -615,6 +649,7 @@ def Term():
 
 #<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>
 def Term_Prime():
+    global token_index
     if print_switch:
         print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
 
@@ -632,6 +667,7 @@ def Term_Prime():
     
 #R27. <Factor> ::= - <Primary> | <Primary>
 def Factor():
+    global token_index
     if print_switch:
         print("<Factor> ::= - <Primary> | <Primary>")
     if lexical.get_lexeme(token_index) == '-':
@@ -643,6 +679,7 @@ def Factor():
 
 #R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
 def Primary():
+    global token_index
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
     if lexical.get_token(token_index) == 'Identifier':
@@ -678,6 +715,7 @@ def Primary():
 
 #R29: <Empty> ::= ε
 def Empty():
+    global token_index
     print("<Empty> ::= ε")
     
 
