@@ -1,5 +1,6 @@
 import lexical
 
+
 print_switch = True
 token_index = 0
 
@@ -682,6 +683,7 @@ def Empty():
 
 def main():
     #example()
+    
     print(lexical.get_token(0))
 
     #Rat24S()
