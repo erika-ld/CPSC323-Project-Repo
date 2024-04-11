@@ -4,6 +4,7 @@ import lexical
 print_switch = True
 token_index = 0
 
+
 #Error handler
 def error_handler(token, lexeme):
     print('\nThere is an error on line {0}'.format(token_index))
@@ -571,7 +572,6 @@ def Relop():
 
 # R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
 def Expression():
-    global token_index 
     if print_switch:
         print("<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>")
         print("Revised: <Expression> ::= <Term> <Expression_Prime>")  
@@ -683,10 +683,7 @@ def Empty():
 
 def main():
     #example()
-    
-    print(lexical.get_token(0))
-
-    #Rat24S()
+    Rat24S()
     return 0
             
 
