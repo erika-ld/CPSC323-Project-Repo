@@ -310,8 +310,8 @@ def main():
   
 
   with open('lexical_storage.txt', 'w') as file:
-    #for i in range(22):
-    file.write(output_token(0) + '\n')
+    for i in range(len(tokens)):
+      file.write(get_token(i) + ' ' + get_lexeme(i) + '\n')
 
 
   # print(output_token(1))

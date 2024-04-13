@@ -4,6 +4,19 @@ import lexical
 print_switch = True
 token_index = 0
 
+token = []
+lexeme = []
+
+with open('lexical_storage.txt', 'r') as file:
+    while True:
+        contents = file.readline()
+        if not contents:
+            break
+        temp = contents.split()
+        token.append(temp[0])
+        lexeme.append(temp[1])
+
+
 
 #Error handler
 def error_handler(token, lexeme, rule):
@@ -21,40 +34,28 @@ def Rat24S():
     if print_switch:
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
 
-    if lexical.get_lexeme(token_index) == '$':
-        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+    if lexeme[token_index] == '$':
         token_index += 1
-        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-        if lexical.get_lexeme(token_index) == 'function':
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+        if lexeme[token_index] == 'function':
             Optional_Function_Definitions()
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             token_index += 1
-            if not lexical.get_lexeme(token_index) == '$':
-                print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            if not lexeme[token_index] == '$':
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-        elif lexical.get_lexeme(token_index) == 'integer' or lexical.get_lexeme(token_index) == 'boolean' or lexical.get_lexeme(token_index) == 'real':
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+        elif lexeme[token_index] == 'integer' or lexeme[token_index] == 'boolean' or lexeme[token_index] == 'real':
             Optional_Declaration_List()
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             token_index += 1
-            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-            if not lexical.get_lexeme(token_index) == '$':
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            if not lexeme[token_index] == '$':
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
-        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Statement_List()
-        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         token_index += 1
-        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-        if not lexical.get_lexeme(token_index) == '$':
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        if not lexeme[token_index] == '$':
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
         
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
@@ -63,16 +64,12 @@ def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
-    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-    if lexical.get_lexeme(token_index) == 'function':
-        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+    if lexeme[token_index] == 'function':
         Function_Definition()
-        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
-        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Empty()
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
 #-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
@@ -81,11 +78,8 @@ def Function_Definition():
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
-    print('Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     Function()
-    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     Function_Definition_Prime()
-    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
 def Function_Definition_Prime():
@@ -93,16 +87,13 @@ def Function_Definition_Prime():
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
     
-
-    print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-    if lexical.get_lexeme(token_index) == 'function':
-        print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+    if lexeme[token_index] == 'function':
+        print('Func_Def_Prime', token[token_index], lexeme[token_index])
         Function_Definition()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
-        print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Empty()
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
@@ -111,43 +102,20 @@ def Function():
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     
-    print('FUNCTION 1st', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
-    if lexical.get_lexeme(token_index) == "function":
-        print('FIRST',lexical.get_token_list(token_index))
-        print(lexical.get_token(0), lexical.get_lexeme(0))
-        print(lexical.get_token(1), lexical.get_lexeme(1))
-        print(lexical.get_token(2), lexical.get_lexeme(2))
-        print(lexical.get_token(3), lexical.get_lexeme(3))
-        print(lexical.get_token(4), lexical.get_lexeme(4))
-        print(lexical.get_token(5), lexical.get_lexeme(5))
-        print(lexical.get_token(6), lexical.get_lexeme(6))
-        print(lexical.get_token(7), lexical.get_lexeme(7))
-        print(lexical.get_token(8), lexical.get_lexeme(8))
-        print(lexical.get_token(9), lexical.get_lexeme(9))
-
-        print('FUNCTION 2ND', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
-        print(lexical.get_token_list(token_index))
-        print(token_index)
+    if lexeme[token_index] == "function":
         token_index += 1
-        print(token_index)
-        print(lexical.get_token_list(token_index))
-        print('FUNCTION 3RD', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
-        if lexical.get_token(token_index) == 'Identifier':
-            print('FUNCTION ID', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+        if token[token_index] == 'Identifier':
             token_index += 1
-            print('FUNCTION PAREN', lexical.get_token(token_index), lexical.get_lexeme(token_index))
-            if lexical.get_lexeme(token_index) == '(':
-                print('FUNCTION', lexical.get_token(token_index), lexical.get_lexeme(token_index))
+            if lexeme[token_index] == '(':
                 token_index += 1
-                print('About to enter Optional Param List', lexical.get_token(token_index), lexical.get_lexeme(token_index))
                 Optional_Parameter_List()
                 token_index += 1
-                if lexical.get_lexeme(token_index) == ')':
+                if lexeme[token_index] == ')':
                     token_index += 1
                     Optional_Declaration_List()
                     Body()
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1) 
 
 #R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
@@ -156,10 +124,10 @@ def Optional_Parameter_List():
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
     
-    if lexical.get_token(token_index) == 'Identifier':
+    if token[token_index] == 'Identifier':
         Parameter_List()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -175,7 +143,7 @@ def Parameter_List():
     Parameter()
     Parameter_List_Prime()
 
-    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    error_handler(token[token_index],lexeme[token_index], token_index)
     exit(1)
 
 
@@ -185,10 +153,10 @@ def Parameter_List_Prime():
   if print_switch:
     print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
 
-    if lexical.get_token(token_index) == 'Identifier':
+    if token[token_index] == 'Identifier':
         Parameter_List()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -202,7 +170,7 @@ def Parameter():
     IDs()
     Qualifier()
 
-    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    error_handler(token[token_index],lexeme[token_index], token_index)
     exit(1)
 
 # R8. <Qualifier> ::= integer | boolean | real
@@ -211,12 +179,12 @@ def Qualifier():
     if print_switch:
         print("<Qualifier> ::= integer | boolean | real")
     
-    lexeme = lexical.get_lexeme(token_index)
-    if lexeme == 'integer' or lexeme == 'boolean' or lexeme == 'real':
+    lexer = lexeme[token_index]
+    if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
         return True
     else:
         print("Error: Expected 'integer', 'boolean', or 'real' in Qualifier")
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)    
         
 
@@ -226,12 +194,12 @@ def Body():
     if print_switch:
         print("<Body> ::= { <Statement List> }")
     
-    if lexical.get_lexeme(token_index) == '{':
+    if lexeme[token_index] == '{':
         token_index += 1
         Statement_List()
         token_index += 1
-        if not lexical.get_lexeme(token_index) == '}':
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        if not lexeme[token_index] == '}':
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)   
         else:
             return True       
@@ -242,11 +210,11 @@ def Optional_Declaration_List():
     global token_index
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
-    lexeme = lexical.get_lexeme(token_index)
-    if lexeme == 'integer' or lexeme == 'boolean' or lexeme == 'real':
+    lexer = lexeme[token_index]
+    if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
         Declaration_List()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)       
     else:
         Empty() 
@@ -259,12 +227,12 @@ def Declaration_List():
     
     Declaration()
     token_index += 1
-    if lexical.get_lexeme(token_index) == ';':
+    if lexeme[token_index] == ';':
             token_index += 1
             Declaration_List_Prime()
     else:
         print("Missing semicolon (;) after declaration")
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)  
 
 # <Declaration List Prime> ::= <Declaration List> | <Empty>
@@ -273,11 +241,11 @@ def Declaration_List_Prime():
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
 
-    lexeme = lexical.get_lexeme(token_index)
-    if lexeme == 'integer' or lexeme == 'boolean' or lexeme == 'real':
+    lexer = lexeme[token_index]
+    if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
         Declaration_List()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)       
     else:
         Empty() 
@@ -300,10 +268,10 @@ def IDs():
         print("Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>")
         print("-> Factorized: <IDS> ::= <Identifier> <IDs Prime>")
 
-    if lexical.get_token(token_index) == 'Identifier':
+    if token[token_index] == 'Identifier':
         IDs_Prime()
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 
@@ -312,11 +280,11 @@ def IDs_Prime():
     global token_index
     if print_switch:
         print("<IDs Prime> ::= <IDs> | <Empty>")
-    if lexical.get_lexeme(token_index) == ',':
+    if lexeme[token_index] == ',':
         token_index += 1
         IDs()      
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -336,12 +304,13 @@ def Statement_List_Prime():
     global token_index
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
-    lexeme = lexical.get_lexeme(token_index)
-    token = lexical.get_token(token_index)
-    if lexeme == '{' or token == 'Identifier' or lexeme == 'if' or lexeme == 'return' or lexeme == 'print' or lexeme == 'scan' or lexeme == 'while':
+    lexer = lexeme[token_index]
+    token = token[token_index]
+    
+    if lexer == '{' or token == 'Identifier' or lexer == 'if' or lexer == 'return' or lexer == 'print' or lexer == 'scan' or lexer == 'while':
         Statement_List()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -350,23 +319,23 @@ def Statement_List_Prime():
 def Statement():
   global token_index
   print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
-  if lexical.get_lexeme(token_index) == '{':
+  if lexeme[token_index] == '{':
     Compound()
-  elif lexical.get_token(token_index) == 'identifier':
+  elif token[token_index] == 'identifier':
     Assign()
-  elif lexical.get_lexeme(token_index) == 'if':
+  elif lexeme[token_index] == 'if':
     If()
-  elif lexical.get_lexeme(token_index) == 'return' :
+  elif lexeme[token_index] == 'return' :
     Return()
-  elif lexical.get_lexeme(token_index) == 'print':
+  elif lexeme[token_index] == 'print':
     Print()
-  elif lexical.get_lexeme(token_index) == 'scan' :
+  elif lexeme[token_index] == 'scan' :
     Scan()
-  elif lexical.get_lexeme(token_index) == 'while':
+  elif lexeme[token_index] == 'while':
     While()
   else:
     print("Syntax Error: Invalid statement")
-    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    error_handler(token[token_index],lexeme[token_index], token_index)
     exit(1)
 
 #R16. <Compound> ::= { <Statement List> }
@@ -375,13 +344,13 @@ def Compound():
     if print_switch:
         print("<Compound> ::= { <Statement List> }")
 
-    if lexical.get_lexeme(token_index) == '{':
+    if lexeme[token_index] == '{':
         token_index += 1
         Statement_List()
         token_index += 1
-        if not lexical.get_lexeme(token_index) == '}':
+        if not lexeme[token_index] == '}':
             print("error in Compound")
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
 
 
@@ -391,14 +360,14 @@ def Assign():
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
     
-    if lexical.get_token(token_index) == 'Identifier':
+    if token[token_index] == 'Identifier':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '=':
+        if lexeme[token_index] == '=':
             token_index += 1
             Expression()
             token_index += 1
-            if not lexical.get_lexeme(token_index) == ';':
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            if not lexeme[token_index] == ';':
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
 
 
@@ -408,24 +377,24 @@ def If():
     if print_switch:
         print("<If> ::= if ( <Condition> ) <Statement> <If Prime>")
     
-    if lexical.get_lexeme(token_index) == 'if':
+    if lexeme[token_index] == 'if':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '(':
+        if lexeme[token_index] == '(':
             token_index += 1
             Condition()
             token_index += 1
-            if lexical.get_lexeme(token_index) == ')':
+            if lexeme[token_index] == ')':
                 token_index += 1
                 Statement()
                 If_Prime()
             else:
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)   
         else:
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 # <If Prime> ::= else <Statement> endif | endif
@@ -434,15 +403,15 @@ def If_Prime():
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
     
-    if lexical.get_lexeme(token_index) == 'else':
+    if lexeme[token_index] == 'else':
         token_index += 1
         Statement()
         token_index += 1
-        if not lexical.get_lexeme(token_index) == 'endif':
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        if not lexeme[token_index] == 'endif':
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
-    elif not lexical.get_lexeme(token_index) == 'endif':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif not lexeme[token_index] == 'endif':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 #R19. <Return> ::= return <Return Prime>
@@ -451,11 +420,11 @@ def Return():
     if print_switch:
         print("<Return> ::= return <Return Prime>")
     
-    if lexical.get_lexeme(token_index) == 'return':
+    if lexeme[token_index] == 'return':
         token_index += 1
         Return_Prime()
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 # <Return Prime> ::= <Expression> | <Empty>
@@ -463,10 +432,10 @@ def Return_Prime():
     global token_index
     if print_switch:
         print("<Return Prime> ::= <Expression> | <Empty>")
-        if not lexical.get_token(token_index) == 'Unknown':
+        if not token[token_index] == 'Unknown':
             Expression()
-        elif lexical.get_token(token_index) == 'Unknown':
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        elif token[token_index] == 'Unknown':
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
         else:
             Empty()
@@ -477,26 +446,26 @@ def Print():
     if print_switch:
         print("<Print> ::= print ( <Expression>);")
     
-    if lexical.get_lexeme(token_index) == 'print':
+    if lexeme[token_index] == 'print':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '(':
+        if lexeme[token_index] == '(':
             token_index += 1
             Expression()
             token_index += 1
-            if lexical.get_lexeme(token_index) == ')':
+            if lexeme[token_index] == ')':
                     token_index += 1
-                    if not lexical.get_lexeme(token_index) == ';':
+                    if not lexeme[token_index] == ';':
                         print("Error: Missing semicolon (;) after print statement")
-                        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                        error_handler(token[token_index],lexeme[token_index], token_index)
                         exit(1)
             else:
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
         else:
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)       
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 # R21. <Scan> ::= scan ( <IDs> );
@@ -505,28 +474,28 @@ def Scan():
     if print_switch:
         print("<Scan> ::= scan ( <IDs> );")
     
-    if lexical.get_lexeme(token_index) == 'scan':
+    if lexeme[token_index] == 'scan':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '(':
+        if lexeme[token_index] == '(':
             token_index += 1
             IDs()
             token_index += 1
-            if lexical.get_lexeme(token_index) == ')':
+            if lexeme[token_index] == ')':
                 token_index += 1
-                if not lexical.get_lexeme(token_index) == ';':
-                    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                if not lexeme[token_index] == ';':
+                    error_handler(token[token_index],lexeme[token_index], token_index)
                     exit(1)
                 else:
-                    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                    error_handler(token[token_index],lexeme[token_index], token_index)
                     exit(1)
             else:
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
         else:
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 # R22. <While> ::= while ( <Condition> ) <Statement> endwhile
@@ -534,26 +503,26 @@ def While():
     global token_index
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
-    if lexical.get_lexeme(token_index) == 'while':
+    if lexeme[token_index] == 'while':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '(':
+        if lexeme[token_index] == '(':
             token_index += 1
             Condition()
             token_index += 1
-            if lexical.get_lexeme(token_index) == ')':
+            if lexeme[token_index] == ')':
                 token += 1
                 Statement()
-                if not lexical.get_lexeme(token_index) == 'endwhile':
-                    error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                if not lexeme[token_index] == 'endwhile':
+                    error_handler(token[token_index],lexeme[token_index], token_index)
                     exit(1)
             else:
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
         else:
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
             
@@ -574,8 +543,8 @@ def Relop():
     if print_switch:
         print("<Relop> ::= == | != | > | < | <= | =>")
 
-    if not lexical.get_lexeme(token_index) == '==' or lexical.get_lexeme(token_index) == '!=' or lexical.get_lexeme(token_index) == '>' or lexical.get_lexeme(token_index) == '<' or lexical.get_lexeme(token_index) == '<=' or lexical.get_lexeme(token_index) == '>=':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    if not lexeme[token_index] == '==' or lexeme[token_index] == '!=' or lexeme[token_index] == '>' or lexeme[token_index] == '<' or lexeme[token_index] == '<=' or lexeme[token_index] == '>=':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 # R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
@@ -595,13 +564,13 @@ def Expression_Prime():
     if print_switch:
         print("<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty>")
     
-    lexer = lexical.get_lexeme(token_index)
+    lexer = lexeme[token_index]
     if lexer == '+' or lexer == '-':
         token_index += 1
         Term()
         Expression_Prime()
-    elif lexical.get_token(token_index) == 'Unknown':
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == 'Unknown':
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -626,12 +595,12 @@ def Term_Prime():
     if print_switch:
         print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
 
-    if lexical.get_lexeme(token_index) == '*' or lexical.get_lexeme(token_index) == '/':
+    if lexeme[token_index] == '*' or lexeme[token_index] == '/':
         token_index += 1
         Factor()
         Term_Prime()
-    elif lexical.get_token(token_index) == "Unknown":
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+    elif token[token_index] == "Unknown":
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
         Empty()
@@ -642,15 +611,15 @@ def Factor():
     if print_switch:
         print("<Factor> ::= - <Primary> | <Primary>")
 
-    lexer = lexical.get_lexeme(token_index)
-    token = lexical.get_token(token_index)
+    lexer = lexeme[token_index]
+    token = token[token_index]
     if lexer == '-':
         token_index += 1
         Primary()
     elif token == 'Identifier' or token == 'Integer' or lexer == '(' or token == 'Real' or lexer == 'true' or lexer == 'false':
         Primary()
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 
@@ -659,30 +628,30 @@ def Primary():
     global token_index
     if print_switch:
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
-    if lexical.get_token(token_index) == 'Identifier':
+    if token[token_index] == 'Identifier':
         token_index += 1
-        if lexical.get_lexeme(token_index) == '(':
+        if lexeme[token_index] == '(':
             token_index += 1
             IDs()
             token_index += 1
-            if not lexical.get_lexeme(token_index) == ')':
-                error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+            if not lexeme[token_index] == ')':
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
-    elif lexical.get_token(token_index) == 'Integer':
+    elif token[token_index] == 'Integer':
         return True
-    elif lexical.get_lexeme(token_index) == '(':
+    elif lexeme[token_index] == '(':
         token_index += 1
         Expression()
         token_index += 1
-        if not lexical.get_lexeme(token_index) == ')':
-            error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        if not lexeme[token_index] == ')':
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
-    elif lexical.get_token(token_index) == 'Real':
+    elif token[token_index] == 'Real':
         return True
-    elif lexical.get_lexeme(token_index) == 'true' or lexical.get_lexeme(token_index) == 'false':
+    elif lexeme[token_index] == 'true' or lexeme[token_index] == 'false':
         return True
     else:
-        error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 
