@@ -22,22 +22,33 @@ def Rat24S():
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
 
     if lexical.get_lexeme(token_index) == '$':
+        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         token_index += 1
+        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         if lexical.get_lexeme(token_index) == 'function':
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             Optional_Function_Definitions()
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             token_index += 1
             if not lexical.get_lexeme(token_index) == '$':
+                print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
                 error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
                 exit(1)
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         elif lexical.get_lexeme(token_index) == 'integer' or lexical.get_lexeme(token_index) == 'boolean' or lexical.get_lexeme(token_index) == 'real':
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             Optional_Declaration_List()
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             token_index += 1
+            print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             if not lexical.get_lexeme(token_index) == '$':
                 error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
                 exit(1)
-
+        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Statement_List()
+        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         token_index += 1
+        print('Rat24S', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         if not lexical.get_lexeme(token_index) == '$':
             error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
             exit(1)
@@ -52,12 +63,16 @@ def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
+    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     if lexical.get_lexeme(token_index) == 'function':
+        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Function_Definition()
+        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     elif lexical.get_token(token_index) == 'Unknown':
         error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
         exit(1)
     else:
+        print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Empty()
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
 #-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
@@ -66,21 +81,28 @@ def Function_Definition():
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
-
+    print('Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     Function()
+    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     Function_Definition_Prime()
+    print('Opt_Func_Def', lexical.get_token(token_index), lexical.get_lexeme(token_index))
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
 def Function_Definition_Prime():
     global token_index
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
+    
+
+    print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
     if lexical.get_lexeme(token_index) == 'function':
+        print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Function_Definition()
     elif lexical.get_token(token_index) == 'Unknown':
         error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
         exit(1)
     else:
+        print('Func_Def_Prime', lexical.get_token(token_index), lexical.get_lexeme(token_index))
         Empty()
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
@@ -88,19 +110,42 @@ def Function():
     global token_index
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
-    if lexical.get_lexeme(token_index) == 'function':
+    
+    print('FUNCTION 1st', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
+    if lexical.get_lexeme(token_index) == "function":
+        print('FIRST',lexical.get_token_list(token_index))
+        print(lexical.get_token(0), lexical.get_lexeme(0))
+        print(lexical.get_token(1), lexical.get_lexeme(1))
+        print(lexical.get_token(2), lexical.get_lexeme(2))
+        print(lexical.get_token(3), lexical.get_lexeme(3))
+        print(lexical.get_token(4), lexical.get_lexeme(4))
+        print(lexical.get_token(5), lexical.get_lexeme(5))
+        print(lexical.get_token(6), lexical.get_lexeme(6))
+        print(lexical.get_token(7), lexical.get_lexeme(7))
+        print(lexical.get_token(8), lexical.get_lexeme(8))
+        print(lexical.get_token(9), lexical.get_lexeme(9))
+
+        print('FUNCTION 2ND', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
+        print(lexical.get_token_list(token_index))
+        print(token_index)
         token_index += 1
+        print(token_index)
+        print(lexical.get_token_list(token_index))
+        print('FUNCTION 3RD', lexical.get_token(token_index), lexical.get_lexeme(token_index), token_index)
         if lexical.get_token(token_index) == 'Identifier':
+            print('FUNCTION ID', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             token_index += 1
+            print('FUNCTION PAREN', lexical.get_token(token_index), lexical.get_lexeme(token_index))
             if lexical.get_lexeme(token_index) == '(':
+                print('FUNCTION', lexical.get_token(token_index), lexical.get_lexeme(token_index))
                 token_index += 1
+                print('About to enter Optional Param List', lexical.get_token(token_index), lexical.get_lexeme(token_index))
                 Optional_Parameter_List()
                 token_index += 1
                 if lexical.get_lexeme(token_index) == ')':
                     token_index += 1
                     Optional_Declaration_List()
                     Body()
-                    return True
     else:
         error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)
         exit(1) 
@@ -602,7 +647,7 @@ def Factor():
     if lexer == '-':
         token_index += 1
         Primary()
-    elif token == 'Identifier' or token == 'Integer' or lexeme == '(' or token == 'Real' or lexeme == 'true' or lexeme == 'false':
+    elif token == 'Identifier' or token == 'Integer' or lexer == '(' or token == 'Real' or lexer == 'true' or lexer == 'false':
         Primary()
     else:
         error_handler(lexical.get_token(token_index),lexical.get_lexeme(token_index), token_index)

@@ -223,6 +223,7 @@ def lexer(input):
         lexer(next_token)
         break
     else:
+
       if output_state is False:
         print("Identifier found:", input)
         lexeme.append(input)
@@ -232,6 +233,8 @@ def lexer(input):
       print("Identifier found:", input)
     lexeme.append(input)
     tokens.append("Identifier")
+  
+  
   # check real
   elif input[0].isdigit() and '.' in input:
     check_real_index = input.index('.')
@@ -304,13 +307,27 @@ def main():
   with open('output_case_one.txt', 'w') as file:
     for i in range(len(tokens)):
       file.write(output_token(i) + '\n')
+  
 
-  print(tokens)
+  with open('lexical_storage.txt', 'w') as file:
+    #for i in range(22):
+    file.write(output_token(0) + '\n')
+
+
   # print(output_token(1))
-  print(get_token(0))
-  print(get_lexeme(0))
-  print(get_token(1))
-  print(get_lexeme(1))
+  print(get_token(0), get_lexeme(0))
+  print(get_token(1), get_lexeme(1))
+  print(get_token(2), get_lexeme(2))
+  print(get_token(3), get_lexeme(3))
+  print(get_token(4), get_lexeme(4))
+  print(get_token(5), get_lexeme(5))
+  print(get_token(6), get_lexeme(6))
+  print(get_token(7), get_lexeme(7))
+  print(get_token(8), get_lexeme(8))
+  print(get_token(9), get_lexeme(9))
+
+
+
 
 
 if __name__ == "__main__":
