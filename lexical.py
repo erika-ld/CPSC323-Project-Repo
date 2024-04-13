@@ -308,6 +308,9 @@ def main():
   print(tokens)
   # print(output_token(1))
   print(get_token(0))
+  print(get_lexeme(0))
+  print(get_token(1))
+  print(get_lexeme(1))
 
 
 if __name__ == "__main__":
