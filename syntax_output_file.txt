@@ -1,0 +1,29 @@
+
+
+Token: Separator      Lexeme: $ 
+
+<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
+
+Token: Keyword      Lexeme: function 
+
+<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
+
+Token: Keyword      Lexeme: function 
+
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+
+Token: Keyword      Lexeme: function 
+
+<Function Definition> ::= <Function> <Function Definition Prime>
+
+Token: Identifier      Lexeme: result 
+
+<Function Definition> ::= <Function> <Function Definition Prime>
+
+Token: Operator      Lexeme: = 
+
+<Function Definition> ::= <Function> <Function Definition Prime>
+
+Token: Identifier      Lexeme: value 
+
+<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
