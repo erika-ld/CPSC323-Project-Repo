@@ -42,7 +42,7 @@ def Rat24S():
             token_index += 1
             update_output(token[token_index], lexeme[token_index], "\n<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             if not lexeme[token_index] == '$':
-                error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
         elif lexeme[token_index] == 'integer' or lexeme[token_index] == 'boolean' or lexeme[token_index] == 'real':
             update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
@@ -50,17 +50,17 @@ def Rat24S():
             token_index += 1
             update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             if not lexeme[token_index] == '$':
-                error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
+                error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
         Statement_List()
         token_index += 1
         update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if not lexeme[token_index] == '$':
-            error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
+            error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
         
     else:
-        error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
+        error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
 
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
@@ -70,11 +70,14 @@ def Optional_Function_Definitions():
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
     if lexeme[token_index] == 'function':
+        update_output(token[token_index], lexeme[token_index], "\n<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         Function_Definition()
     elif token[token_index] == 'Unknown':
+        update_output(token[token_index], lexeme[token_index], "\n<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
+        update_output(token[token_index], lexeme[token_index], "\n<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         Empty()
 #R3. Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>
 #-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>
@@ -83,8 +86,11 @@ def Function_Definition():
     if print_switch:
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
+    update_output(token[token_index], lexeme[token_index], "\n<Function Definition> ::= <Function> <Function Definition Prime>")
     Function()
+    update_output(token[token_index], lexeme[token_index], "\n<Function Definition> ::= <Function> <Function Definition Prime>")
     Function_Definition_Prime()
+    update_output(token[token_index], lexeme[token_index], "\n<Function Definition> ::= <Function> <Function Definition Prime>")
 
 #<Function Definition Prime> ::= <Function Definition> | <Empty>
 def Function_Definition_Prime():
@@ -108,17 +114,27 @@ def Function():
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     
     if lexeme[token_index] == "function":
+        print('hi 1')
         token_index += 1
         if token[token_index] == 'Identifier':
+            print('hi 2')
             token_index += 1
             if lexeme[token_index] == '(':
+                print('hi 3')
                 token_index += 1
+                print('hi 4')
                 Optional_Parameter_List()
+                print('hi 5')
                 token_index += 1
+                print('hi 6')
                 if lexeme[token_index] == ')':
+                    print('hi 6')
                     token_index += 1
+                    print('hi 7')
                     Optional_Declaration_List()
+                    print('hi 8')
                     Body()
+                    print('hi 9')
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1) 
@@ -148,8 +164,6 @@ def Parameter_List():
     Parameter()
     Parameter_List_Prime()
 
-    error_handler(token[token_index],lexeme[token_index], token_index)
-    exit(1)
 
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
@@ -175,8 +189,6 @@ def Parameter():
     IDs()
     Qualifier()
 
-    error_handler(token[token_index],lexeme[token_index], token_index)
-    exit(1)
 
 # R8. <Qualifier> ::= integer | boolean | real
 def Qualifier():
@@ -185,12 +197,13 @@ def Qualifier():
         print("<Qualifier> ::= integer | boolean | real")
     
     lexer = lexeme[token_index]
-    if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
-        return True
-    else:
+
+    if not (lexer == 'integer' or lexer == 'boolean' or lexer == 'real'):
         print("Error: Expected 'integer', 'boolean', or 'real' in Qualifier")
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)    
+    else:
+        token_index += 1
         
 
 # R9. <Body> ::= { <Statement List> }
@@ -663,6 +676,7 @@ def Primary():
 #R29: <Empty> ::= ε
 def Empty():
     global token_index
+    token_index += 1
     print("<Empty> ::= ε")
     
 
