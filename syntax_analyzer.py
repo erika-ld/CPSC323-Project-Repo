@@ -24,38 +24,43 @@ def error_handler(token, lexeme, rule):
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
 def update_output(token, lexeme, rule):
-    with open('syntax_analyzer', 'a') as file:
-        file.write('Token: {0}      Identifier: {1} \n'.format(token, lexeme))
-        file.write(rule)
+    with open('syntax_output_file.txt', 'a') as file:
+        file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
+        file.write(rule + '\n')
 
 #R1. <Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
 def Rat24S():
     global token_index
     if print_switch:
         print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
-
     if lexeme[token_index] == '$':
+        update_output(token[token_index], lexeme[token_index], "\n<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         token_index += 1
+        update_output(token[token_index], lexeme[token_index], "\n<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if lexeme[token_index] == 'function':
             Optional_Function_Definitions()
             token_index += 1
+            update_output(token[token_index], lexeme[token_index], "\n<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             if not lexeme[token_index] == '$':
-                error_handler(token[token_index],lexeme[token_index], token_index)
+                error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
                 exit(1)
         elif lexeme[token_index] == 'integer' or lexeme[token_index] == 'boolean' or lexeme[token_index] == 'real':
+            update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             Optional_Declaration_List()
             token_index += 1
+            update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             if not lexeme[token_index] == '$':
-                error_handler(token[token_index],lexeme[token_index], token_index)
+                error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
                 exit(1)
         Statement_List()
         token_index += 1
+        update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if not lexeme[token_index] == '$':
-            error_handler(token[token_index],lexeme[token_index], token_index)
+            error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
             exit(1)
         
     else:
-        error_handler(token[token_index],lexeme[token_index], token_index)
+        error_handler(token[token_index],lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         exit(1)
 
 #R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
