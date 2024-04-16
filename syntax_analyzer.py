@@ -20,6 +20,7 @@ with open('lexical_storage.txt', 'r') as file:
 
 #Error handler
 def error_handler(token, lexeme, rule):
+    rule += 1
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
@@ -52,7 +53,10 @@ def Rat24S():
             if not lexeme[token_index] == '$':
                 error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
+        token_index += 1
+        update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         Statement_List()
+        update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         token_index += 1
         update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if not lexeme[token_index] == '$':
@@ -69,6 +73,7 @@ def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
+    print('76:', lexeme[token_index])
     if lexeme[token_index] == 'function':
         update_output(token[token_index], lexeme[token_index], "\n<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         Function_Definition()
@@ -97,14 +102,17 @@ def Function_Definition_Prime():
     global token_index
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
-    
+    print('105:', lexeme[token_index])
     if lexeme[token_index] == 'function':
         print('Func_Def_Prime', token[token_index], lexeme[token_index])
+        update_output(token[token_index], lexeme[token_index], "<Function Definition Prime> ::= <Function Definition> | <Empty>")
         Function_Definition()
     elif token[token_index] == 'Unknown':
+        update_output(token[token_index], lexeme[token_index], "<Function Definition Prime> ::= <Function Definition> | <Empty>")
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
     else:
+        update_output(token[token_index], lexeme[token_index], "<Function Definition Prime> ::= <Function Definition> | <Empty>")
         Empty()
 
 #R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
@@ -114,27 +122,20 @@ def Function():
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     
     if lexeme[token_index] == "function":
-        print('hi 1')
         token_index += 1
         if token[token_index] == 'Identifier':
-            print('hi 2')
             token_index += 1
             if lexeme[token_index] == '(':
-                print('hi 3')
-                token_index += 1
-                print('hi 4')
                 Optional_Parameter_List()
-                print('hi 5')
-                token_index += 1
-                print('hi 6')
+                #token_index += 1
                 if lexeme[token_index] == ')':
-                    print('hi 6')
-                    token_index += 1
                     print('hi 7')
-                    Optional_Declaration_List()
+                    token_index += 1
                     print('hi 8')
-                    Body()
+                    Optional_Declaration_List()
                     print('hi 9')
+                    Body()
+                    print('hi 10')
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1) 
@@ -144,7 +145,9 @@ def Optional_Parameter_List():
     global token_index
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
-    
+    print('148:', lexeme[token_index])
+    token_index += 1
+    print('148:', lexeme[token_index])
     if token[token_index] == 'Identifier':
         Parameter_List()
     elif token[token_index] == 'Unknown':
@@ -171,7 +174,6 @@ def Parameter_List_Prime():
   global token_index
   if print_switch:
     print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
-
     if token[token_index] == 'Identifier':
         Parameter_List()
     elif token[token_index] == 'Unknown':
