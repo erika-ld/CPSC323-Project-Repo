@@ -1,12 +1,15 @@
 import lexical
 
-
+#To-do: make a lexical storage and output file for each test case, and when going through them empty the token and lexeme list in between
 print_switch = True
 token_index = 0
 peek_next_index = 0
 
 token = []
 lexeme = []
+
+def test_case_one():
+    print()
 
 with open('lexical_storage.txt', 'r') as file:
     while True:

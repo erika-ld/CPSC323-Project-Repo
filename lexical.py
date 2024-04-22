@@ -115,12 +115,69 @@ def pre_process():
         lexer(token)
   
   # change output file name if needed
-  with open('output_case_one.txt', 'w') as file:
+  with open('test_case_one_output.txt', 'w') as file:
     for i in range(len(tokens)):
       file.write(output_token(i) + '\n')
   output_state = False  
   pre_state = False
 
+  tokens.clear()
+
+  #TWO
+  output_state = True
+  # change input file if needed
+  with open('test_case_two.txt', 'r') as file:
+    contents = file.read()
+    if not contents:
+      print("File is empty")
+      return
+  
+    token_list = contents.split()
+    # print("Token list:", token_list)
+    for token in token_list:
+      if comment_state is True and token != '*]':
+        continue
+      elif comment_state is True and token == '*]':
+        comment_state = False
+      else:
+        lexer(token)
+  
+  # change output file name if needed
+  with open('test_case_two_output.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(output_token(i) + '\n')
+  output_state = False  
+  pre_state = False
+
+  tokens.clear()
+
+  #THREE
+  output_state = True
+  # change input file if needed
+  with open('test_case_three.txt', 'r') as file:
+    contents = file.read()
+    if not contents:
+      print("File is empty")
+      return
+  
+    token_list = contents.split()
+    # print("Token list:", token_list)
+    for token in token_list:
+      if comment_state is True and token != '*]':
+        continue
+      elif comment_state is True and token == '*]':
+        comment_state = False
+      else:
+        lexer(token)
+  
+  # change output file name if needed
+  with open('test_case_three_output.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(output_token(i) + '\n')
+  output_state = False  
+  pre_state = False
+
+  tokens.clear()
 
 
 def get_token(index):
@@ -173,8 +230,6 @@ def get_token_list(index):
 # return the from the index input
 def output_token(index):
   return ("Tokens: " + tokens[index] + "  Lexeme: " + lexeme[index])
-
-
 
 
 
@@ -283,7 +338,7 @@ def lexer(input):
     # might not need this line for assigment 2
 
 
-# get token at that specefic index
+# get token at that specific index
 def main():
   global comment_state
   # change input file if needed
@@ -304,17 +359,76 @@ def main():
         lexer(token)
 
   # change output file name if needed
-  with open('output_case_one.txt', 'w') as file:
+  with open('test_case_one_output.txt', 'w') as file:
     for i in range(len(tokens)):
       file.write(output_token(i) + '\n')
   
 
-  with open('lexical_storage.txt', 'w') as file:
+  with open('lexical_storage_one.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(get_token(i) + ' ' + get_lexeme(i) + '\n')
+  
+  tokens.clear()
+
+
+  #TWO
+  with open('test_case_two.txt', 'r') as file:
+    contents_two = file.read()
+    if not contents_two:
+      print("File is empty")
+      return
+
+  token_list = contents_two.split()
+  # print("Token list:", token_list)
+  for token in token_list:
+    if comment_state is True and token != '*]':
+      continue
+    elif comment_state is True and token == '*]':
+      comment_state = False
+    else:
+      lexer(token)
+
+# change output file name if needed
+  with open('test_case_two_output.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(output_token(i) + '\n')
+
+
+  with open('lexical_storage_two.txt', 'w') as file:
     for i in range(len(tokens)):
       file.write(get_token(i) + ' ' + get_lexeme(i) + '\n')
 
+  tokens.clear()
 
-  # print(output_token(1))
+  #THREE
+  with open('test_case_three.txt', 'r') as file:
+    contents_three = file.read()
+    if not contents_three:
+      print("File is empty")
+      return
+
+  token_list = contents_three.split()
+  # print("Token list:", token_list)
+  for token in token_list:
+    if comment_state is True and token != '*]':
+      continue
+    elif comment_state is True and token == '*]':
+      comment_state = False
+    else:
+      lexer(token)
+
+  # change output file name if needed
+  with open('test_case_three_output.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(output_token(i) + '\n')
+
+
+  with open('lexical_storage_three.txt', 'w') as file:
+    for i in range(len(tokens)):
+      file.write(get_token(i) + ' ' + get_lexeme(i) + '\n')
+  
+  tokens.clear()
+# print(output_token(1))
 
 
 
