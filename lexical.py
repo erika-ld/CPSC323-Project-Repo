@@ -315,17 +315,6 @@ def main():
 
 
   # print(output_token(1))
-  print(get_token(0), get_lexeme(0))
-  print(get_token(1), get_lexeme(1))
-  print(get_token(2), get_lexeme(2))
-  print(get_token(3), get_lexeme(3))
-  print(get_token(4), get_lexeme(4))
-  print(get_token(5), get_lexeme(5))
-  print(get_token(6), get_lexeme(6))
-  print(get_token(7), get_lexeme(7))
-  print(get_token(8), get_lexeme(8))
-  print(get_token(9), get_lexeme(9))
-
 
 
 
