@@ -195,6 +195,7 @@ def remove_comments(input_string):
 # main(): reads and writes to files, calls lexer() function, and contains transition tables for Identifier, Integer, and Real
 def main():
     input_files = ("test_case_one.txt", "test_case_two.txt", "test_case_three.txt")
+
     temp_file = "temp.txt"
 
     for input_file in input_files:
