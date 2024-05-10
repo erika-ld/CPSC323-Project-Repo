@@ -53,11 +53,6 @@ def get_lexeme(index):
             else:
                 lexer(token)
 
-    # Change output file name if needed
-    with open('output_case_one.txt', 'w') as file:
-        for i in range(len(tokens)):
-            file.write(output_token(i) + '\n')
-
     output_state = False  
     return lexeme[index]
 
@@ -81,11 +76,6 @@ def get_token_list(index):
                 comment_state = False
             else:
                 lexer(token)
-
-    # Change output file name if needed
-    with open('output_case_one.txt', 'w') as file:
-        for i in range(len(tokens)):
-            file.write(output_token(i) + '\n')
 
     output_state = False  
     print("Tokens:", tokens[index], "  Lexeme:", lexeme[index])
@@ -211,11 +201,6 @@ def main():
                 comment_state = False
             else:
                 lexer(token)
-
-    # Change output file name if needed
-    with open('output_case_one.txt', 'w') as file:
-        for i in range(len(tokens)):
-            file.write(output_token(i) + '\n')
 
     print(tokens)
 

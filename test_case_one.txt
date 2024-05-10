@@ -1,7 +1,17 @@
+[* this is comment for this sample code for assignment 3 *]
 $
-function calculate (value real)
-{
-    result = value * 23.56 - 5 + .12;
-    return result; [* hi this is a comment *]
+[* NO function definitions *]
+$
+integer i, max, sum; [* declarations *]
+$
+sum = 0;
+i = 1;
+scan (max);
+while (i < max) {
+sum = sum + i;
+i = i + 1;
 }
+endwhile
+3
+print (sum + max);
 $
