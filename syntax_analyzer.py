@@ -422,15 +422,15 @@ def Statement_List_Prime():
 
     if lexeme[token_index] == ';' and lexeme[peek_next_index] != '}':
         token_index += 1
-        print('386', lexeme[token_index], token[token_index])
+        print('425', lexeme[token_index], token[token_index])
 
-    print('388', lexeme[token_index], token[token_index])
+    print('427', lexeme[token_index], token[token_index])
 
     lexer = lexeme[token_index]
     t = token[token_index]
 
     if lexer == '{' or t == 'Identifier' or lexer == 'if' or lexer == 'return' or lexer == 'print' or lexer == 'scan' or lexer == 'while':
-        print('388', lexeme[token_index], token[token_index])
+        print('433', lexeme[token_index], token[token_index])
         Statement_List()
     elif token[token_index] == 'Unknown':
         error_handler(token[token_index],lexeme[token_index], token_index)
@@ -535,6 +535,7 @@ def If():
                 token_index += 1
                 print('536', lexeme[token_index])
                 If_Prime()
+                token_index += 1
                 print('538', lexeme[token_index])
             else:
                 error_handler(token[token_index],lexeme[token_index], token_index)
