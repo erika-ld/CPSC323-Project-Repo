@@ -226,9 +226,11 @@ def main():
     for input in input_list:
         lexer(input)
 
+    print("0", tokens[0])
+
     with open(output_file, 'w') as file:
         for token_type, token_value in tokens:
-            file.write(f"{token_type}: {token_value}\n")
+            file.write(f"{token_type} {token_value}\n")
     
 
 
