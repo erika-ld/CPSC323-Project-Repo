@@ -1,4 +1,4 @@
-import lexical
+import lexical_analyzer
 
 print_switch = True
 token_index = 0
