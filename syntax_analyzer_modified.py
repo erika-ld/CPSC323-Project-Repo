@@ -52,7 +52,7 @@ def Rat24S():
             if lexeme[token_index] != '$':
                 error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
-        token_index += 1
+            token_index += 1
         Statement_List()
         token_index += 1
         if lexeme[token_index] != '$':
