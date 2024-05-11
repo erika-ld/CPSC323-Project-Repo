@@ -1,5 +1,3 @@
-from itertools import tee
-
 keywords = ['endif', 'else', 'function', 'integer', 'true', 'false', 'boolean', 'real','if', 'return', 'print', 'scan', 'while', 'endwhile' ]
 operators = ['<=', '=>', '>', '<', '=', '==', '!=', '+', '-', '/', '*']
 separators = ['(', ')', ',', ';', '{', '}', '$']
