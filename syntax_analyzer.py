@@ -45,7 +45,6 @@ def Rat24S():
         token_index += 1
         if lexeme[token_index] == 'function':
             Optional_Function_Definitions()
-            print('here', lexeme[token_index])
             token_index += 1        
             if lexeme[token_index] == 'function':
                     Optional_Function_Definitions() 
@@ -54,13 +53,12 @@ def Rat24S():
                         print('A statement list is required.')
                         error_handler(token[token_index],lexeme[token_index], token_index)
                         exit(1) 
-        if((token_index + 1) == len(token)):
-            print('A statement list is required.')
-            error_handler(token[token_index],lexeme[token_index], token_index)
-            exit(1) 
-        else:
-            token_index += 1
-
+            if((token_index + 1) == len(token)):
+                print('A statement list is required.')
+                error_handler(token[token_index],lexeme[token_index], token_index)
+                exit(1) 
+            else:
+                token_index += 1
         if lexeme[token_index] == 'integer' or lexeme[token_index] == 'boolean' or lexeme[token_index] == 'real':
             Optional_Declaration_List()
             if lexeme[token_index] != '$':

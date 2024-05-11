@@ -209,33 +209,18 @@ def main():
         if not input_string:
             print("File is empty")
             return
-    # Remove comments from input string
+        
     input_string_no_comments = remove_comments(input_string)
-    #print(input_string_no_comments)
     input_list = input_string_no_comments.split()
 
-    #Operators: = != > < <= => + - * / == +-*/"
-    #Separators: $ { } ; , () ) (
-    #Keywords: integer boolean real {} ; , if else endif return scan while endwhile true false
-    #Integers: 1 1000 99 00000000000000
-    #Real: 234.567 9.000001 000.00
-    #Identifiers: z12_d_ Zzzz a1z4r zbc12__x x
-    #Unknown: # _ 23rty 000. .123
     for input in input_list:
         lexer(input)
-
-    print("0", tokens[0])
 
     with open(output_file, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type} {token_value}\n")
-    
-
-
-    #for ex in input_list:
-        #lexer(ex)
+ 
     print(tokens, '\n')
-
 
 
 if __name__ == "__main__":
