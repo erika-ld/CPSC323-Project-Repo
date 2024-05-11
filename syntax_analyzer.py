@@ -21,6 +21,9 @@ with open('output_file.txt', 'r') as file:
 #Error handler
 def error_handler(token, lexeme, rule):
     rule += 1
+    with open('syntax_output_file.txt', 'a') as file:
+        file.write('\nThere is an error on line {0}'.format(rule))
+        file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
@@ -42,21 +45,32 @@ def Rat24S():
         token_index += 1
         if lexeme[token_index] == 'function':
             Optional_Function_Definitions()
+            print('here', lexeme[token_index])
             token_index += 1        
             if lexeme[token_index] == 'function':
-                    Optional_Function_Definitions()   
+                    Optional_Function_Definitions() 
                     token_index += 1
-            else:
-                error_handler(token[token_index],lexeme[token_index], token_index)
-                exit(1)
-        token_index += 1
+                    if ((token_index + 1) == len(token)):
+                        print('A statement list is required.')
+                        error_handler(token[token_index],lexeme[token_index], token_index)
+                        exit(1) 
+        if((token_index + 1) == len(token)):
+            print('A statement list is required.')
+            error_handler(token[token_index],lexeme[token_index], token_index)
+            exit(1) 
+        else:
+            token_index += 1
+
         if lexeme[token_index] == 'integer' or lexeme[token_index] == 'boolean' or lexeme[token_index] == 'real':
             Optional_Declaration_List()
             if lexeme[token_index] != '$':
                 error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)
-        if lexeme[token_index] == '$':
-            token_index += 1
+        if (lexeme[token_index] == '$'):
+            if ((token_index + 1) == len(token)):
+                print('A statement list is required.')
+            else:    
+                token_index += 1
         Statement_List()
         token_index += 1
         if not lexeme[token_index] == '$':
