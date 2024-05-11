@@ -1,3 +1,5 @@
+import syntax_analyzer_modified
+
 class SymbolTableEntry:
     def __init__(self, lexeme, memory_location, type):
         self.lexeme = lexeme
