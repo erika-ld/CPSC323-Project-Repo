@@ -1,7 +1,6 @@
 import lexical_analyzer
 import os
 
-
 print_switch = False
 token_index = 0
 peek_next_index = 0
@@ -11,16 +10,12 @@ token = []
 lexeme = []
 
 symbol_table = {}
-#Instruction: 2D matrix 
-#change the 50 to 1000 before submission
-#50x3 2d list
-instructions = [None] * 100
-for i in range(100):
+instructions = [None] * 1000
+for i in range(1000):
     instructions[i] = [None] * 3
 instructions[0][0] = 'Address'
 instructions[0][1] = 'Op'
 instructions[0][2] = 'Oprnd'
-
 
 Memory_Aress = 5000
 instr_Address = 1

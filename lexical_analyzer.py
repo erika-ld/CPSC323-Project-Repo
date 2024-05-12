@@ -96,9 +96,7 @@ def lexer(input):
     global id_transition_table
     global int_transition_table
     global real_transition_table
-    id_state = 1
-    real_state = 1
-    int_state = 1
+    
     if input in operators:
         tokens.append(('Operator', input))
     elif input in keywords:
@@ -118,8 +116,6 @@ def lexer(input):
                     current_str = char
                 elif char in operators:
                     tokens.append(('Operator', char))
-                #elif char == '!':
-                    #current_str = char
                 continue
             if (((char in separators) or (char in operators) or (char.isspace()) or (char == '!')) and (length > 0)):
                 if current_str[0] in operators or current_str[0] == '!':
@@ -173,7 +169,6 @@ def lexer(input):
 
                     current_str = ""
                 
-
                 if char in separators:
                     tokens.append(('Separator', char))
                 elif char == '<' or char == '=' or char == '!':
@@ -189,17 +184,7 @@ def lexer(input):
 
     else:  
         tokens.append(('Unknown', input))
-            
-
-
-
-
-
-
-
-
-
-
+        
 
 def main():
     input_file = "test_case_one_prof.txt"
