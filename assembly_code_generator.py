@@ -927,7 +927,7 @@ def Empty():
 
     
 def main():
-    output_file = "icg_output_file.txt"
+    output_file = "test_case_one_output.txt"
     lexical_analyzer.main()
     Rat24S()
     print('\nFile successfully parsed.\n\n')
