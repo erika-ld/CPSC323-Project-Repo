@@ -443,8 +443,10 @@ def Statement_List_Prime():
     peek_next_index = token_index
     peek_next_index += 1
 
-    if lexeme[token_index] == ';' and lexeme[peek_next_index] != '}':
+    if (lexeme[token_index] == ';' and (lexeme[peek_next_index] != '}' and lexeme[peek_next_index] != '$')):
         token_index += 1
+    elif lexeme[token_index] == 'endwhile':
+            token_index += 1
 
     lexer = lexeme[token_index]
     t = token[token_index]

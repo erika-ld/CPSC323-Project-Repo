@@ -370,11 +370,13 @@ def Statement_List_Prime():
     peek_next_index = token_index
     peek_next_index += 1
 
-    if lexeme[token_index] == ';' and lexeme[peek_next_index] != '}':
+    if (lexeme[token_index] == ';' and (lexeme[peek_next_index] != '}' and lexeme[peek_next_index] != '$')):
         token_index += 1
-
+    elif lexeme[token_index] == 'endwhile':
+            token_index += 1
     lexer = lexeme[token_index]
     t = token[token_index]
+
 
     if lexer == '{' or t == 'Identifier' or lexer == 'if' or lexer == 'return' or lexer == 'print' or lexer == 'scan' or lexer == 'while':
         Statement_List()
@@ -615,6 +617,7 @@ def While():
                 if not lexeme[token_index] == 'endwhile':
                     error_handler(token[token_index],lexeme[token_index], token_index)
                     exit(1)
+                    
             else:
                 error_handler(token[token_index],lexeme[token_index], token_index)
                 exit(1)

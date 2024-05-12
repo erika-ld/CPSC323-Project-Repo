@@ -1,21 +1,16 @@
-[* operator test *]
-= != > < <= => + - * / ==
-+-*/
-[* separator test *]
-$ { } ; , () =
-)(
-[* keyword *]
-integer boolean real {} ; , if else endif return scan while endwhile
-true false
-[* integer *]
-1 1000 99 00000000000000
-[* real *]
-234.567 9.000001 000.00
-[* identifier *]
-z12_d_ Zzzz a1z4r zbc12__x x
-[* wrongTokens *]
-#
-_
-23rty
-000.
-.123
+[* this is comment for this sample code for assignment 3 *]
+$
+[* NO function definitions *]
+$
+integer i, max, sum; [* declarations *]
+$
+sum = 0;
+i = 1;
+scan (max);
+while (i < max) 
+{
+sum = sum + i;
+i = i + 1;
+}
+endwhile
+$

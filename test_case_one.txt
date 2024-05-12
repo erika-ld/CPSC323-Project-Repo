@@ -12,6 +12,5 @@ sum = sum + i;
 i = i + 1;
 }
 endwhile
-3
 print (sum + max);
 $

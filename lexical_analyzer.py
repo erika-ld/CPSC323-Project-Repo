@@ -96,7 +96,7 @@ def lexer(input):
     global id_transition_table
     global int_transition_table
     global real_transition_table
-    
+
     if input in operators:
         tokens.append(('Operator', input))
     elif input in keywords:
@@ -187,7 +187,7 @@ def lexer(input):
         
 
 def main():
-    input_file = "test_case_one_prof.txt"
+    input_file = "test_case_two.txt"
     output_file = "output_file.txt"
     with open(input_file, 'r') as file:
         input_string = file.read() 
