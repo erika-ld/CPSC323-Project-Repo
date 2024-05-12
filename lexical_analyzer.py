@@ -188,7 +188,7 @@ def lexer(input):
 
 def main():
     input_file = "test_case_one.txt"
-    output_file = "output_file.txt"
+    output_file = "test_case_one_output.txt"
     with open(input_file, 'r') as file:
         input_string = file.read() 
         if not input_string:
