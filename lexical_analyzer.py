@@ -187,9 +187,9 @@ def lexer(input):
         
 
 def main():
-    input_file = "test_case_one.txt"
-    output_file = "test_case_one_output.txt"
-    with open(input_file, 'r') as file:
+    input_file_one = "test_case_one.txt"
+    output_file_one = "test_case_one_output.txt"
+    with open(input_file_one, 'r') as file:
         input_string = file.read() 
         if not input_string:
             print("File is empty")
@@ -201,7 +201,46 @@ def main():
     for input in input_list:
         lexer(input)
 
-    with open(output_file, 'w') as file:
+    with open(output_file_one, 'w') as file:
+        for token_type, token_value in tokens:
+            file.write(f"{token_type} {token_value}\n")
+
+
+
+    input_file_two = "test_case_two.txt"
+    output_file_two = "test_case_two_output.txt"
+    with open(input_file_two, 'r') as file:
+        input_string = file.read() 
+        if not input_string:
+            print("File is empty")
+            return
+        
+    input_string_no_comments = remove_comments(input_string)
+    input_list = input_string_no_comments.split()
+
+    for input in input_list:
+        lexer(input)
+
+    with open(output_file_two, 'w') as file:
+        for token_type, token_value in tokens:
+            file.write(f"{token_type} {token_value}\n")
+
+
+    input_file_three = "test_case_three.txt"
+    output_file_three = "test_case_three_output.txt"
+    with open(input_file_three, 'r') as file:
+        input_string = file.read() 
+        if not input_string:
+            print("File is empty")
+            return
+        
+    input_string_no_comments = remove_comments(input_string)
+    input_list = input_string_no_comments.split()
+
+    for input in input_list:
+        lexer(input)
+
+    with open(output_file_three, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type} {token_value}\n")
 

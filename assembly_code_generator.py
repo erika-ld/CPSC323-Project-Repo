@@ -66,7 +66,7 @@ def back_patch():
     instructions[patch_address][2] = instr_Address
 
 
-with open('test_case_one_output.txt', 'r') as file:
+with open('test_case_three_output.txt', 'r') as file:
     while True:
         contents = file.readline()
         if not contents:
@@ -79,14 +79,14 @@ with open('test_case_one_output.txt', 'r') as file:
 #Error handler
 def error_handler(token, lexeme, rule):
     rule += 1
-    with open('test_case_one_output.txt', 'a') as file:
+    with open('test_case_three_output.txt', 'a') as file:
         file.write('\nThere is an error on line {0}'.format(rule))
         file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
 def update_output(token, lexeme, rule):
-    with open('test_case_one_output.txt', 'a') as file:
+    with open('test_case_three_output.txt', 'a') as file:
         file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
         file.write(rule + '\n')
 
@@ -827,7 +827,6 @@ def Term():
         print("<Term> ::= <Factor> <Term Prime>")
 
     #update_output(token[token_index], lexeme[token_index], "<Term> ::= <Factor> <Term Prime>")
-
     Factor()
     Term_Prime()
 
@@ -927,7 +926,7 @@ def Empty():
 
     
 def main():
-    output_file = "test_case_one_output.txt"
+    output_file = "test_case_three_output.txt"
     lexical_analyzer.main()
     Rat24S()
     print('\nFile successfully parsed.\n\n')
