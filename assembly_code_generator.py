@@ -66,7 +66,7 @@ def back_patch():
     instructions[patch_address][2] = instr_Address
 
 
-with open('output_file.txt', 'r') as file:
+with open('test_case_one_output.txt', 'r') as file:
     while True:
         contents = file.readline()
         if not contents:
@@ -79,14 +79,14 @@ with open('output_file.txt', 'r') as file:
 #Error handler
 def error_handler(token, lexeme, rule):
     rule += 1
-    with open('syntax_output_file.txt', 'a') as file:
+    with open('test_case_one_output.txt', 'a') as file:
         file.write('\nThere is an error on line {0}'.format(rule))
         file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
 def update_output(token, lexeme, rule):
-    with open('syntax_output_file.txt', 'a') as file:
+    with open('test_case_one_output.txt', 'a') as file:
         file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
         file.write(rule + '\n')
 
@@ -107,7 +107,7 @@ def Rat24S():
     if print_switch:
         print("<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $")
     
-    update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $")
+    #update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $")
     if lexeme[token_index] == '$':
         token_index += 1
         if lexeme[token_index] != '$':
@@ -137,7 +137,7 @@ def Optional_Function_Definitions():
     if print_switch:
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
     
     if lexeme[token_index] == 'function':
         Function_Definition()
@@ -155,7 +155,7 @@ def Function_Definition():
         print("Original: <Function Definitions> ::= <Function> | <Function> <Function Definitions>")
         print("-> Factorized: <Function Definition> ::= <Function> <Function Definition Prime>")
 
-    update_output(token[token_index], lexeme[token_index], "<Function Definition> ::= <Function> <Function Definition Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Function Definition> ::= <Function> <Function Definition Prime>")
     Function()
     Function_Definition_Prime()
 
@@ -165,7 +165,7 @@ def Function_Definition_Prime():
     if print_switch:
         print("<Function Definition Prime> ::= <Function Definition> | <Empty>")
     
-    update_output(token[token_index], lexeme[token_index], "<Function Definition Prime> ::= <Function Definition> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Function Definition Prime> ::= <Function Definition> | <Empty>")
     if lexeme[token_index] == 'function':
         Function_Definition()
     elif lexeme[token_index] == '}':
@@ -186,7 +186,7 @@ def Function():
     if print_switch:
         print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     
-    update_output(token[token_index], lexeme[token_index], "<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
+    #update_output(token[token_index], lexeme[token_index], "<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
     
     if lexeme[token_index] == "function":
         token_index += 1
@@ -214,7 +214,7 @@ def Optional_Parameter_List():
     if print_switch:
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<Opt Parameter List> ::= <Parameter List> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Opt Parameter List> ::= <Parameter List> | <Empty>")
     if token[token_index] == 'Identifier':
         Parameter_List()
     elif token[token_index] == 'Unknown':
@@ -231,7 +231,7 @@ def Parameter_List():
     #if print_switch:
         #print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
         #print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
-    update_output(token[token_index], lexeme[token_index], "<Parameter List> ::= <Parameter> <Parameter List Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Parameter List> ::= <Parameter> <Parameter List Prime>")
     Parameter()
     Parameter_List_Prime()
 
@@ -245,7 +245,7 @@ def Parameter_List_Prime():
 
     peek_next_index = token_index
     peek_next_index += 1
-    update_output(token[token_index], lexeme[token_index], "<Parameter List Prime> ::= <Parameter List> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Parameter List Prime> ::= <Parameter List> | <Empty>")
     if token[token_index] == 'Identifier':
         Parameter_List()
     elif lexeme[peek_next_index] == ',':
@@ -262,7 +262,7 @@ def Parameter():
     global token_index
     if print_switch:
         print("<Parameter> ::= <IDs> <Qualifier>")
-    update_output(token[token_index], lexeme[token_index], "<Parameter> ::= <IDs> <Qualifier>")
+    #update_output(token[token_index], lexeme[token_index], "<Parameter> ::= <IDs> <Qualifier>")
     IDs()
     token_index += 1
     Qualifier()
@@ -274,7 +274,7 @@ def Qualifier():
     if print_switch:
         print("<Qualifier> ::= integer | boolean | real")
     
-    update_output(token[token_index], lexeme[token_index], "<Qualifier> ::= integer | boolean | real")
+    #update_output(token[token_index], lexeme[token_index], "<Qualifier> ::= integer | boolean | real")
 
     lexer = lexeme[token_index]
     if (lexer == 'real'):
@@ -295,7 +295,7 @@ def Body():
     global token_index
     if print_switch:
         print("<Body> ::= { <Statement List> }")
-    update_output(token[token_index], lexeme[token_index], "<Body> ::= { <Statement List> }")
+    #update_output(token[token_index], lexeme[token_index], "<Body> ::= { <Statement List> }")
     if lexeme[token_index] == '{':
         token_index += 1
         Statement_List()
@@ -314,7 +314,7 @@ def Optional_Declaration_List():
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<Opt Declaration List> ::= <Declaration List> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Opt Declaration List> ::= <Declaration List> | <Empty>")
     
     lexer = lexeme[token_index]
     if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
@@ -333,7 +333,7 @@ def Declaration_List():
     if print_switch:
         print("<Declaration List> ::= <Declaration> ; <Declaration List Prime>")
     
-    update_output(token[token_index], lexeme[token_index], "<Declaration> ; <Declaration List Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Declaration> ; <Declaration List Prime>")
 
     temp_index = token_index
     while lexeme[temp_index] != ';':
@@ -359,7 +359,7 @@ def Declaration_List_Prime():
     if print_switch:
         print("<Declaration List Prime> ::= <Declaration List> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<Declaration List Prime> ::= <Declaration List> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Declaration List Prime> ::= <Declaration List> | <Empty>")
 
     lexer = lexeme[token_index]
     if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
@@ -376,7 +376,7 @@ def Declaration():
     global token_index
     if print_switch:
         print("<Declaration> ::= <Qualifier> <IDs>")
-    update_output(token[token_index], lexeme[token_index], "<Declaration> ::= <Qualifier> <IDs>")
+    #update_output(token[token_index], lexeme[token_index], "<Declaration> ::= <Qualifier> <IDs>")
     Qualifier()
     type = lexeme[token_index]
     token_index += 1
@@ -392,7 +392,7 @@ def IDs():
     if print_switch:
         print("<IDS> ::= <Identifier> <IDs Prime>")
 
-    update_output(token[token_index], lexeme[token_index], "<IDS> ::= <Identifier> <IDs Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<IDS> ::= <Identifier> <IDs Prime>")
 
     peek_next_index = token_index
     peek_next_index += 1
@@ -413,7 +413,7 @@ def IDs_Prime():
     if print_switch:
         print("<IDs Prime> ::= , <IDs> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<IDs Prime> ::= , <IDs> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<IDs Prime> ::= , <IDs> | <Empty>")
     
     if lexeme[token_index] == ',':
         token_index += 1
@@ -432,7 +432,7 @@ def Statement_List():
     if print_switch:
         print("<Statement List> ::= <Statement> <Statement List Prime>")
 
-    update_output(token[token_index], lexeme[token_index], "<Statement List> ::= <Statement> <Statement List Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Statement List> ::= <Statement> <Statement List Prime>")
     
     Statement()
     Statement_List_Prime()
@@ -445,7 +445,7 @@ def Statement_List_Prime():
     if print_switch:
         print("<Statement List Prime> ::= <Statement List> | <Empty>")
 
-    update_output(token[token_index], lexeme[token_index], "<Statement List Prime> ::= <Statement List> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Statement List Prime> ::= <Statement List> | <Empty>")
 
     peek_next_index = token_index
     peek_next_index += 1
@@ -471,7 +471,7 @@ def Statement():
     if print_switch:
         print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
 
-    update_output(token[token_index], lexeme[token_index], "<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
+    #update_output(token[token_index], lexeme[token_index], "<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
     
     if lexeme[token_index] == '{':
         Compound()
@@ -498,7 +498,7 @@ def Compound():
     if print_switch:
         print("<Compound> ::= { <Statement List> }")
 
-    update_output(token[token_index], lexeme[token_index], "<Compound> ::= { <Statement List> }")
+    #update_output(token[token_index], lexeme[token_index], "<Compound> ::= { <Statement List> }")
     if lexeme[token_index] == '{':
         token_index += 1
         generate_instruction('LABEL', 'nil')
@@ -518,7 +518,7 @@ def Assign():
     if print_switch:
         print("<Assign> ::= <Identifier> = <Expression> ;")
     
-    update_output(token[token_index], lexeme[token_index], "<Assign> ::= <Identifier> = <Expression> ;")
+    #update_output(token[token_index], lexeme[token_index], "<Assign> ::= <Identifier> = <Expression> ;")
 
     if token[token_index] == 'Identifier':
         save = lexeme[token_index]
@@ -541,7 +541,7 @@ def If():
     if print_switch:
         print("<If> ::= if ( <Condition> ) <Statement> <If Prime>")
     
-    update_output(token[token_index], lexeme[token_index], "<If> ::= if ( <Condition> ) <Statement> <If Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<If> ::= if ( <Condition> ) <Statement> <If Prime>")
     
     if lexeme[token_index] == 'if':
         token_index += 1
@@ -571,7 +571,7 @@ def If_Prime():
     global token_index
     if print_switch:
         print("<If Prime> ::= else <Statement> endif | endif")
-    update_output(token[token_index], lexeme[token_index], "<If Prime> ::= else <Statement> endif | endif")
+    #update_output(token[token_index], lexeme[token_index], "<If Prime> ::= else <Statement> endif | endif")
 
     if lexeme[token_index] == 'else':
         token_index += 1
@@ -590,7 +590,7 @@ def Return():
     if print_switch:
         print("<Return> ::= return <Return Prime>")
     
-    update_output(token[token_index], lexeme[token_index], "<Return> ::= return <Return Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Return> ::= return <Return Prime>")
 
     if lexeme[token_index] == 'return':
         token_index += 1
@@ -606,7 +606,7 @@ def Return_Prime():
     if print_switch:
         print("<Return Prime> ::= <Expression>; | <Empty>;")
     
-    update_output(token[token_index], lexeme[token_index], "<Return Prime> ::= <Expression>; | <Empty>;")
+    #update_output(token[token_index], lexeme[token_index], "<Return Prime> ::= <Expression>; | <Empty>;")
 
     lexer = lexeme[token_index]
     t = token[token_index]
@@ -632,7 +632,7 @@ def Print():
     if print_switch:
         print("<Print> ::= print ( <Expression> );")
     
-    update_output(token[token_index], lexeme[token_index], "<Print> ::= print ( <Expression> );")
+    #update_output(token[token_index], lexeme[token_index], "<Print> ::= print ( <Expression> );")
 
     if lexeme[token_index] == 'print':
         token_index += 1
@@ -667,7 +667,7 @@ def Scan():
     if print_switch:
         print("<Scan> ::= scan ( <IDs> );")
     
-    update_output(token[token_index], lexeme[token_index], "<Scan> ::= scan ( <IDs> );")
+    #update_output(token[token_index], lexeme[token_index], "<Scan> ::= scan ( <IDs> );")
 
     if lexeme[token_index] == 'scan':
         token_index += 1
@@ -692,7 +692,7 @@ def While():
     if print_switch:
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
 
-    update_output(token[token_index], lexeme[token_index], "<While> ::= while ( <Condition> ) <Statement> endwhile")
+    #update_output(token[token_index], lexeme[token_index], "<While> ::= while ( <Condition> ) <Statement> endwhile")
 
     if lexeme[token_index] == 'while':
         ar = instr_Address
@@ -730,7 +730,7 @@ def Condition():
     if print_switch:
         print("<Condition> ::= <Expression> <Relop> <Expression>")
     
-    update_output(token[token_index], lexeme[token_index], "<Condition> ::= <Expression> <Relop> <Expression>")
+    #update_output(token[token_index], lexeme[token_index], "<Condition> ::= <Expression> <Relop> <Expression>")
     
     Expression()
     token_index += 1
@@ -745,7 +745,7 @@ def Relop():
     if print_switch:
         print("<Relop> ::= == | != | > | < | <= | =>")
 
-    update_output(token[token_index], lexeme[token_index], "<Relop> ::= == | != | > | < | <= | =>")
+    #update_output(token[token_index], lexeme[token_index], "<Relop> ::= == | != | > | < | <= | =>")
 
     lex = lexeme[token_index]
 
@@ -785,7 +785,7 @@ def Expression():
     if print_switch:
         print("<Expression> ::= <Term> <Expression_Prime>")  
 
-    update_output(token[token_index], lexeme[token_index], "<Expression> ::= <Term> <Expression_Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Expression> ::= <Term> <Expression_Prime>")
 
     Term()
     Expression_Prime()
@@ -798,7 +798,7 @@ def Expression_Prime():
     if print_switch:
         print("<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty>")
     
-    update_output(token[token_index], lexeme[token_index], "<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty>")
+    #update_output(token[token_index], lexeme[token_index], "<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty>")
 
     peek_next_index = token_index
     peek_next_index += 1
@@ -826,7 +826,7 @@ def Term():
     if print_switch:
         print("<Term> ::= <Factor> <Term Prime>")
 
-    update_output(token[token_index], lexeme[token_index], "<Term> ::= <Factor> <Term Prime>")
+    #update_output(token[token_index], lexeme[token_index], "<Term> ::= <Factor> <Term Prime>")
 
     Factor()
     Term_Prime()
@@ -838,7 +838,7 @@ def Term_Prime():
     if print_switch:
         print("<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
     
-    update_output(token[token_index], lexeme[token_index], "<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
+    #(token[token_index], lexeme[token_index], "<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>")
 
     peek_next_index = token_index
     peek_next_index += 1
@@ -860,7 +860,7 @@ def Factor():
     global token_index
     if print_switch:
         print("<Factor> ::= - <Primary> | <Primary>")
-    update_output(token[token_index], lexeme[token_index], "<Factor> ::= - <Primary> | <Primary>")
+    #update_output(token[token_index], lexeme[token_index], "<Factor> ::= - <Primary> | <Primary>")
 
     lexer = lexeme[token_index]
     t = token[token_index]
@@ -885,7 +885,7 @@ def Primary():
         print("<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
     peek_next_index = token_index
     peek_next_index += 1
-    update_output(token[token_index], lexeme[token_index], "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
+    #update_output(token[token_index], lexeme[token_index], "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false")
 
     if token[token_index] == 'Identifier':
         if lexeme[peek_next_index] == '(':
@@ -923,7 +923,7 @@ def Empty():
     if print_switch:
         print("<Empty> ::= ε")
 
-    update_output(token[token_index], lexeme[token_index], "<Empty> ::= ε")
+    #update_output(token[token_index], lexeme[token_index], "<Empty> ::= ε")
 
     
 def main():
