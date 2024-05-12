@@ -14,9 +14,12 @@ symbol_table = {}
 #Instruction: 2D matrix 
 #change the 50 to 1000 before submission
 #50x3 2d list
-instructions = [None] * 50
-for i in range(50):
+instructions = [None] * 100
+for i in range(100):
     instructions[i] = [None] * 3
+instructions[0][0] = 'Address'
+instructions[0][1] = 'Op'
+instructions[0][2] = 'Oprnd'
 
 
 Memory_Aress = 5000
@@ -89,9 +92,9 @@ def update_output(token, lexeme, rule):
 def generate_instruction(op, oprnd):
     global instr_Address
     global instructions
-    instructions[instr_Address].append(instr_Address)
-    instructions[instr_Address].append(op)
-    instructions[instr_Address].append(oprnd)
+    instructions[instr_Address][0] = (instr_Address)
+    instructions[instr_Address][1] = (op)
+    instructions[instr_Address][2] = (oprnd)
     instr_Address += 1
 
 
@@ -330,12 +333,10 @@ def Declaration_List():
     
     update_output(token[token_index], lexeme[token_index], "<Declaration> ; <Declaration List Prime>")
 
-    print('335', lexeme[token_index])
     temp_index = token_index
     while lexeme[temp_index] != ';':
         if token[temp_index] == 'Identifier':
             insert_id(lexeme[temp_index], lexeme[token_index])
-            print('token: ', lexeme[temp_index])
         temp_index += 1
 
 
@@ -374,11 +375,9 @@ def Declaration():
     if print_switch:
         print("<Declaration> ::= <Qualifier> <IDs>")
     update_output(token[token_index], lexeme[token_index], "<Declaration> ::= <Qualifier> <IDs>")
-    print(lexeme[token_index])
     Qualifier()
     type = lexeme[token_index]
     token_index += 1
-    print(lexeme[token_index])
     IDs()
 
 
@@ -638,11 +637,8 @@ def Print():
             token_index += 1
             save = lexeme[token_index]
             Expression()
-            print(lexeme[token_index])
             generate_instruction('PUSHM', get_address(save))
-            print(lexeme[token_index])
             generate_instruction('SOUT', get_address(save))
-            print(lexeme[token_index])
 
             token_index += 1
             if lexeme[token_index] == ')':
@@ -751,29 +747,29 @@ def Relop():
     lex = lexeme[token_index]
 
     if lex == '==':
-        generate_instruction ('EQU', 'nil')
+        generate_instruction('EQU', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil')
+        generate_instruction('JUMP0', 'nil')
     elif lex == '!=':
-        generate_instruction ('NEQ', 'nil')
+        generate_instruction('NEQ', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil') 
+        generate_instruction('JUMP0', 'nil') 
     elif lex == '>':
-        generate_instruction ('GRT', 'nil')
+        generate_instruction('GRT', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil')
+        generate_instruction('JUMP0', 'nil')
     elif lex == '<':
-        generate_instruction ('LES', 'nil')
+        generate_instruction('LES', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil')
+        generate_instruction('JUMP0', 'nil')
     elif lex == '<=':
-        generate_instruction ('LEQ', 'nil')
+        generate_instruction('LEQ', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil')
+        generate_instruction('JUMP0', 'nil')
     elif lex == '>=':
-        generate_instruction ('GEQ', 'nil')
+        generate_instruction('GEQ', 'nil')
         #push_jumpstack (instr_Address)
-        generate_instruction ('JUMP0', 'nil')
+        generate_instruction('JUMP0', 'nil')
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
@@ -931,10 +927,16 @@ def main():
     output_file = "icg_output_file.txt"
     lexical_analyzer.main()
     Rat24S()
-    print('\n')
-    print('File successfully parsed.\n')
+    print('\nFile successfully parsed.\n\n')
     print_identifiers()
-    
+    print('\n\n')
+
+    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
+
+    for i in range(1, len(instructions)):
+        if instructions[i][0] != None:
+            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
+
     return 0
 
 
