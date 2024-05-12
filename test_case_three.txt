@@ -1,25 +1,14 @@
 $
-function find_max (a real, b real)
+[* Declarations and Input *]
+$
+integer low, high, step, max;
+scan(low, high, step, max);
+print(low, high, step, max)
+$
 {
-    if (a > b)
-    {
-        return a;
-    }
-    else
-    {
-        return b;
-    }
+low = (high / 2) * step;
+print(low)
+step = max low;
+print(step)
 }
-$
-real x, y, max; [* hi this is a comment *]
-$
-scan(x, y);
-max = find_max(x, .12);
-print(max);
-$
-real num, result;
-$
-scan (num);
-result = calculate(num);
-print(result);
 $

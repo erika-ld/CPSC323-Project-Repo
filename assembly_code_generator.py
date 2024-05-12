@@ -956,54 +956,6 @@ def main():
 
 
 
-    output_file_two = "test_case_two_output.txt"
-
-    with open('test_case_two_output.txt', 'r') as file:
-        while True:
-            contents = file.readline()
-            if not contents:
-                break
-            temp = contents.split()
-            token.append(temp[0])
-            lexeme.append(temp[1])
-
-    Rat24S()
-    print('\nFile successfully parsed.\n\n')
-    print_identifiers()
-    print('\n\n')
-
-    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
-
-    for i in range(1, len(instructions)):
-        if instructions[i][0] != None:
-            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
-
-    token.clear()
-    lexeme.clear()
-    
-
-    output_file_three = "test_case_three_output.txt"
-
-    with open('test_case_three_output.txt', 'r') as file:
-        while True:
-            contents = file.readline()
-            if not contents:
-                break
-            temp = contents.split()
-            token.append(temp[0])
-            lexeme.append(temp[1]) 
-
-    Rat24S()
-    print('\nFile successfully parsed.\n\n')
-    print_identifiers()
-    print('\n\n')
-
-    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
-
-    for i in range(1, len(instructions)):
-        if instructions[i][0] != None:
-            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
-
 
             
 
