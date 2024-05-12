@@ -204,6 +204,8 @@ def main():
     with open(output_file, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type} {token_value}\n")
+
+    print("Successful lexical analysis.")
  
     #print(tokens, '\n')
 
