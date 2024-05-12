@@ -220,7 +220,7 @@ def main():
         for token_type, token_value in tokens:
             file.write(f"{token_type} {token_value}\n")
  
-    print(tokens, '\n')
+    #print(tokens, '\n')
 
 
 if __name__ == "__main__":

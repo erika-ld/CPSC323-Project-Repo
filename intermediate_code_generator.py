@@ -9,6 +9,57 @@ peek_next_index = 0
 token = []
 lexeme = []
 
+symbol_table = {}
+#Instruction: 2D matrix 
+#change the 50 to 1000 before submission
+#50x3 2d list
+instructions = [None] * 50
+for i in range(50):
+    instructions[i] = [None] * 3
+
+
+Memory_Aress = 5000
+instr_Address = 1
+
+def check_if_exists(id):
+    if id in symbol_table:
+        return id in symbol_table
+    else:
+        return False
+
+def insert_id(lexeme, data_type):
+    global Memory_Aress
+    if not check_if_exists(lexeme):
+        #Entry: id_lexeme = {Memory Address, Data Type}
+        symbol_table[lexeme] = {"Memory_Address": Memory_Aress, "Data_Type": data_type}
+        Memory_Aress += 1
+    else:
+        print(f"Error: {lexeme} already exists in the symbol table.")
+
+
+def print_identifiers():
+    #write to file afterwards
+    print("Symbol Table\n")
+    print("Identifier\tMemoryLocation\tType\n")
+
+    for lexeme, data_type in symbol_table.items():
+        print(f"{lexeme}\t\t{data_type['Memory_Address']}\t\t {data_type['Data_Type']}\n")
+
+def get_address(id):
+    if check_if_exists(id):
+        return symbol_table[id]["Memory_Address"]
+    else:
+        print(f"Error: {id} does not exist in the symbol table.")
+        return
+    
+def get_data_type(id):
+    if check_if_exists(id):
+        return symbol_table[id]["Data_Type"]
+    else:
+        print(f"Error: {id} does not exist in the symbol table.")
+        return 
+
+
 with open('output_file.txt', 'r') as file:
     while True:
         contents = file.readline()
@@ -32,6 +83,16 @@ def update_output(token, lexeme, rule):
     with open('syntax_output_file.txt', 'a') as file:
         file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
         file.write(rule + '\n')
+
+
+def generate_instruction(op, oprnd):
+    global instr_Address
+    global instructions
+    instructions[instr_Address].append(instr_Address)
+    instructions[instr_Address].append(op)
+    instructions[instr_Address].append(oprnd)
+    instr_Address += 1
+
 
 
 #R1. <Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $
@@ -161,9 +222,9 @@ def Optional_Parameter_List():
 #-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
 def Parameter_List():
     global token_index
-    if print_switch:
-        print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
-        print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
+    #if print_switch:
+        #print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
+        #print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
     update_output(token[token_index], lexeme[token_index], "<Parameter List> ::= <Parameter> <Parameter List Prime>")
     Parameter()
     Parameter_List_Prime()
@@ -172,9 +233,9 @@ def Parameter_List():
 
 #<Parameter List Prime> ::= <Parameter List> | <Empty> 
 def Parameter_List_Prime():
-  global token_index
-  if print_switch:
-    print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
+    global token_index
+    if print_switch:
+        print("<Parameter List Prime> ::= <Parameter List> | <Empty>")
 
     peek_next_index = token_index
     peek_next_index += 1
@@ -801,15 +862,18 @@ def Empty():
     update_output(token[token_index], lexeme[token_index], "<Empty> ::= ε")
 
     
-    
-
 def main():
+    output_file = "icg_output_file.txt"
     lexical_analyzer.main()
-    print('\n')
     Rat24S()
-    print("File successfully parsed.\n")
+    print('\n')
+    print('File successfully parsed.\n')
     return 0
             
 
 if __name__ == "__main__":
     main()
+
+
+
+    
