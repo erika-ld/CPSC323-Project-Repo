@@ -66,29 +66,29 @@ def back_patch():
     instructions[patch_address][2] = instr_Address
 
 
-with open('test_case_three_output.txt', 'r') as file:
-    while True:
-        contents = file.readline()
-        if not contents:
-            break
-        temp = contents.split()
-        token.append(temp[0])
-        lexeme.append(temp[1])
+#with open('test_case_three_output.txt', 'r') as file:
+    #while True:
+        #contents = file.readline()
+        #if not contents:
+            #break
+        #temp = contents.split()
+        #token.append(temp[0])
+        #lexeme.append(temp[1])
 
 
 #Error handler
 def error_handler(token, lexeme, rule):
     rule += 1
-    with open('test_case_three_output.txt', 'a') as file:
-        file.write('\nThere is an error on line {0}'.format(rule))
-        file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
+    #with open('test_case_one_output.txt', 'a') as file:
+        #file.write('\nThere is an error on line {0}'.format(rule))
+        #file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
 
-def update_output(token, lexeme, rule):
-    with open('test_case_three_output.txt', 'a') as file:
-        file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
-        file.write(rule + '\n')
+#def update_output(token, lexeme, rule):
+    #with open('test_case_one_output.txt', 'a') as file:
+        #file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
+        #file.write(rule + '\n')
 
 
 def generate_instruction(op, oprnd):
@@ -228,9 +228,9 @@ def Optional_Parameter_List():
 #-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>
 def Parameter_List():
     global token_index
-    #if print_switch:
-        #print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
-        #print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
+    if print_switch:
+        print("Original: <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>")
+        print("-> Factorized: <Parameter List> ::= <Parameter> <Parameter List Prime>")
     #update_output(token[token_index], lexeme[token_index], "<Parameter List> ::= <Parameter> <Parameter List Prime>")
     Parameter()
     Parameter_List_Prime()
@@ -926,8 +926,47 @@ def Empty():
 
     
 def main():
-    output_file = "test_case_three_output.txt"
-    lexical_analyzer.main()
+    global token
+    global lexeme
+
+    output_file_one = "test_case_one_output.txt"
+
+    with open('test_case_one_output.txt', 'r') as file:
+        while True:
+            contents = file.readline()
+            if not contents:
+                break
+            temp = contents.split()
+            token.append(temp[0])
+            lexeme.append(temp[1])
+
+    Rat24S()
+    print('\nFile successfully parsed.\n\n')
+    print_identifiers()
+    print('\n\n')
+
+    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
+
+    for i in range(1, len(instructions)):
+        if instructions[i][0] != None:
+            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
+    
+    token.clear()
+    lexeme.clear()
+
+
+
+    output_file_two = "test_case_two_output.txt"
+
+    with open('test_case_two_output.txt', 'r') as file:
+        while True:
+            contents = file.readline()
+            if not contents:
+                break
+            temp = contents.split()
+            token.append(temp[0])
+            lexeme.append(temp[1])
+
     Rat24S()
     print('\nFile successfully parsed.\n\n')
     print_identifiers()
@@ -939,7 +978,31 @@ def main():
         if instructions[i][0] != None:
             print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
 
-    return 0
+    token.clear()
+    lexeme.clear()
+    
+
+    output_file_three = "test_case_three_output.txt"
+
+    with open('test_case_three_output.txt', 'r') as file:
+        while True:
+            contents = file.readline()
+            if not contents:
+                break
+            temp = contents.split()
+            token.append(temp[0])
+            lexeme.append(temp[1]) 
+
+    Rat24S()
+    print('\nFile successfully parsed.\n\n')
+    print_identifiers()
+    print('\n\n')
+
+    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
+
+    for i in range(1, len(instructions)):
+        if instructions[i][0] != None:
+            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
 
 
             
