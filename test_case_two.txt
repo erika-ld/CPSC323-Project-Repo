@@ -13,4 +13,5 @@ sum = sum + i;
 i = i + 1;
 }
 endwhile
+print(sum + max);
 $
