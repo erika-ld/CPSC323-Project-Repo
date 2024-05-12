@@ -8,6 +8,7 @@ type = ''
 
 token = []
 lexeme = []
+jump_stack = []
 
 symbol_table = {}
 instructions = [None] * 1000
@@ -57,6 +58,12 @@ def get_data_type(id):
     else:
         print(f"Error: {id} does not exist in the symbol table.")
         return 
+
+def back_patch():
+    global instructions
+    global jump_stack
+    patch_address = jump_stack.pop()
+    instructions[patch_address][2] = instr_Address
 
 
 with open('output_file.txt', 'r') as file:
@@ -496,6 +503,7 @@ def Compound():
     update_output(token[token_index], lexeme[token_index], "<Compound> ::= { <Statement List> }")
     if lexeme[token_index] == '{':
         token_index += 1
+        generate_instruction('LABEL', 'nil')
         Statement_List()
 
         token_index += 1
@@ -701,7 +709,7 @@ def While():
                 token_index += 1
                 Statement()
                 generate_instruction('JUMP', ar)
-                #back_patch here
+                back_patch()  # Call back_patch() after the loop
                 token_index += 1
                 if not lexeme[token_index] == 'endwhile':
                     error_handler(token[token_index],lexeme[token_index], token_index)
@@ -745,27 +753,27 @@ def Relop():
 
     if lex == '==':
         generate_instruction('EQU', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil')
     elif lex == '!=':
         generate_instruction('NEQ', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil') 
     elif lex == '>':
         generate_instruction('GRT', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil')
     elif lex == '<':
         generate_instruction('LES', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil')
     elif lex == '<=':
         generate_instruction('LEQ', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil')
     elif lex == '>=':
         generate_instruction('GEQ', 'nil')
-        #push_jumpstack (instr_Address)
+        jump_stack.append(instr_Address)
         generate_instruction('JUMP0', 'nil')
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
