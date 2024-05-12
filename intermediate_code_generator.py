@@ -5,6 +5,7 @@ import os
 print_switch = False
 token_index = 0
 peek_next_index = 0
+type = ''
 
 token = []
 lexeme = []
@@ -40,10 +41,10 @@ def insert_id(lexeme, data_type):
 def print_identifiers():
     #write to file afterwards
     print("Symbol Table\n")
-    print("Identifier\tMemoryLocation\tType\n")
+    print("Identifier\t\tMemory Location\t\tType\n")
 
     for lexeme, data_type in symbol_table.items():
-        print(f"{lexeme}\t\t{data_type['Memory_Address']}\t\t {data_type['Data_Type']}\n")
+        print(f"{lexeme}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
 
 def get_address(id):
     if check_if_exists(id):
@@ -303,6 +304,7 @@ def Body():
 
 #R10. <Opt Declaration List> ::= <Declaration List> | <Empty>
 def Optional_Declaration_List():
+    global type
     global token_index
     if print_switch:
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
@@ -311,6 +313,7 @@ def Optional_Declaration_List():
     
     lexer = lexeme[token_index]
     if lexer == 'integer' or lexer == 'boolean' or lexer == 'real':
+        type = lexeme[token_index]
         Declaration_List()
     elif token[token_index] == 'Unknown':
         error_handler(token[token_index],lexeme[token_index], token_index)
@@ -326,6 +329,15 @@ def Declaration_List():
         print("<Declaration List> ::= <Declaration> ; <Declaration List Prime>")
     
     update_output(token[token_index], lexeme[token_index], "<Declaration> ; <Declaration List Prime>")
+
+    print('335', lexeme[token_index])
+    temp_index = token_index
+    while lexeme[temp_index] != ';':
+        if token[temp_index] == 'Identifier':
+            insert_id(lexeme[temp_index], lexeme[token_index])
+            print('token: ', lexeme[temp_index])
+        temp_index += 1
+
 
     Declaration()
     token_index += 1
@@ -362,14 +374,20 @@ def Declaration():
     if print_switch:
         print("<Declaration> ::= <Qualifier> <IDs>")
     update_output(token[token_index], lexeme[token_index], "<Declaration> ::= <Qualifier> <IDs>")
+    print(lexeme[token_index])
     Qualifier()
+    type = lexeme[token_index]
     token_index += 1
+    print(lexeme[token_index])
     IDs()
+
+
 
 #R13. Original: <IDs> ::= <Identifier> | <Identifier>, <IDs>
 #-> Factorized: <IDS> ::= <Identifier> <IDs Prime>
 def IDs():
     global token_index
+    global type
     if print_switch:
         print("<IDS> ::= <Identifier> <IDs Prime>")
 
@@ -483,6 +501,7 @@ def Compound():
     if lexeme[token_index] == '{':
         token_index += 1
         Statement_List()
+
         token_index += 1
         if lexeme[token_index] == '}':
             return
@@ -500,10 +519,12 @@ def Assign():
     update_output(token[token_index], lexeme[token_index], "<Assign> ::= <Identifier> = <Expression> ;")
 
     if token[token_index] == 'Identifier':
+        save = lexeme[token_index]
         token_index += 1
         if lexeme[token_index] == '=':
             token_index += 1
             Expression()
+            generate_instruction('POPM', get_address(save))
             token_index += 1
             if lexeme[token_index] == ';':
                 return
@@ -529,6 +550,7 @@ def If():
             if lexeme[token_index] == ')':
                 token_index += 1
                 Statement()
+                #back_patch(instr_Address);
                 token_index += 1
                 If_Prime()
                 token_index += 1
@@ -614,7 +636,14 @@ def Print():
         token_index += 1
         if lexeme[token_index] == '(':
             token_index += 1
+            save = lexeme[token_index]
             Expression()
+            print(lexeme[token_index])
+            generate_instruction('PUSHM', get_address(save))
+            print(lexeme[token_index])
+            generate_instruction('SOUT', get_address(save))
+            print(lexeme[token_index])
+
             token_index += 1
             if lexeme[token_index] == ')':
                     token_index += 1
@@ -645,7 +674,10 @@ def Scan():
         token_index += 1
         if lexeme[token_index] == '(':
             token_index += 1
+            save = lexeme[token_index]
             IDs()
+            generate_instruction('PUSHM', get_address(save))
+            generate_instruction('SIN', get_address(save))
             token_index += 1
             if lexeme[token_index] == ')':
                 token_index += 1
@@ -664,6 +696,9 @@ def While():
     update_output(token[token_index], lexeme[token_index], "<While> ::= while ( <Condition> ) <Statement> endwhile")
 
     if lexeme[token_index] == 'while':
+        ar = instr_Address
+        generate_instruction('LABEL', 'nil')
+
         token_index += 1
         if lexeme[token_index] == '(':
             token_index += 1
@@ -672,6 +707,8 @@ def While():
             if lexeme[token_index] == ')':
                 token_index += 1
                 Statement()
+                generate_instruction('JUMP', ar)
+                #back_patch here
                 token_index += 1
                 if not lexeme[token_index] == 'endwhile':
                     error_handler(token[token_index],lexeme[token_index], token_index)
@@ -711,8 +748,32 @@ def Relop():
 
     update_output(token[token_index], lexeme[token_index], "<Relop> ::= == | != | > | < | <= | =>")
 
-    if lexeme[token_index] == '==' or lexeme[token_index] == '!=' or lexeme[token_index] == '>' or lexeme[token_index] == '<' or lexeme[token_index] == '<=' or lexeme[token_index] == '>=':
-        return
+    lex = lexeme[token_index]
+
+    if lex == '==':
+        generate_instruction ('EQU', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil')
+    elif lex == '!=':
+        generate_instruction ('NEQ', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil') 
+    elif lex == '>':
+        generate_instruction ('GRT', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil')
+    elif lex == '<':
+        generate_instruction ('LES', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil')
+    elif lex == '<=':
+        generate_instruction ('LEQ', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil')
+    elif lex == '>=':
+        generate_instruction ('GEQ', 'nil')
+        #push_jumpstack (instr_Address)
+        generate_instruction ('JUMP0', 'nil')
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)
@@ -750,6 +811,7 @@ def Expression_Prime():
     if lexer == '+' or lexer == '-':
         token_index += 1
         Term()
+        generate_instruction('A', 'nil')
         Expression_Prime()
     elif token[token_index] == 'Unknown':
         error_handler(token[token_index],lexeme[token_index], token_index)
@@ -785,6 +847,7 @@ def Term_Prime():
     if lexeme[peek_next_index] == '*' or lexeme[peek_next_index] == '/':
         token_index += 2
         Factor()
+        generate_instruction('M', 'nil')
         Term_Prime()
     elif token[token_index] == "Unknown":
         error_handler(token[token_index],lexeme[token_index], token_index)
@@ -805,7 +868,9 @@ def Factor():
     if lexer == '-':
         token_index += 1
         Primary()
-    elif t == 'Identifier' or t == 'Integer' or lexer == '(' or t == 'Real' or lexer == 'true' or lexer == 'false':
+    elif t == 'Identifier':
+        generate_instruction('PUSHM', get_address(lexeme[token_index]))
+    elif t == 'Integer' or lexer == '(' or t == 'Real' or lexer == 'true' or lexer == 'false':
         Primary()
     else:
         error_handler(token[token_index],lexeme[token_index], token_index)
@@ -868,7 +933,11 @@ def main():
     Rat24S()
     print('\n')
     print('File successfully parsed.\n')
+    print_identifiers()
+    
     return 0
+
+
             
 
 if __name__ == "__main__":
