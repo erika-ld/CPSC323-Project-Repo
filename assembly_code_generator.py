@@ -930,6 +930,8 @@ def main(input_file, output_file):
     global lex
     global token_index
     global peek_next_index
+    global Memory_Aress
+    global instr_Address
 
     input_file_curr = input_file
     output_file_curr = output_file
@@ -982,6 +984,8 @@ def main(input_file, output_file):
     symbol_table.clear()
     token_index = 0
     peek_next_index = 0
+    Memory_Aress = 5000
+    instr_Address = 1
     
 
             
