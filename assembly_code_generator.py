@@ -965,7 +965,7 @@ def main(input_file, output_file):
             file.write('\n')
 
         file.write('\n\nInstructions\n\n')    
-        file.write(f'Instr_Address\t\tOp\t\t\t\t\tOprnd\n')
+        file.write(f'Instr_Address\t\t\t\tOp\t\t\t\t\tOprnd\n')
         for i in range(1, len(instructions)):
             if instructions[i][0] != None:
                 file.write(f'{instructions[i][0]}.\t\t\t\t\t{instructions[i][1]}\t\t\t\t\t{instructions[i][2]}\n')
