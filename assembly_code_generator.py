@@ -957,7 +957,7 @@ def main(input_file, output_file):
     
     with open(output_file_curr, 'w') as file:
         file.write('Symbol Table\n\n')
-        file.write('Identifier\t\tMemory Location\t\tType\n')
+        file.write('Identifier\t\t\tMemory Location\t\t\tType\n')
 
         for lex, data_type in symbol_table.items():
             file.write(f'{lex}\t\t\t\t{data_type["Memory_Address"]}\t\t\t\t{data_type["Data_Type"]}\n')
