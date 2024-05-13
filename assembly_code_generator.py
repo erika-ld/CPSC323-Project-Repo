@@ -27,23 +27,22 @@ def check_if_exists(id):
     else:
         return False
 
-def insert_id(lexeme, data_type):
+def insert_id(lex, data_type):
     global Memory_Aress
-    if not check_if_exists(lexeme):
-        #Entry: id_lexeme = {Memory Address, Data Type}
-        symbol_table[lexeme] = {'Memory_Address': Memory_Aress, 'Data_Type': data_type}
+    if not check_if_exists(lex):
+        #Entry: id_lex = {Memory Address, Data Type}
+        symbol_table[lex] = {'Memory_Address': Memory_Aress, 'Data_Type': data_type}
         Memory_Aress += 1
     else:
-        print(f'Error: {lexeme} already exists in the symbol table.')
+        print(f'Error: {lex} already exists in the symbol table.')
 
 
 def print_identifiers():
-    #write to file afterwards
     print('Symbol Table\n')
     print('Identifier\t\tMemory Location\t\tType\n')
 
-    for lexeme, data_type in symbol_table.items():
-        print(f"{lexeme}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
+    for lex, data_type in symbol_table.items():
+        print(f"{lex}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
 
 def get_address(id):
     if check_if_exists(id):
@@ -77,17 +76,17 @@ def back_patch():
 
 
 #Error handler
-def error_handler(token, lexeme, rule):
+def error_handler(token, lex, rule):
     rule += 1
     #with open('test_case_one_output.txt', 'a') as file:
         #file.write('\nThere is an error on line {0}'.format(rule))
-        #file.write('\nToken: {0}   Lexeme: {1}'.format(token, lexeme))
+        #file.write('\nToken: {0}   Lexeme: {1}'.format(token, lex))
     print('\nThere is an error on line {0}'.format(rule))
-    print('Token: {0}   Lexeme: {1}'.format(token, lexeme))
+    print('Token: {0}   Lexeme: {1}'.format(token, lex))
 
-#def update_output(token, lexeme, rule):
+#def update_output(token, lex, rule):
     #with open('test_case_one_output.txt', 'a') as file:
-        #file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lexeme))
+        #file.write('\nToken: {0}      Lexeme: {1} \n'.format(token, lex))
         #file.write(rule + '\n')
 
 
@@ -667,7 +666,6 @@ def Scan():
         print("<Scan> ::= scan ( <IDs> );")
     
     #update_output(token[token_index], lexeme[token_index], "<Scan> ::= scan ( <IDs> );")
-    print(lexeme[token_index])
     if lexeme[token_index] == 'scan':
         token_index += 1
         if lexeme[token_index] == '(':
@@ -929,6 +927,9 @@ def main(input_file, output_file):
     global lexeme
     global instructions
     global symbol_table
+    global lex
+    global token_index
+    global peek_next_index
 
     input_file_curr = input_file
     output_file_curr = output_file
@@ -943,32 +944,44 @@ def main(input_file, output_file):
             lexeme.append(temp[1])
 
     Rat24S()
-    print('\nFile successfully parsed.\n\n')
+    print('\n\n')
     print_identifiers()
     print('\n\n')
 
-    token.clear()
-    lexeme.clear()
-
-    print(f'{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n')
-
+    #print(f'{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n')
+    print('Instructions\n\n')
+    print('Instr_Address\t\tOp\t\t\tOprnd\t\t\n')
     for i in range(1, len(instructions)):
         if instructions[i][0] != None:
             print(f'{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n')
     
     with open(output_file_curr, 'w') as file:
-        file.write('Symbol Table\n')
+        file.write('Symbol Table\n\n')
         file.write('Identifier\t\tMemory Location\t\tType\n')
 
-        for lexeme, data_type in symbol_table.items():
-            file.write(f"{lexeme}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
-            file.write('\n\n')
-            file.write(f'{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n')
+        for lex, data_type in symbol_table.items():
+            file.write(f'{lex}\t\t\t\t{data_type["Memory_Address"]}\t\t\t\t{data_type["Data_Type"]}\n')
+            #file.write(('{}\t\t\t{}\t\t\t{}').format(lexeme, data_type["Memory_Address"], data_type["Data_Type"]))
+            file.write('\n')
 
+        file.write('\n\nInstructions\n\n')    
+        file.write(f'Instr_Address\t\tOp\t\t\t\t\tOprnd\n')
         for i in range(1, len(instructions)):
             if instructions[i][0] != None:
-                file.write(f'{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n')
+                file.write(f'{instructions[i][0]}.\t\t\t\t\t{instructions[i][1]}\t\t\t\t\t{instructions[i][2]}\n')
         file.close()
+
+    lex = ""
+    token.clear()
+    lexeme.clear()
+    for i in range(1, len(instructions)):
+        instructions[i][0] = None
+        instructions[i][1] = None
+        instructions[i][2] = None
+    #instructions.clear()
+    symbol_table.clear()
+    token_index = 0
+    peek_next_index = 0
     
 
             

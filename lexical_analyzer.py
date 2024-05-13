@@ -188,6 +188,7 @@ def lexer(input):
 
 def main(input_file, output_file):
     global tokens
+    global lexeme
     input_file_curr = input_file
     output_file_curr = output_file
 
@@ -215,8 +216,8 @@ def main(input_file, output_file):
     input_file_curr = ""
     output_file_curr = ""
     tokens = []
+    lexeme = []
 
-    print("Successful lexical analysis.")
  
     #print(tokens, '\n')
 
