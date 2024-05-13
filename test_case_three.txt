@@ -2,13 +2,21 @@ $
 [* Declarations and Input *]
 $
 integer low, high, step, max;
-scan(low, high, step, max);
-print(low, high, step, max)
 $
 {
+scan(low);
+scan(high);
+scan(step);
+scan(max);
+
+print(low);
+print(high);
+print(step);
+print(max);
+
 low = (high / 2) * step;
-print(low)
-step = max low;
-print(step)
+print(low);
+step = max + low;
+print(step);
 }
 $
