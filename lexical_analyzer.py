@@ -187,6 +187,7 @@ def lexer(input):
         
 
 def main(input_file, output_file):
+    global tokens
     input_file_curr = input_file
     output_file_curr = output_file
 
@@ -195,6 +196,7 @@ def main(input_file, output_file):
         if not input_string:
             print("File is empty")
             return
+        file.close()
         
     input_string_no_comments = remove_comments(input_string)
     input_list = input_string_no_comments.split()
@@ -205,10 +207,14 @@ def main(input_file, output_file):
     with open(output_file_curr, 'w') as file:
         for token_type, token_value in tokens:
             file.write(f"{token_type} {token_value}\n")
+        file.close()
 
     input_string = ""
     input_string_no_comments = ""
     input_list.clear()
+    input_file_curr = ""
+    output_file_curr = ""
+    tokens = []
 
     print("Successful lexical analysis.")
  

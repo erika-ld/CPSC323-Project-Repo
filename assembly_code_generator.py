@@ -31,32 +31,32 @@ def insert_id(lexeme, data_type):
     global Memory_Aress
     if not check_if_exists(lexeme):
         #Entry: id_lexeme = {Memory Address, Data Type}
-        symbol_table[lexeme] = {"Memory_Address": Memory_Aress, "Data_Type": data_type}
+        symbol_table[lexeme] = {'Memory_Address': Memory_Aress, 'Data_Type': data_type}
         Memory_Aress += 1
     else:
-        print(f"Error: {lexeme} already exists in the symbol table.")
+        print(f'Error: {lexeme} already exists in the symbol table.')
 
 
 def print_identifiers():
     #write to file afterwards
-    print("Symbol Table\n")
-    print("Identifier\t\tMemory Location\t\tType\n")
+    print('Symbol Table\n')
+    print('Identifier\t\tMemory Location\t\tType\n')
 
     for lexeme, data_type in symbol_table.items():
         print(f"{lexeme}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
 
 def get_address(id):
     if check_if_exists(id):
-        return symbol_table[id]["Memory_Address"]
+        return symbol_table[id]['Memory_Address']
     else:
-        print(f"Error: {id} does not exist in the symbol table.")
+        print(f'Error: {id} does not exist in the symbol table.')
         return
     
 def get_data_type(id):
     if check_if_exists(id):
-        return symbol_table[id]["Data_Type"]
+        return symbol_table[id]['Data_Type']
     else:
-        print(f"Error: {id} does not exist in the symbol table.")
+        print(f'Error: {id} does not exist in the symbol table.')
         return 
 
 def back_patch():
@@ -105,7 +105,7 @@ def generate_instruction(op, oprnd):
 def Rat24S():
     global token_index
     if print_switch:
-        print("<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $")
+        print('<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $')
     
     #update_output(token[token_index], lexeme[token_index], "<Rat24S> ::= $ $ <Opt Declaration List> $ <Statement List> $")
     if lexeme[token_index] == '$':
@@ -278,7 +278,7 @@ def Qualifier():
 
     lexer = lexeme[token_index]
     if (lexer == 'real'):
-        print("Reals are not permitted.")
+        print('Reals are not permitted.')
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)   
     elif lexer == 'integer' or lexer == 'boolean':
@@ -340,7 +340,6 @@ def Declaration_List():
         if token[temp_index] == 'Identifier':
             insert_id(lexeme[temp_index], lexeme[token_index])
         temp_index += 1
-
 
     Declaration()
     token_index += 1
@@ -668,7 +667,7 @@ def Scan():
         print("<Scan> ::= scan ( <IDs> );")
     
     #update_output(token[token_index], lexeme[token_index], "<Scan> ::= scan ( <IDs> );")
-
+    print(lexeme[token_index])
     if lexeme[token_index] == 'scan':
         token_index += 1
         if lexeme[token_index] == '(':
@@ -906,7 +905,7 @@ def Primary():
             error_handler(token[token_index],lexeme[token_index], token_index)
             exit(1)
     elif token[token_index] == 'Real':
-        print("Reals are not permitted.")
+        print('Reals are not permitted.')
         error_handler(token[token_index],lexeme[token_index], token_index)
         exit(1)  
     elif lexeme[token_index] == 'true' or lexeme[token_index] == 'false':
@@ -925,13 +924,16 @@ def Empty():
     #update_output(token[token_index], lexeme[token_index], "<Empty> ::= ε")
 
     
-def main():
+def main(input_file, output_file):
     global token
     global lexeme
+    global instructions
+    global symbol_table
 
-    output_file_one = "test_case_one_output.txt"
+    input_file_curr = input_file
+    output_file_curr = output_file
 
-    with open('test_case_one_output.txt', 'r') as file:
+    with open(input_file_curr, 'r') as file:
         while True:
             contents = file.readline()
             if not contents:
@@ -945,17 +947,29 @@ def main():
     print_identifiers()
     print('\n\n')
 
-    print(f"{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n")
-
-    for i in range(1, len(instructions)):
-        if instructions[i][0] != None:
-            print(f"{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n")
-    
     token.clear()
     lexeme.clear()
 
+    print(f'{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n')
 
+    for i in range(1, len(instructions)):
+        if instructions[i][0] != None:
+            print(f'{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n')
+    
+    with open(output_file_curr, 'w') as file:
+        file.write('Symbol Table\n')
+        file.write('Identifier\t\tMemory Location\t\tType\n')
 
+        for lexeme, data_type in symbol_table.items():
+            file.write(f"{lexeme}\t\t\t{data_type['Memory_Address']}\t\t\t{data_type['Data_Type']}\n")
+            file.write('\n\n')
+            file.write(f'{instructions[0][0]}\t\t\t{instructions[0][1]}\t\t\t{instructions[0][2]}\n')
+
+        for i in range(1, len(instructions)):
+            if instructions[i][0] != None:
+                file.write(f'{instructions[i][0]}.\t\t\t{instructions[i][1]}\t\t\t{instructions[i][2]}\n')
+        file.close()
+    
 
             
 
