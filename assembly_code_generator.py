@@ -65,22 +65,9 @@ def back_patch():
     instructions[patch_address][2] = instr_Address
 
 
-#with open('test_case_three_output.txt', 'r') as file:
-    #while True:
-        #contents = file.readline()
-        #if not contents:
-            #break
-        #temp = contents.split()
-        #token.append(temp[0])
-        #lexeme.append(temp[1])
-
-
 #Error handler
 def error_handler(token, lex, rule):
     rule += 1
-    #with open('test_case_one_output.txt', 'a') as file:
-        #file.write('\nThere is an error on line {0}'.format(rule))
-        #file.write('\nToken: {0}   Lexeme: {1}'.format(token, lex))
     print('\nThere is an error on line {0}'.format(rule))
     print('Token: {0}   Lexeme: {1}'.format(token, lex))
 
@@ -980,7 +967,7 @@ def main(input_file, output_file):
         instructions[i][0] = None
         instructions[i][1] = None
         instructions[i][2] = None
-    #instructions.clear()
+
     symbol_table.clear()
     token_index = 0
     peek_next_index = 0
